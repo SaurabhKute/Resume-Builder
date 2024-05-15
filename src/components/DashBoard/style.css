@@ -1,0 +1,32 @@
+.main {
+  background-color: rgb(255, 255, 255) !important;
+}
+
+.card-content {
+  height: 380px;
+  width: 280px;
+  border: 2px solid gray;
+  display: flex;
+  margin: 70px;
+  border-radius: 4px;
+  justify-content: center;
+}
+
+.card-content:hover {
+  cursor: pointer;
+  transform: scale(0.9) !important;
+  /* You can adjust the scale value as needed */
+  background-color: #738f93;
+}
+
+.card-content:hover Button {
+  background-color: white;
+  color: #738f93;
+  text-overflow: ellipsis;
+}
+
+.sub-cart-content {
+  /* display: block; */
+  /* margin: 10px; */
+  justify-content: center;
+}

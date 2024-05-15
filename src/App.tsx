@@ -1,9 +1,15 @@
+import Header from "./common/components/Header/Header"
+import Navbar from "./common/components/Navbar/Navbar"
+import DashBoard from "./components/DashBoard/DashBoard"
+
 
 const App = () => {
 
   return (
     <>
-      <h1>Resume Builder</h1>
+    <Navbar/>
+    <Header/>
+    <DashBoard/>
     </>
   )
 }
