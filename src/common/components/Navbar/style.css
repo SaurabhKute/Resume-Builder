@@ -1,0 +1,15 @@
+.navbar {
+    background-color: #121418!important;
+}
+
+.login-btn:hover {
+    background-color: #fff !important;
+    opacity: 1;
+    transition: 0.3s;
+}
+
+.signup-btn:hover {
+     background-color: #068932!important;
+     opacity: 1;
+     transition: 0.3s;
+}
