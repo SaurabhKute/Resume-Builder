@@ -22,6 +22,7 @@ export default function Resume () {
                 <Paper elevation={3} sx={{bgcolor:'white', height:'99vh', width:'600px', display:'flex', justifyContent:'center', alignItems:'center'}}>
 
                 <Typography>Resume Contents</Typography>
+                <Typography>Name Here</Typography>
                 </Paper>
             </Container>
         </div>
