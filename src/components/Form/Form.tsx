@@ -1,5 +1,16 @@
-import React, { useState } from "react";
+import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState } from '../../app/store'; // Adjust path as per your project structure
 import {
+  setPersonalInfo,
+  addInputField,
+  removeInputField,
+  updateInputField,
+} from '../../features/form/formSlice';
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
   Box,
   Button,
   FormControl,
@@ -10,53 +21,41 @@ import {
   Tab,
   Tabs,
   TextField,
-} from "@mui/material";
-import Accordion from "@mui/material/Accordion";
-import AccordionDetails from "@mui/material/AccordionDetails";
-import AccordionSummary from "@mui/material/AccordionSummary";
-import Typography from "@mui/material/Typography";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import PersonOutlineRoundedIcon from "@mui/icons-material/PersonOutlineRounded";
-import WorkHistoryOutlinedIcon from "@mui/icons-material/WorkHistoryOutlined";
-import SchoolOutlinedIcon from "@mui/icons-material/SchoolOutlined";
-import LayersOutlinedIcon from "@mui/icons-material/LayersOutlined";
-import LaptopOutlinedIcon from "@mui/icons-material/LaptopOutlined";
-import StarBorderPurple500OutlinedIcon from "@mui/icons-material/StarBorderPurple500Outlined";
-import WorkspacePremiumOutlinedIcon from "@mui/icons-material/WorkspacePremiumOutlined";
-import { SOCIAL_LINKS } from "../../utils/Constants";
-import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
-
-interface InputField {
-  link: string;
-  linkType: string;
-}
+  Typography,
+} from '@mui/material';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
+import { SOCIAL_LINKS } from '../../utils/Constants'; // Adjust path as per your project structure
 
 const Form: React.FC = () => {
-  const [value, setValue] = useState(0);
+  const dispatch = useDispatch();
+  const personalInfo = useSelector((state: RootState) => state.form.personalInfo);
+  const inputFields = useSelector((state: RootState) => state.form.socialLinks);
+  const [value, setValue] = React.useState(0);
   const [expanded, setExpanded] = React.useState<string | false>(false);
-  const [linkCounter, setLinkCounter] = useState(0);
-  const [inputFields, setInputFields] = useState<InputField[]>([]);
+  const [linkCounter, setLinkCounter] = React.useState(0);
 
   const handleChangeTab = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
 
-  const handleChange =
-    (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
-      setExpanded(isExpanded ? panel : false);
-    };
+  const handleChange = (panel: string) => (
+    event: React.SyntheticEvent,
+    isExpanded: boolean
+  ) => {
+    setExpanded(isExpanded ? panel : false);
+  };
 
   const handleAddNewLink = () => {
     if (linkCounter < 5) {
-      setInputFields([...inputFields, { link: "", linkType: "" }]);
+      dispatch(addInputField());
       setLinkCounter(linkCounter + 1);
     }
   };
 
   const handleRemoveField = (index: number) => {
     if (linkCounter > 0) {
-      const newInputFields = inputFields.filter((_, i) => i !== index);
-      setInputFields(newInputFields);
+      dispatch(removeInputField(index));
       setLinkCounter(linkCounter - 1);
     }
   };
@@ -65,25 +64,32 @@ const Form: React.FC = () => {
     index: number,
     event: React.ChangeEvent<HTMLInputElement | { name?: string; value: unknown }>
   ) => {
-    const newInputFields = [...inputFields];
     const { name, value } = event.target as HTMLInputElement;
-    newInputFields[index] = {
-      ...newInputFields[index],
-      [name as keyof InputField]: value,
-    };
-    setInputFields(newInputFields);
+    dispatch(
+      updateInputField({
+        index,
+        field: { ...inputFields[index], [name]: value },
+      })
+    );
+  };
+
+  const handlePersonalInfoChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const { name, value } = event.target;
+    dispatch(setPersonalInfo({ [name]: value }));
   };
 
   return (
     <div
       style={{
-        border: "0.1px solid gray",
-        width: "500px",
-        display: "flex",
-        justifyContent: "center",
+        border: '0.1px solid gray',
+        width: '500px',
+        display: 'flex',
+        justifyContent: 'center',
       }}
     >
-      <Box sx={{ width: "100%", bgcolor: "background.paper" }}>
+      <Box sx={{ width: '100%', bgcolor: 'background.paper' }}>
         <Tabs
           value={value}
           onChange={handleChangeTab}
@@ -96,37 +102,29 @@ const Form: React.FC = () => {
         </Tabs>
         {value === 0 ? (
           <div>
-            <Accordion
-              // expanded={}
-              defaultExpanded
-              onChange={handleChange("panel1")}
-            >
+            <Accordion defaultExpanded onChange={handleChange('panel1')}>
               <AccordionSummary
-              
                 expandIcon={<ExpandMoreIcon />}
                 aria-controls="panel1bh-content"
                 id="panel1bh-header"
               >
                 <Box
                   sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    width: "60%",
+                    display: 'flex',
+                    alignItems: 'center',
+                    width: '60%',
                     flexShrink: 0,
                   }}
                 >
-                  <PersonOutlineRoundedIcon
-                    sx={{ fontSize: "20px", mr: 1, fontWeight: "light" }}
-                  />
                   <Typography
-                    sx={{ fontWeight: "light", fontSize: "16px", p: 0.1 }}
+                    sx={{ fontWeight: 'light', fontSize: '16px', p: 0.1 }}
                   >
                     Personal Info
                   </Typography>
                 </Box>
               </AccordionSummary>
               <AccordionDetails>
-                <Typography sx={{ fontSize: "14px", fontWeight: "bold" }}>
+                <Typography sx={{ fontSize: '14px', fontWeight: 'bold' }}>
                   Personal Info
                 </Typography>
 
@@ -139,54 +137,73 @@ const Form: React.FC = () => {
                   <Grid item xs={6} mt={1}>
                     <TextField
                       id="first-name"
+                      name="firstName"
                       type="text"
                       label="First Name"
                       placeholder="John"
-                     
+                      value={personalInfo.firstName}
+                      onChange={handlePersonalInfoChange}
                     />
                   </Grid>
                   <Grid item xs={6} mt={1}>
                     <TextField
                       id="last-name"
+                      name="lastName"
                       type="text"
                       label="Last Name"
                       placeholder="Doe"
+                      value={personalInfo.lastName}
+                      onChange={handlePersonalInfoChange}
                     />
                   </Grid>
                   <Grid item xs={6} mt={1}>
                     <TextField
                       id="email"
+                      name="email"
                       type="email"
                       label="Email"
                       placeholder="john@example.com"
+                      value={personalInfo.email}
+                      onChange={handlePersonalInfoChange}
                     />
                   </Grid>
                   <Grid item xs={6} mt={1}>
                     <TextField
                       id="phone"
+                      name="phone"
                       type="text"
                       label="Phone"
                       placeholder="+91 2354 6545 34"
+                      value={personalInfo.phone}
+                      onChange={handlePersonalInfoChange}
                     />
                   </Grid>
                   <Grid item xs={6} mt={1}>
                     <TextField
                       id="address"
+                      name="address"
                       type="text"
                       label="Address"
                       placeholder="123 Main Street New York"
+                      value={personalInfo.address}
+                      onChange={handlePersonalInfoChange}
                     />
                   </Grid>
                   <Grid item xs={6} mt={1}>
                     <TextField
                       id="job-title"
+                      name="jobTitle"
                       type="text"
                       label="Job Title"
                       placeholder="Full Stack Developer"
+                      value={personalInfo.jobTitle}
+                      onChange={handlePersonalInfoChange}
                     />
                   </Grid>
                 </Grid>
-                <Typography sx={{ fontSize: "14px", fontWeight: "bold", mt: 2 }}>
+                <Typography
+                  sx={{ fontSize: '14px', fontWeight: 'bold', mt: 2 }}
+                >
                   Links {`(${linkCounter}/5)`}
                 </Typography>
 
@@ -209,14 +226,18 @@ const Form: React.FC = () => {
                     </Grid>
                     <Grid item xs={5} mt={1}>
                       <FormControl fullWidth>
-                        <InputLabel id={`link-type-label-${index}`}>Link Type</InputLabel>
+                        <InputLabel
+                          id={`link-type-label-${index}`}
+                        >
+                          Link Type
+                        </InputLabel>
                         <Select
                           labelId={`link-type-label-${index}`}
                           id={`link-type-${index}`}
                           name="linkType"
                           value={inputField.linkType}
                           label="Link Type"
-                          onChange={(event:any) => handleInputChange(index, event)}
+                          onChange={(event) => handleInputChange(index, event)}
                         >
                           {SOCIAL_LINKS.map((name, idx) => (
                             <MenuItem key={idx} value={name}>
@@ -228,7 +249,7 @@ const Form: React.FC = () => {
                     </Grid>
                     <Grid item xs={2} mt={3}>
                       <DeleteOutlineOutlinedIcon
-                        sx={{ cursor: "pointer" }}
+                        sx={{ cursor: 'pointer' }}
                         onClick={() => handleRemoveField(index)}
                       />
                     </Grid>
@@ -238,236 +259,20 @@ const Form: React.FC = () => {
                   size="medium"
                   variant="outlined"
                   sx={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    width: "80%",
-                    fontStyle: "none",
-                    borderColor: "black",
-                    color: "black",
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    width: '80%',
+                    fontStyle: 'none',
+                    borderColor: 'black',
+                    color: 'black',
                     m: 3,
                   }}
                   onClick={handleAddNewLink}
                   disabled={linkCounter === 5}
                 >
-                  {linkCounter < 5 ? "+ Add Link" : "Max number of links added"}
+                  {linkCounter < 5 ? '+ Add Link' : 'Max number of links added'}
                 </Button>
-              </AccordionDetails>
-            </Accordion>
-            <Accordion
-              defaultExpanded
-              expanded={expanded === "panel2"}
-              onChange={handleChange("panel2")}
-            >
-              <AccordionSummary
-                expandIcon={<ExpandMoreIcon />}
-                aria-controls="panel2bh-content"
-                id="panel2bh-header"
-              >
-                <Box
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    width: "60%",
-                    flexShrink: 0,
-                  }}
-                >
-                  <SchoolOutlinedIcon
-                    sx={{ fontSize: "20px", mr: 1, fontWeight: "light" }}
-                  />
-                  <Typography
-                    sx={{ fontWeight: "light", fontSize: "16px", p: 0.6 }}
-                  >
-                    Education
-                  </Typography>
-                </Box>
-              </AccordionSummary>
-              <AccordionDetails>
-                <Typography>
-                  Donec placerat, lectus sed mattis semper, neque lectus feugiat
-                  lectus, varius pulvinar diam eros in elit. Pellentesque
-                  convallis laoreet laoreet.
-                </Typography>
-              </AccordionDetails>
-            </Accordion>
-            <Accordion
-              expanded={expanded === "panel3"}
-              onChange={handleChange("panel3")}
-            >
-              <AccordionSummary
-                expandIcon={<ExpandMoreIcon />}
-                aria-controls="panel3bh-content"
-                id="panel3bh-header"
-              >
-                <Box
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    width: "60%",
-                    flexShrink: 0,
-                  }}
-                >
-                  <WorkHistoryOutlinedIcon
-                    sx={{ fontSize: "20px", mr: 1, fontWeight: "light" }}
-                  />
-                  <Typography
-                    sx={{ fontWeight: "light", fontSize: "16px", p: 0.6 }}
-                  >
-                    Work Experience
-                  </Typography>
-                </Box>
-              </AccordionSummary>
-              <AccordionDetails>
-                <Typography>
-                  Nunc viverra imperdiet enim. Fusce est. Vivamus a tellus.
-                  Pellentesque habitant morbi tristique senectus et netus et
-                  malesuada fames ac turpis egestas. Proin pharetra nonummy pede.
-                  Mauris et orci.
-                </Typography>
-              </AccordionDetails>
-            </Accordion>
-            <Accordion
-              expanded={expanded === "panel4"}
-              onChange={handleChange("panel4")}
-            >
-              <AccordionSummary
-                expandIcon={<ExpandMoreIcon />}
-                aria-controls="panel4bh-content"
-                id="panel4bh-header"
-              >
-                <Box
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    width: "60%",
-                    flexShrink: 0,
-                  }}
-                >
-                  <LayersOutlinedIcon
-                    sx={{ fontSize: "20px", mr: 1, fontWeight: "light" }}
-                  />
-                  <Typography
-                    sx={{ fontWeight: "light", fontSize: "16px", p: 0.6 }}
-                  >
-                    Projects
-                  </Typography>
-                </Box>
-              </AccordionSummary>
-              <AccordionDetails>
-                <Typography>
-                  Nunc viverra imperdiet enim. Fusce est. Vivamus a tellus.
-                  Pellentesque habitant morbi tristique senectus et netus et
-                  malesuada fames ac turpis egestas. Proin pharetra nonummy pede.
-                  Mauris et orci.
-                </Typography>
-              </AccordionDetails>
-            </Accordion>
-            <Accordion
-              expanded={expanded === "panel5"}
-              onChange={handleChange("panel5")}
-            >
-              <AccordionSummary
-                expandIcon={<ExpandMoreIcon />}
-                aria-controls="panel5bh-content"
-                id="panel5bh-header"
-              >
-                <Box
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    width: "60%",
-                    flexShrink: 0,
-                  }}
-                >
-                  <LaptopOutlinedIcon
-                    sx={{ fontSize: "20px", mr: 1, fontWeight: "light" }}
-                  />
-                  <Typography
-                    sx={{ fontWeight: "light", fontSize: "16px", p: 0.6 }}
-                  >
-                    Skills
-                  </Typography>
-                </Box>
-              </AccordionSummary>
-              <AccordionDetails>
-                <Typography>
-                  Nunc viverra imperdiet enim. Fusce est. Vivamus a tellus.
-                  Pellentesque habitant morbi tristique senectus et netus et
-                  malesuada fames ac turpis egestas. Proin pharetra nonummy pede.
-                  Mauris et orci.
-                </Typography>
-              </AccordionDetails>
-            </Accordion>
-            <Accordion
-              expanded={expanded === "panel6"}
-              onChange={handleChange("panel6")}
-            >
-              <AccordionSummary
-                expandIcon={<ExpandMoreIcon />}
-                aria-controls="panel6bh-content"
-                id="panel6bh-header"
-              >
-                <Box
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    width: "60%",
-                    flexShrink: 0,
-                  }}
-                >
-                  <StarBorderPurple500OutlinedIcon
-                    sx={{ fontSize: "20px", mr: 1, fontWeight: "light" }}
-                  />
-                  <Typography
-                    sx={{ fontWeight: "light", fontSize: "16px", p: 0.6 }}
-                  >
-                    Awards
-                  </Typography>
-                </Box>
-              </AccordionSummary>
-              <AccordionDetails>
-                <Typography>
-                  Nunc viverra imperdiet enim. Fusce est. Vivamus a tellus.
-                  Pellentesque habitant morbi tristique senectus et netus et
-                  malesuada fames ac turpis egestas. Proin pharetra nonummy pede.
-                  Mauris et orci.
-                </Typography>
-              </AccordionDetails>
-            </Accordion>
-            <Accordion
-              expanded={expanded === "panel7"}
-              onChange={handleChange("panel7")}
-            >
-              <AccordionSummary
-                expandIcon={<ExpandMoreIcon />}
-                aria-controls="panel7bh-content"
-                id="panel7bh-header"
-              >
-                <Box
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    width: "60%",
-                    flexShrink: 0,
-                  }}
-                >
-                  <WorkspacePremiumOutlinedIcon
-                    sx={{ fontSize: "20px", mr: 1, fontWeight: "light" }}
-                  />
-                  <Typography
-                    sx={{ fontWeight: "light", fontSize: "16px", p: 0.6 }}
-                  >
-                    Certifications
-                  </Typography>
-                </Box>
-              </AccordionSummary>
-              <AccordionDetails>
-                <Typography>
-                  Nunc viverra imperdiet enim. Fusce est. Vivamus a tellus.
-                  Pellentesque habitant morbi tristique senectus et netus et
-                  malesuada fames ac turpis egestas. Proin pharetra nonummy pede.
-                  Mauris et orci.
-                </Typography>
               </AccordionDetails>
             </Accordion>
           </div>
