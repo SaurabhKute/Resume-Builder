@@ -1,6 +1,8 @@
 import Header from "./common/components/Header/Header"
 import Navbar from "./common/components/Navbar/Navbar"
-import DashBoard from "./components/DashBoard/DashBoard"
+import Builder from "./components/Builder/Builder"
+// import Dashboard from "./components/Dashboard/Dashboard"
+
 
 
 const App = () => {
@@ -9,7 +11,8 @@ const App = () => {
     <>
     <Navbar/>
     <Header/>
-    <DashBoard/>
+    {/* <Dashboard/> */}
+    <Builder/>
     </>
   )
 }
