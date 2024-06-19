@@ -1,7 +1,28 @@
 import React, { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { RootState } from "../../app/store"; // Adjust path as per your project structure
 import {
+  setPersonalInfo,
+  addInputField,
+  removeInputField,
+  updateInputField,
+  addProgLanguage,
+  removeProgLanguage,
+  addFramework,
+  removeFramework,
+  addTool,
+  removeTool,
+  removeDatabase,
+  addDatabase,
+} from "../../features/form/formSlice";
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Autocomplete,
   Box,
   Button,
+  Chip,
   FormControl,
   Grid,
   InputLabel,
@@ -10,68 +31,146 @@ import {
   Tab,
   Tabs,
   TextField,
+  Typography,
 } from "@mui/material";
-import Accordion from "@mui/material/Accordion";
-import AccordionDetails from "@mui/material/AccordionDetails";
-import AccordionSummary from "@mui/material/AccordionSummary";
-import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import PersonOutlineRoundedIcon from "@mui/icons-material/PersonOutlineRounded";
-import WorkHistoryOutlinedIcon from "@mui/icons-material/WorkHistoryOutlined";
-import SchoolOutlinedIcon from "@mui/icons-material/SchoolOutlined";
-import LayersOutlinedIcon from "@mui/icons-material/LayersOutlined";
-import LaptopOutlinedIcon from "@mui/icons-material/LaptopOutlined";
-import StarBorderPurple500OutlinedIcon from "@mui/icons-material/StarBorderPurple500Outlined";
-import WorkspacePremiumOutlinedIcon from "@mui/icons-material/WorkspacePremiumOutlined";
-import { SOCIAL_LINKS } from "../../utils/Constants";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
+import PersonOutlineRoundedIcon from "@mui/icons-material/PersonOutlineRounded";
+import SchoolOutlinedIcon from "@mui/icons-material/SchoolOutlined";
+import { SOCIAL_LINKS, LANGUAGES, FRAMEWORKS, DATABASES, TOOLS } from "../../utils/Constants"; // Adjust path as per your project structure
 
-interface InputField {
-  link: string;
-  linkType: string;
-}
 
 const Form: React.FC = () => {
-  const [value, setValue] = useState(0);
-  const [expanded, setExpanded] = React.useState<string | false>(false);
-  const [linkCounter, setLinkCounter] = useState(0);
-  const [inputFields, setInputFields] = useState<InputField[]>([]);
+  const dispatch = useDispatch();
+  const personalInfo = useSelector((state: RootState) => state.form.personalInfo);
+  const inputFields = useSelector((state: RootState) => state.form.socialLinks);
+
+  // Personal Information
+  const [value, setValue] = useState<number>(0);
+  const [expanded, setExpanded] = useState<string | false>(false);
+  const [linkCounter, setLinkCounter] = useState<number>(0);
+
+  // Programming Languages
+  const [language, setLanguage] = useState<string | null>(null);
+  const [inputLanguage, setInputLanguage] = useState<string>("");
+  const [selectedLanguages, setSelectedLanguages] = useState<string[]>([]);
+
+
+  // FrameWorks
+  const [framework, setFramework] = useState<string | null>(null);
+  const [inputFramework, setInputFramework] = useState<string>("");
+  const [selectedFramework, setSelectedFramework] = useState<string[]>([]);
+
+  // Tools
+  const [tools, setTools] = useState<string | null>(null);
+  const [inputTools, setInputTools] = useState<string>("");
+  const [selectedTools, setSelectedTools] = useState<string[]>([]);
+
+  // Databases
+  const [database, setDatabase] = useState<string | null>(null);
+const [inputDatabase, setInputDatabase] = useState("");
+const [selectedDatabases, setSelectedDatabases] = useState<string[]>([]);
 
   const handleChangeTab = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
 
-  const handleChange =
-    (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
-      setExpanded(isExpanded ? panel : false);
-    };
+  const handleChange = (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
+    setExpanded(isExpanded ? panel : false);
+  };
 
   const handleAddNewLink = () => {
     if (linkCounter < 5) {
-      setInputFields([...inputFields, { link: "", linkType: "" }]);
+      dispatch(addInputField());
       setLinkCounter(linkCounter + 1);
     }
   };
 
   const handleRemoveField = (index: number) => {
     if (linkCounter > 0) {
-      const newInputFields = inputFields.filter((_, i) => i !== index);
-      setInputFields(newInputFields);
+      dispatch(removeInputField(index));
       setLinkCounter(linkCounter - 1);
     }
   };
 
   const handleInputChange = (
     index: number,
-    event: React.ChangeEvent<HTMLInputElement | { name?: string; value: unknown }>
+    event: React.ChangeEvent<
+      HTMLInputElement | { name?: string; value: unknown }
+    >
   ) => {
-    const newInputFields = [...inputFields];
     const { name, value } = event.target as HTMLInputElement;
-    newInputFields[index] = {
-      ...newInputFields[index],
-      [name as keyof InputField]: value,
-    };
-    setInputFields(newInputFields);
+    dispatch(
+      updateInputField({
+        index,
+        field: { ...inputFields[index], [name]: value },
+      })
+    );
+  };
+
+  const handlePersonalInfoChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const { name, value } = event.target;
+    dispatch(setPersonalInfo({ [name]: value }));
+  };
+
+  const handleAddLanguage = (event, newValue) => {
+    if (newValue && !selectedLanguages.includes(newValue)) {
+      setSelectedLanguages([...selectedLanguages, newValue]);
+      dispatch(addProgLanguage({ language: newValue }));
+    }
+    setLanguage(null);
+  };
+
+  const handleDeleteLanguage = (languageToDelete: string) => {
+    setSelectedLanguages(selectedLanguages.filter(language => language !== languageToDelete));
+    dispatch(removeProgLanguage(languageToDelete));
+    setInputLanguage(''); // Clear the autocomplete input
+  };
+
+  const handleAddFramework = (event, newValue) => {
+    if (newValue && !selectedFramework.includes(newValue)) {
+      setSelectedFramework([...selectedFramework, newValue]);
+      dispatch(addFramework({ frameworks: newValue }));
+    }
+    setFramework(null);
+  };
+
+  const handleDeleteFramework = (frameworkToDelete: string) => {
+    setSelectedFramework(selectedFramework.filter(framework => framework !== frameworkToDelete));
+    dispatch(removeFramework(frameworkToDelete));
+    setInputFramework(''); // Clear the autocomplete input
+  };
+
+  const handleAddTool = (event, newValue) => {
+    if (newValue && !selectedTools.includes(newValue)) {
+      setSelectedTools([...selectedTools, newValue]);
+      dispatch(addTool({ tools: newValue }));
+    }
+    setTools(null);
+  };
+
+  const handleDeleteTool = (toolToDelete: string) => {
+    setSelectedTools(selectedTools.filter(tool => tool !== toolToDelete));
+    dispatch(removeTool(toolToDelete));
+    setInputTools('');
+  }
+
+  const handleAddDatabase = (event,newValue) => {
+    if (newValue && !selectedDatabases.includes(newValue)) {
+      setSelectedDatabases([...selectedDatabases, newValue]);
+      dispatch(addDatabase({ database: newValue })); // Assuming you have an addDatabase action
+    }
+    setDatabase(null);
+  };
+  
+  const handleDeleteDatabase = (databaseToDelete: string) => {
+    setSelectedDatabases(
+      selectedDatabases.filter(database => database !== databaseToDelete)
+    );
+    dispatch(removeDatabase(databaseToDelete)); // Assuming you have a removeDatabase action
+    setInputDatabase(""); // Clear the autocomplete input
   };
 
   return (
@@ -97,12 +196,11 @@ const Form: React.FC = () => {
         {value === 0 ? (
           <div>
             <Accordion
-              // expanded={}
-              defaultExpanded
+              // defaultExpanded
+
               onChange={handleChange("panel1")}
             >
               <AccordionSummary
-              
                 expandIcon={<ExpandMoreIcon />}
                 aria-controls="panel1bh-content"
                 id="panel1bh-header"
@@ -139,54 +237,73 @@ const Form: React.FC = () => {
                   <Grid item xs={6} mt={1}>
                     <TextField
                       id="first-name"
+                      name="firstName"
                       type="text"
                       label="First Name"
                       placeholder="John"
-                     
+                      value={personalInfo.firstName}
+                      onChange={handlePersonalInfoChange}
                     />
                   </Grid>
                   <Grid item xs={6} mt={1}>
                     <TextField
                       id="last-name"
+                      name="lastName"
                       type="text"
                       label="Last Name"
                       placeholder="Doe"
+                      value={personalInfo.lastName}
+                      onChange={handlePersonalInfoChange}
                     />
                   </Grid>
                   <Grid item xs={6} mt={1}>
                     <TextField
                       id="email"
+                      name="email"
                       type="email"
                       label="Email"
                       placeholder="john@example.com"
+                      value={personalInfo.email}
+                      onChange={handlePersonalInfoChange}
                     />
                   </Grid>
                   <Grid item xs={6} mt={1}>
                     <TextField
                       id="phone"
+                      name="phone"
                       type="text"
                       label="Phone"
                       placeholder="+91 2354 6545 34"
+                      value={personalInfo.phone}
+                      onChange={handlePersonalInfoChange}
                     />
                   </Grid>
                   <Grid item xs={6} mt={1}>
                     <TextField
                       id="address"
+                      name="address"
                       type="text"
                       label="Address"
                       placeholder="123 Main Street New York"
+                      value={personalInfo.address}
+                      onChange={handlePersonalInfoChange}
                     />
                   </Grid>
                   <Grid item xs={6} mt={1}>
                     <TextField
                       id="job-title"
+                      name="jobTitle"
                       type="text"
                       label="Job Title"
                       placeholder="Full Stack Developer"
+                      value={personalInfo.jobTitle}
+                      onChange={handlePersonalInfoChange}
                     />
                   </Grid>
                 </Grid>
-                <Typography sx={{ fontSize: "14px", fontWeight: "bold", mt: 2 }}>
+                <Typography
+                  sx={{ fontSize: "14px", fontWeight: "bold", mt: 2 }}
+                >
                   Links {`(${linkCounter}/5)`}
                 </Typography>
 
@@ -209,14 +326,18 @@ const Form: React.FC = () => {
                     </Grid>
                     <Grid item xs={5} mt={1}>
                       <FormControl fullWidth>
-                        <InputLabel id={`link-type-label-${index}`}>Link Type</InputLabel>
+                        <InputLabel id={`link-type-label-${index}`}>
+                          Link Type
+                        </InputLabel>
                         <Select
                           labelId={`link-type-label-${index}`}
                           id={`link-type-${index}`}
                           name="linkType"
                           value={inputField.linkType}
                           label="Link Type"
-                          onChange={(event:any) => handleInputChange(index, event)}
+                          onChange={(event: any) =>
+                            handleInputChange(index, event)
+                          }
                         >
                           {SOCIAL_LINKS.map((name, idx) => (
                             <MenuItem key={idx} value={name}>
@@ -283,191 +404,108 @@ const Form: React.FC = () => {
                 </Box>
               </AccordionSummary>
               <AccordionDetails>
-                <Typography>
-                  Donec placerat, lectus sed mattis semper, neque lectus feugiat
-                  lectus, varius pulvinar diam eros in elit. Pellentesque
-                  convallis laoreet laoreet.
-                </Typography>
-              </AccordionDetails>
-            </Accordion>
-            <Accordion
-              expanded={expanded === "panel3"}
-              onChange={handleChange("panel3")}
-            >
-              <AccordionSummary
-                expandIcon={<ExpandMoreIcon />}
-                aria-controls="panel3bh-content"
-                id="panel3bh-header"
-              >
-                <Box
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    width: "60%",
-                    flexShrink: 0,
-                  }}
-                >
-                  <WorkHistoryOutlinedIcon
-                    sx={{ fontSize: "20px", mr: 1, fontWeight: "light" }}
+                <Box sx={{ width: 400 }}>
+                  <Autocomplete
+                    value={language}
+                    onChange={handleAddLanguage}
+                    inputValue={inputLanguage}
+                    onInputChange={(event, newInputValue) => {
+                      setInputLanguage(newInputValue);
+                    }}
+                    id="controllable-states-demo"
+                    options={LANGUAGES}
+                    renderInput={(params) => (
+                      <TextField {...params} label="Add Programming languages" />
+                    )}
                   />
-                  <Typography
-                    sx={{ fontWeight: "light", fontSize: "16px", p: 0.6 }}
-                  >
-                    Work Experience
-                  </Typography>
+                  <Box sx={{ mt: 2 }}>
+                    {selectedLanguages.map((language: string, index: number) => (
+                      <Chip
+                        key={index}
+                        label={language}
+                        onDelete={() => handleDeleteLanguage(language)}
+                        sx={{ margin: 0.5 }}
+                      />
+                    ))}
+                  </Box>
                 </Box>
-              </AccordionSummary>
-              <AccordionDetails>
-                <Typography>
-                  Nunc viverra imperdiet enim. Fusce est. Vivamus a tellus.
-                  Pellentesque habitant morbi tristique senectus et netus et
-                  malesuada fames ac turpis egestas. Proin pharetra nonummy pede.
-                  Mauris et orci.
-                </Typography>
-              </AccordionDetails>
-            </Accordion>
-            <Accordion
-              expanded={expanded === "panel4"}
-              onChange={handleChange("panel4")}
-            >
-              <AccordionSummary
-                expandIcon={<ExpandMoreIcon />}
-                aria-controls="panel4bh-content"
-                id="panel4bh-header"
-              >
-                <Box
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    width: "60%",
-                    flexShrink: 0,
-                  }}
-                >
-                  <LayersOutlinedIcon
-                    sx={{ fontSize: "20px", mr: 1, fontWeight: "light" }}
+                <Box sx={{ width: 400, mt: 2 }}>
+                  <Autocomplete
+                    value={framework}
+                    onChange={handleAddFramework}
+                    inputValue={inputFramework}
+                    onInputChange={(event, newInputValue) => {
+                      setInputFramework(newInputValue);
+                    }}
+                    id="controllable-states-demo"
+                    options={FRAMEWORKS}
+                    renderInput={(params) => (
+                      <TextField {...params} label="Add libraries / frameworks" />
+                    )}
                   />
-                  <Typography
-                    sx={{ fontWeight: "light", fontSize: "16px", p: 0.6 }}
-                  >
-                    Projects
-                  </Typography>
+                  <Box sx={{ mt: 2 }}>
+                    {selectedFramework.map((framework: string, index: number) => (
+                      <Chip
+                        key={index}
+                        label={framework}
+                        onDelete={() => handleDeleteFramework(framework)}
+                        sx={{ margin: 0.5 }}
+                      />
+                    ))}
+                  </Box>
                 </Box>
-              </AccordionSummary>
-              <AccordionDetails>
-                <Typography>
-                  Nunc viverra imperdiet enim. Fusce est. Vivamus a tellus.
-                  Pellentesque habitant morbi tristique senectus et netus et
-                  malesuada fames ac turpis egestas. Proin pharetra nonummy pede.
-                  Mauris et orci.
-                </Typography>
-              </AccordionDetails>
-            </Accordion>
-            <Accordion
-              expanded={expanded === "panel5"}
-              onChange={handleChange("panel5")}
-            >
-              <AccordionSummary
-                expandIcon={<ExpandMoreIcon />}
-                aria-controls="panel5bh-content"
-                id="panel5bh-header"
-              >
-                <Box
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    width: "60%",
-                    flexShrink: 0,
-                  }}
-                >
-                  <LaptopOutlinedIcon
-                    sx={{ fontSize: "20px", mr: 1, fontWeight: "light" }}
+                <Box sx={{ width: 400, mt: 2 }}>
+                  <Autocomplete
+                    value={tools}
+                    onChange={handleAddTool}
+                    inputValue={inputTools}
+                    onInputChange={(event, newInputValue) => {
+                      setInputTools(newInputValue);
+                    }}
+                    id="controllable-states-demo"
+                    options={TOOLS }
+                    renderInput={(params) => (
+                      <TextField {...params} label="Add tools / platforms" />
+                    )}
                   />
-                  <Typography
-                    sx={{ fontWeight: "light", fontSize: "16px", p: 0.6 }}
-                  >
-                    Skills
-                  </Typography>
+                  <Box sx={{ mt: 2 }}>
+                    {selectedTools.map((tools: string, index: number) => (
+                      <Chip
+                        key={index}
+                        label={tools}
+                        onDelete={() => handleDeleteTool(tools)}
+                        sx={{ margin: 0.5 }}
+                      />
+                    ))}
+                  </Box>
                 </Box>
-              </AccordionSummary>
-              <AccordionDetails>
-                <Typography>
-                  Nunc viverra imperdiet enim. Fusce est. Vivamus a tellus.
-                  Pellentesque habitant morbi tristique senectus et netus et
-                  malesuada fames ac turpis egestas. Proin pharetra nonummy pede.
-                  Mauris et orci.
-                </Typography>
-              </AccordionDetails>
-            </Accordion>
-            <Accordion
-              expanded={expanded === "panel6"}
-              onChange={handleChange("panel6")}
-            >
-              <AccordionSummary
-                expandIcon={<ExpandMoreIcon />}
-                aria-controls="panel6bh-content"
-                id="panel6bh-header"
-              >
-                <Box
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    width: "60%",
-                    flexShrink: 0,
-                  }}
-                >
-                  <StarBorderPurple500OutlinedIcon
-                    sx={{ fontSize: "20px", mr: 1, fontWeight: "light" }}
+                <Box sx={{ width: 400, mt: 2 }}>
+
+                  <Autocomplete
+                    value={database}
+                    onChange={handleAddDatabase}
+                    inputValue={inputDatabase}
+                    onInputChange={(event, newInputValue) => {
+                      setInputDatabase(newInputValue);
+                    }}
+                    id="controllable-states-demo"
+                    options={DATABASES}
+                    renderInput={(params) => (
+                      <TextField {...params} label="Add databases" />
+                    )}
                   />
-                  <Typography
-                    sx={{ fontWeight: "light", fontSize: "16px", p: 0.6 }}
-                  >
-                    Awards
-                  </Typography>
+                  <Box sx={{ mt: 2 }}>
+                    {selectedDatabases.map((database: string, index: number) => (
+                      <Chip
+                        key={index}
+                        label={database}
+                        onDelete={() => handleDeleteDatabase(database)}
+                        sx={{ margin: 0.5 }}
+                      />
+                    ))}
+                  </Box>
+
                 </Box>
-              </AccordionSummary>
-              <AccordionDetails>
-                <Typography>
-                  Nunc viverra imperdiet enim. Fusce est. Vivamus a tellus.
-                  Pellentesque habitant morbi tristique senectus et netus et
-                  malesuada fames ac turpis egestas. Proin pharetra nonummy pede.
-                  Mauris et orci.
-                </Typography>
-              </AccordionDetails>
-            </Accordion>
-            <Accordion
-              expanded={expanded === "panel7"}
-              onChange={handleChange("panel7")}
-            >
-              <AccordionSummary
-                expandIcon={<ExpandMoreIcon />}
-                aria-controls="panel7bh-content"
-                id="panel7bh-header"
-              >
-                <Box
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    width: "60%",
-                    flexShrink: 0,
-                  }}
-                >
-                  <WorkspacePremiumOutlinedIcon
-                    sx={{ fontSize: "20px", mr: 1, fontWeight: "light" }}
-                  />
-                  <Typography
-                    sx={{ fontWeight: "light", fontSize: "16px", p: 0.6 }}
-                  >
-                    Certifications
-                  </Typography>
-                </Box>
-              </AccordionSummary>
-              <AccordionDetails>
-                <Typography>
-                  Nunc viverra imperdiet enim. Fusce est. Vivamus a tellus.
-                  Pellentesque habitant morbi tristique senectus et netus et
-                  malesuada fames ac turpis egestas. Proin pharetra nonummy pede.
-                  Mauris et orci.
-                </Typography>
               </AccordionDetails>
             </Accordion>
           </div>
