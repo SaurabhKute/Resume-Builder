@@ -1,16 +1,9 @@
 import React, { useState } from "react";
-import {
-  Box,
-  Tab,
-  Tabs,
-} from "@mui/material";
-import Additional from "../Additional/Additional";
-import Skillsets from "../Skillsets/Skillsets";
-import PersonalInfo from "../PersonalInfo/PersonalInfo";
-import Certification from "../Certifications/Certification";
+import { Box, Tab, Tabs } from "@mui/material";
+import { Additional,Certification,Education,PersonalInfo, Skillset } from "../Accordians";
+
 
 const Form: React.FC = () => {
-
   // Accordians
   const [value, setValue] = useState<number>(0);
   const [expanded, setExpanded] = useState<string | false>(false);
@@ -46,11 +39,26 @@ const Form: React.FC = () => {
         </Tabs>
         {value === 0 ? (
           <div>
-            <PersonalInfo expanded={expanded === "panel1"} onChange={handleChange("panel1")} />
-            <Skillsets expanded={expanded === "panel2"} onChange={handleChange("panel2")} />
-            <Additional expanded={expanded === "panel3"} onChange={handleChange("panel3")} />
-            <Certification expanded={expanded === "panel4"} onChange={handleChange("panel4")} />
-
+            <PersonalInfo
+              expanded={expanded === "panel1"}
+              onChange={handleChange("panel1")}
+            />
+            <Education
+              expanded={expanded === "panel2"}
+              onChange={handleChange("panel2")}
+            />
+            <Skillset
+              expanded={expanded === "panel3"}
+              onChange={handleChange("panel3")}
+            />
+            <Additional
+              expanded={expanded === "panel4"}
+              onChange={handleChange("panel4")}
+            />
+            <Certification
+              expanded={expanded === "panel5"}
+              onChange={handleChange("panel5")}
+            />
           </div>
         ) : (
           <div>Resume Matcher content goes here...</div>

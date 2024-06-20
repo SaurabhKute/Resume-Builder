@@ -1,6 +1,6 @@
 import { Accordion, AccordionDetails, AccordionSummary, Box, Button, FormControl, Grid, InputLabel, MenuItem, Select, TextField, Typography } from "@mui/material";
 import { useState } from "react";
-import { addInputField, removeInputField, setPersonalInfo, updateInputField } from "../../../features/form/formSlice";
+import { addInputField, removeInputField, setPersonalInfo, updateInputField } from "../../../features/form/slices/personalInfoSlice";
 import { useDispatch } from "react-redux";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import PersonOutlineRoundedIcon from "@mui/icons-material/PersonOutlineRounded";
@@ -18,11 +18,11 @@ interface PersonalInfoProps {
 const PersonalInfo: React.FC<PersonalInfoProps> = ({ expanded, onChange }) => {
 
     const dispatch = useDispatch();
-    const inputFields = useSelector((state: RootState) => state.form.socialLinks);
+    const inputFields = useSelector((state: RootState) => state.personalInfo.socialLinks);
 
 
     const personalInfo = useSelector(
-        (state: RootState) => state.form.personalInfo
+        (state: RootState) => state.personalInfo.personalInfo
     );
 
 

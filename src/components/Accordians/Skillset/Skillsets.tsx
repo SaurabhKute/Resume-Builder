@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import LaptopOutlinedIcon from "@mui/icons-material/LaptopOutlined";
 import { Accordion, AccordionDetails, AccordionSummary, Autocomplete, Box, Chip, TextField, Typography } from "@mui/material";
-import { addDatabase, addFramework, addProgLanguage, addTool, removeDatabase, removeFramework, removeProgLanguage, removeTool } from "../../../features/form/formSlice";
+import { addDatabase, addFramework, addProgLanguage, addTool, removeDatabase, removeFramework, removeProgLanguage, removeTool } from "../../../features/form/slices/skillSetSlice";
 import { DATABASES, FRAMEWORKS, LANGUAGES, TOOLS } from "../../../utils/Constants";
 
 interface SkillsetsProps {
