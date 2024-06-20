@@ -4,14 +4,14 @@ import { useSelector } from "react-redux";
 import "./Resume.css";
 
 export default function Resume() {
-  const personalInfo = useSelector((state: RootState) => state.form.personalInfo);
-  const socialLinks = useSelector((state: RootState) => state.form.socialLinks);
-  const progLanguages = useSelector((state: RootState) => state.form.progLanguages)
-  const frameWorks = useSelector((state: RootState) => state.form.frameworks)
-  const tools = useSelector((state: RootState) => state.form.tools)
-  const databases = useSelector((state: RootState) => state.form.databases)
-  const honorsAndAwards = useSelector((state: RootState) => state.form.awards)
-  const certificates = useSelector((state: RootState) => state.form.certificate)
+  const personalInfo = useSelector((state: RootState) => state.personalInfo.personalInfo);
+  const socialLinks = useSelector((state: RootState) => state.personalInfo.socialLinks);
+  const progLanguages = useSelector((state: RootState) => state.skillset.progLanguages)
+  const frameWorks = useSelector((state: RootState) => state.skillset.frameworks)
+  const tools = useSelector((state: RootState) => state.skillset.tools)
+  const databases = useSelector((state: RootState) => state.skillset.databases)
+  const honorsAndAwards = useSelector((state: RootState) => state.additional.awards)
+  const certificates = useSelector((state: RootState) => state.certificate.certificate)
 
 
   const contactInfo = [personalInfo.email, personalInfo.phone, personalInfo.address].filter(Boolean);
@@ -85,10 +85,14 @@ export default function Resume() {
             <hr className="divider" />
             <div className="section">
               <h2>Education:</h2>
-              <div className="date">2010 - 2014</div>
-              <div className="location">University of Example, Cityville</div>
+              <div className="location">Amravati</div>
+              <div className="institute">P.R.Pote Patil College of Engineering and Managment</div>
+              <div className="date">July 2010 - July 2014</div>
               <div className="content">
                 <p>Bachelor of Science in Computer Science</p>
+              </div>
+              <div>
+                <p>CGPA : 7.9</p>
               </div>
               {/* Add more education entries as needed */}
             </div>

@@ -6,7 +6,7 @@ import BlurOnOutlinedIcon from "@mui/icons-material/BlurOnOutlined";
 import WorkspacePremiumOutlinedIcon from "@mui/icons-material/WorkspacePremiumOutlined";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import { Accordion, AccordionDetails, AccordionSummary, Box, Button, Grid, TextField, Typography } from "@mui/material";
-import {  addCertificateField, removeCertificateField,  updateCertificateField } from "../../../features/form/formSlice";
+import {  addCertificateField, removeCertificateField,  updateCertificateField } from "../../../features/form/slices/certificationSlice";
 
 interface CertificationProps {
   expanded: boolean;
@@ -17,7 +17,7 @@ const Certification: React.FC<CertificationProps> = ({ expanded, onChange }) => 
 
     const dispatch = useDispatch();
 
-    const inputCertificates = useSelector((state: RootState) => state.form.certificate);
+    const inputCertificates = useSelector((state: RootState) => state.certificate.certificate);
 
 
     const handleAddNewCertificate = () => {

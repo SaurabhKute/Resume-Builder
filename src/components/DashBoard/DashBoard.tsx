@@ -1,209 +1,238 @@
-import { Button, Paper, Radio, Typography } from '@mui/material'
-import { Box } from '@mui/material'
-import { useState } from 'react';
-import template1 from '../../assets/templates/template1.png'
-import template2 from '../../assets/templates/template2.png'
-import AddCircleIcon from '@mui/icons-material/AddCircle';
-import './style.css'
-
+import { Button, Paper, Radio, Typography } from "@mui/material";
+import { Box } from "@mui/material";
+import { useState } from "react";
+import template1 from "../../assets/templates/template1.png";
+import template2 from "../../assets/templates/template2.png";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
+import "./style.css";
 
 export default function Dashboard() {
-    const [showTemplates, setShowTemplates] = useState(false);
-    const [selectedValue, setSelectedValue] = useState('a');
+  const [showTemplates, setShowTemplates] = useState(false);
+  const [selectedValue, setSelectedValue] = useState("a");
 
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setSelectedValue(event.target.value);
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSelectedValue(event.target.value);
+  };
 
-    };
+  const handleCreateNewClick = () => {
+    setShowTemplates(true);
+  };
 
-    const handleCreateNewClick = () => {
-        setShowTemplates(true);
-    }
+  const handleCancelClick = () => {
+    setShowTemplates(false);
+  };
 
-    const handleCancelClick = () => {
-        setShowTemplates(false);
-    }
-
-    return (
-
-
-        <>
-            {!showTemplates ?
-                (<div className="main" >
-                    <div className='card-content' style={{ transition: 'transform 0.8s ease' }} >
-                        <div className='sub-cart-content' onClick={handleCreateNewClick}>
-                            <Box
-                                sx={{
-                                    display: 'flex',
-                                    justifyContent: 'center',
-                                    cursor: 'pointer',
-                                    alignItems: 'center',
-                                    mt: '120px',
-                                    flexWrap: 'wrap',
-                                    '& > :not(style)': {
-                                        m: 1,
-                                        width: 115,
-                                        height: 90,
-                                    },
-                                }}
-
-                            >
-
-
-                                <Paper elevation={4} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginRight: '10px' }} >
-                                    <AddCircleIcon fontSize='large' sx={{ color: '#738f93' }} />
-                                </Paper>
-
-                            </Box>
-                            <Button sx={{ backgroundColor: '#738f93', textTransform: 'none', m: '10px' }} variant="contained" >Create New</Button>
-                        </div>
-                    </div>
-                </div>) :
-                (
-                    <Box
-                        sx={{
-                            display: "flex",
-                            flexWrap: "wrap",
-                            justifyContent: "center",
-                            alignItems: "center",
-                            "& > :not(style)": {
-                                m: 1,
-                                width: 850,
-                                height: 780,
-                            },
-                        }}
-                    >
-                        <Paper elevation={3}>
-                            <Box sx={{ m: 6 }}>
-                                <Typography
-                                    sx={{ fontSize: "16px", fontWeight: "bold", color: "#0F151F" }}
-                                >
-                                    Select a template
-                                </Typography>
-                                <Typography
-                                    variant="h6"
-                                    sx={{ color: "#576871", fontWeight: "light", fontSize: "16px" }}
-                                >
-                                    Choose a template and start creating resume with us.
-                                </Typography>
-                            </Box>
-                            <Box sx={{ display: "flex", justifyContent: "space-evenly", height: '550px', overflow: 'hidden' }}>
-                                <Box
-                                    sx={{
-                                        display: "flex",
-                                        flexWrap: "wrap",
-                                        justifyContent: "center",
-                                        alignItems: "center",
-                                        "& > :not(style)": {
-                                            width: 350,
-                                            height: 500,
-                                        },
-                                    }}
-                                >
-                                    <Paper elevation={4} >
-
-                                        <img
-
-                                            src={template1}
-                                            height='500px'
-                                            width='320px'
-                                            alt='Classic'
-                                            loading="lazy"
-                                            
-                                        />
-                                    </Paper>
-                                    <Typography sx={{ justifyContent: 'center', fontSize: '18px', fontFamily: 'inherit' }}>
-                                        <Radio
-                                            checked={selectedValue === 'a'}
-                                            onChange={handleChange}
-                                            value="a"
-                                            name="radio-buttons"
-                                            inputProps={{ 'aria-label': 'A' }}
-                                            sx={{ marginBottom: '4px', color:'black',}}
-                                            color='success'
-                                            
-                                        />
-                                        Classic
-                                    </Typography>
-                                </Box>
-                                <Box
-                                    sx={{
-                                        display: "flex",
-                                        flexWrap: "wrap",
-                                        justifyContent: "center",
-                                        alignItems: "center",
-                                        "& > :not(style)": {
-                                            width: 350,
-                                            height: 500,
-                                        },
-                                    }}
-                                >
-                                    <Paper elevation={4} >
-
-                                        <img
-                                            src={template2}
-                                            height='500px'
-                                            width='320px'
-                                            alt='Modern'
-                                            loading="lazy"
-                                            color='success'
-                                        />
-                                    </Paper>
-                                    <Typography sx={{ justifyContent: 'center', fontSize: '18px', fontFamily: 'inherit' }}>
-                                        <Radio
-                                            checked={selectedValue === 'b'}
-                                            onChange={handleChange}
-                                            value="b"
-                                            name="radio-buttons"
-                                            inputProps={{ 'aria-label': 'B' }}
-                                            sx={{ marginBottom: '4px' }}
-                                        />
-                                        Modern
-                                    </Typography>
-                                </Box>
-                            </Box>
-                            <Box sx={{ display: 'flex', alignItems: 'end', justifyContent: 'end', mt: 3, mb: 3 }}>
-                                <Button
-
-                                    sx={{
-                                        backgroundColor: "#fff",
-                                        borderRadius: '6px',
-                                        color: 'black',
-                                        textTransform: "none",
-                                        marginRight: "16px",
-                                        ":hover": {
-                                            bgcolor: "#fff",
-                                            transition: "linear",
-                                        },
-                                    }}
-                                    variant="contained"
-                                    onClick={handleCancelClick}
-                                >
-                                    Cancel
-                                </Button>
-                                <Button
-
-                                    sx={{
-                                        borderRadius: '6px',
-                                        backgroundColor: "#068932",
-                                        textTransform: "none",
-                                        marginRight: "20px",
-                                        ":hover": {
-                                            bgcolor: "#068932",
-                                            transition: "linear",
-                                        },
-                                    }}
-                                    variant="contained"
-                                >
-                                    Confirm
-                                </Button>
-                            </Box>
-                        </Paper>
-                    </Box>
-
-                )
-
-            }
-        </>
-    )
+  return (
+    <>
+      {!showTemplates ? (
+        <div className="main">
+          <div
+            className="card-content"
+            style={{ transition: "transform 0.8s ease" }}
+          >
+            <div className="sub-cart-content" onClick={handleCreateNewClick}>
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  cursor: "pointer",
+                  alignItems: "center",
+                  mt: "120px",
+                  flexWrap: "wrap",
+                  "& > :not(style)": {
+                    m: 1,
+                    width: 115,
+                    height: 90,
+                  },
+                }}
+              >
+                <Paper
+                  elevation={4}
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    marginRight: "10px",
+                  }}
+                >
+                  <AddCircleIcon fontSize="large" sx={{ color: "#738f93" }} />
+                </Paper>
+              </Box>
+              <Button
+                sx={{
+                  backgroundColor: "#738f93",
+                  textTransform: "none",
+                  m: "10px",
+                }}
+                variant="contained"
+              >
+                Create New
+              </Button>
+            </div>
+          </div>
+        </div>
+      ) : (
+        <Box
+          sx={{
+            display: "flex",
+            flexWrap: "wrap",
+            justifyContent: "center",
+            alignItems: "center",
+            "& > :not(style)": {
+              m: 1,
+              width: 850,
+              height: 780,
+            },
+          }}
+        >
+          <Paper elevation={3}>
+            <Box sx={{ m: 6 }}>
+              <Typography
+                sx={{ fontSize: "16px", fontWeight: "bold", color: "#0F151F" }}
+              >
+                Select a template
+              </Typography>
+              <Typography
+                variant="h6"
+                sx={{ color: "#576871", fontWeight: "light", fontSize: "16px" }}
+              >
+                Choose a template and start creating resume with us.
+              </Typography>
+            </Box>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "space-evenly",
+                height: "550px",
+                overflow: "hidden",
+              }}
+            >
+              <Box
+                sx={{
+                  display: "flex",
+                  flexWrap: "wrap",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  "& > :not(style)": {
+                    width: 350,
+                    height: 500,
+                  },
+                }}
+              >
+                <Paper elevation={4}>
+                  <img
+                    src={template1}
+                    height="500px"
+                    width="320px"
+                    alt="Classic"
+                    loading="lazy"
+                  />
+                </Paper>
+                <Typography
+                  sx={{
+                    justifyContent: "center",
+                    fontSize: "18px",
+                    fontFamily: "inherit",
+                  }}
+                >
+                  <Radio
+                    checked={selectedValue === "a"}
+                    onChange={handleChange}
+                    value="a"
+                    name="radio-buttons"
+                    inputProps={{ "aria-label": "A" }}
+                    sx={{ marginBottom: "4px", color: "black" }}
+                    color="success"
+                  />
+                  Classic
+                </Typography>
+              </Box>
+              <Box
+                sx={{
+                  display: "flex",
+                  flexWrap: "wrap",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  "& > :not(style)": {
+                    width: 350,
+                    height: 500,
+                  },
+                }}
+              >
+                <Paper elevation={4}>
+                  <img
+                    src={template2}
+                    height="500px"
+                    width="320px"
+                    alt="Modern"
+                    loading="lazy"
+                    color="success"
+                  />
+                </Paper>
+                <Typography
+                  sx={{
+                    justifyContent: "center",
+                    fontSize: "18px",
+                    fontFamily: "inherit",
+                  }}
+                >
+                  <Radio
+                    checked={selectedValue === "b"}
+                    onChange={handleChange}
+                    value="b"
+                    name="radio-buttons"
+                    inputProps={{ "aria-label": "B" }}
+                    sx={{ marginBottom: "4px" }}
+                  />
+                  Modern
+                </Typography>
+              </Box>
+            </Box>
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "end",
+                justifyContent: "end",
+                mt: 3,
+                mb: 3,
+              }}
+            >
+              <Button
+                sx={{
+                  backgroundColor: "#fff",
+                  borderRadius: "6px",
+                  color: "black",
+                  textTransform: "none",
+                  marginRight: "16px",
+                  ":hover": {
+                    bgcolor: "#fff",
+                    transition: "linear",
+                  },
+                }}
+                variant="contained"
+                onClick={handleCancelClick}
+              >
+                Cancel
+              </Button>
+              <Button
+                sx={{
+                  borderRadius: "6px",
+                  backgroundColor: "#068932",
+                  textTransform: "none",
+                  marginRight: "20px",
+                  ":hover": {
+                    bgcolor: "#068932",
+                    transition: "linear",
+                  },
+                }}
+                variant="contained"
+              >
+                Confirm
+              </Button>
+            </Box>
+          </Paper>
+        </Box>
+      )}
+    </>
+  );
 }
