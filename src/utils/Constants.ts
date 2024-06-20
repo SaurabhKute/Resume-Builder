@@ -41,6 +41,7 @@ export const LANGUAGES = [
   "Lisp",
   "Julia",
 ];
+
 export const FRAMEWORKS = [
   // JavaScript
   "React",

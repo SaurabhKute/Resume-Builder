@@ -10,6 +10,9 @@ export default function Resume() {
   const frameWorks = useSelector((state: RootState) => state.form.frameworks)
   const tools = useSelector((state: RootState) => state.form.tools)
   const databases = useSelector((state: RootState) => state.form.databases)
+  const honorsAndAwards = useSelector((state: RootState) => state.form.awards)
+  const certificates = useSelector((state: RootState) => state.form.certificate)
+
 
   const contactInfo = [personalInfo.email, personalInfo.phone, personalInfo.address].filter(Boolean);
 
@@ -24,6 +27,7 @@ export default function Resume() {
         marginLeft: "100px",
         backgroundColor: "#f3f7f7",
         height: '80%',
+        // border:'2px solid yellow'
 
       }}
     >
@@ -33,10 +37,11 @@ export default function Resume() {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          height: '90vh', // Ensure it takes full height
+          height: '100vh', // Ensure it takes full height
           overflowY: 'auto',
+          // border:'2px solid green'
 
-          marginTop: '2px',
+          // marginTop: '2px',
 
         }}
       >
@@ -45,11 +50,12 @@ export default function Resume() {
           sx={{
             bgcolor: 'white',
             width: '670px', // Fixed width
-            height: '1200px', // Define height for scrollable area
+            height: '1100px', // Define height for scrollable area
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
-            marginTop: '200px'
+            // marginTop: '200px',
+            // border:'2px solid black'
             // overflowY: 'auto', // Enable vertical scroll
 
           }}
@@ -106,50 +112,51 @@ export default function Resume() {
               </div>
               {/* Add more experience entries as needed */}
             </div>
-            <hr className="divider" />
+
             <div className="section">
-      {(progLanguages.length > 0 || frameWorks.length > 0 || tools.length > 0 || databases.length > 0 ) && (
-        <>
-          <h2>Skills</h2>
-          <div className="skill-group">
-            {progLanguages.length > 0 && <h3>Programming Languages : </h3>}
-            {progLanguages?.map((lang, index) => (
-              <span key={index}>
-                {lang.language}
-                {index < progLanguages.length - 1 && ", "}
-              </span>
-            ))}
+              {(progLanguages.length > 0 || frameWorks.length > 0 || tools.length > 0 || databases.length > 0) && (
+                <>
+                  <hr className="divider" />
+                  <h2>Skills</h2>
+                  <div className="skill-group">
+                    {progLanguages.length > 0 && <h3>Programming Languages : </h3>}
+                    {progLanguages?.map((lang, index) => (
+                      <span key={index}>
+                        {lang.language}
+                        {index < progLanguages.length - 1 && ", "}
+                      </span>
+                    ))}
+                  </div>
+                  <div className="skill-group">
+                    {frameWorks.length > 0 && <h3>Frameworks / Libraries : </h3>}
+                    {frameWorks?.map((framework, index) => (
+                      <span key={index}>
+                        {framework.framework}
+                        {index < frameWorks.length - 1 && ", "}
+                      </span>
+                    ))}
+                  </div>
+                  <div className="skill-group">
+                    {tools.length > 0 && <h3>Tools / Platforms : </h3>}
+                    {tools?.map((tool, index) => (
+                      <span key={index}>
+                        {tool.tool}
+                        {index < tools.length - 1 && ", "}
+                      </span>
+                    ))}
+                  </div>
+                  <div className="skill-group">
+                    {databases.length > 0 && <h3>Databases : </h3>}
+                    {databases?.map((database, index) => (
+                      <span key={index}>
+                        {database.database}
+                        {index < databases.length - 1 && ", "}
+                      </span>
+                    ))}
+                  </div>
+                </>
+              )}
             </div>
-            <div className="skill-group">
-            {frameWorks.length > 0 && <h3>Frameworks / Libraries : </h3>}
-            {frameWorks?.map((framework, index) => (
-              <span key={index}>
-                {framework.framework}
-                {index < frameWorks.length - 1 && ", "}
-              </span>
-            ))}
-          </div>
-          <div className="skill-group">
-            {tools.length > 0 && <h3>Tools / Platforms : </h3>}
-            {tools?.map((tool, index) => (
-              <span key={index}>
-                {tool.tool}
-                {index < tools.length - 1 && ", "}
-              </span>
-            ))}
-          </div>
-          <div className="skill-group">
-            {databases.length > 0 && <h3>Databases : </h3>}
-            {databases?.map((database, index) => (
-              <span key={index}>
-                {database.database}
-                {index < databases.length - 1 && ", "}
-              </span>
-            ))}
-          </div>
-        </>
-      )}
-    </div>
             <hr className="divider" />
             <div className="section">
               <h2>Projects</h2>
@@ -172,14 +179,32 @@ export default function Resume() {
               </div>
               {/* Add more project entries as needed */}
             </div>
-            <hr className="divider" />
-            <div className="section">
-              <h2>Honors and Awards</h2>
-              <ul>
-                <li>Employee of the Month, ABC Company</li>
-                <li>First Place in Hackathon, University of Example</li>
-              </ul>
-            </div>
+            {certificates.length > 0 &&
+              <>
+                <hr className="divider" />
+                <div className="section">
+                  <h2>Certifications</h2>
+                  <ul>
+                    {certificates.map((certificate, index) => (
+                      <li key={index}>{certificate.certificate}</li>
+                    ))}
+                  </ul>
+                </div>
+              </>
+            }
+            {honorsAndAwards.length > 0 &&
+              <>
+                <hr className="divider" />
+                <div className="section">
+                  <h2>Honors and Awards</h2>
+                  <ul>
+                    {honorsAndAwards.map((award, index) => (
+                      <li key={index}>{award.award}</li>
+                    ))}
+                  </ul>
+                </div>
+              </>
+            }
           </div>
         </Paper>
       </Container>
