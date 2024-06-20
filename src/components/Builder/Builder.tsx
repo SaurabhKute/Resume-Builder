@@ -1,4 +1,4 @@
-import Form from "../Form/Form";
+import Form from "../Form/Forms/Form";
 import Resume from "../Resume/Resume";
 
 export default function Builder () {

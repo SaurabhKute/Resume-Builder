@@ -26,6 +26,14 @@ interface Databases {
   database:string;
 }
 
+interface Awards {
+  award:string;
+}
+
+interface Certificate {
+  certificate:string;
+}
+
 interface FormState {
   personalInfo: PersonalInfo;
   socialLinks: SocialLinks[];
@@ -33,6 +41,8 @@ interface FormState {
   frameworks: Frameworks[];
   tools: Tools[];
   databases: Databases[];
+  awards: Awards[];
+  certificate:Certificate[];
 }
 
 const initialState: FormState = {
@@ -49,6 +59,8 @@ const initialState: FormState = {
   frameworks:[],
   tools:[],
   databases:[],
+  awards:[],
+  certificate:[],
 };
 
 const formSlice = createSlice({
@@ -106,9 +118,37 @@ const formSlice = createSlice({
     removeDatabase: (state, action: PayloadAction<string>) => {
       state.databases = state.databases.filter(database => database.database !== action.payload);
     },
+
+    setAwardField(state, action: PayloadAction<Awards[]>) {
+      state.awards = action.payload;
+    },
+    updateAwardField(state, action: PayloadAction<{ index: number; field: Awards }>) {
+      state.awards[action.payload.index] = action.payload.field;
+    },
+    addAwardField(state) {
+      state.awards.push({ award: '' });
+    },
+    removeAwardField(state, action: PayloadAction<number>) {
+      state.awards.splice(action.payload, 1);
+     
+    },
+
+    setCertificateField(state, action: PayloadAction<Certificate[]>) {
+      state.certificate = action.payload;
+    },
+    updateCertificateField(state, action: PayloadAction<{ index: number; field: Certificate }>) {
+      state.certificate[action.payload.index] = action.payload.field;
+    },
+    addCertificateField(state) {
+      state.certificate.push({ certificate: '' });
+    },
+    removeCertificateField(state, action: PayloadAction<number>) {
+      state.certificate.splice(action.payload, 1);
+     
+    },
   },
 });
 
-export const { setPersonalInfo, setInputFields, updateInputField, addInputField, removeInputField, setProgLanguages, updateProgLanguages, addProgLanguage, removeProgLanguage, setFramework, addFramework, updateFramewrok, removeFramework, addTool, removeTool , addDatabase, removeDatabase} = formSlice.actions;
+export const { setPersonalInfo, setInputFields, updateInputField, addInputField, removeInputField, setProgLanguages, updateProgLanguages, addProgLanguage, removeProgLanguage, setFramework, addFramework, updateFramewrok, removeFramework, addTool, removeTool , addDatabase, removeDatabase, addAwardField, setAwardField, updateAwardField, removeAwardField,addCertificateField,updateCertificateField,removeCertificateField,setCertificateField} = formSlice.actions;
 
 export default formSlice.reducer;
