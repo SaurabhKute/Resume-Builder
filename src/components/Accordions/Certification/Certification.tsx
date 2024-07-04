@@ -1,27 +1,47 @@
-import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
-  Box,
-  Button,
-  Typography,
-} from "@mui/material";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { RootState } from "../../../app/store";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import BlurOnOutlinedIcon from "@mui/icons-material/BlurOnOutlined";
 import WorkspacePremiumOutlinedIcon from "@mui/icons-material/WorkspacePremiumOutlined";
+import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
+import { Accordion, AccordionDetails, AccordionSummary, Box, Button, Grid, TextField, Typography } from "@mui/material";
+import {  addCertificateField, removeCertificateField,  updateCertificateField } from "../../../features/form/slices/certificationSlice";
+import StarBorderOutlinedIcon from '@mui/icons-material/StarBorderOutlined';
 
-interface EducationProps {
+
+interface CertificationProps {
   expanded: boolean;
   onChange: (event: React.SyntheticEvent, isExpanded: boolean) => void;
 }
 
-const Education: React.FC<EducationProps> = ({ expanded, onChange }) => {
+const Certification: React.FC<CertificationProps> = ({ expanded, onChange }) => {
+
+    const dispatch = useDispatch();
+
+    const inputCertificates = useSelector((state: RootState) => state.certificate.certificate);
+
+
+    const handleAddNewCertificate = () => {
+      dispatch(addCertificateField());
+    };
+  
+    const handleRemoveCertificate = (index: number) => {
+      dispatch(removeCertificateField(index));
+    };
+  
+  
+    const handleCertificateInputChange = (index: number, event: React.ChangeEvent<HTMLInputElement>) => {
+      const newValue = event.target.value;
+      dispatch(updateCertificateField({ index, field: { certificate: newValue } }));
+    };
+ 
   return (
     <>
       <Accordion
         //   expanded={expanded === "panel7"}
         //   onChange={handleChange("panel7")}
-        expanded={expanded}
-        onChange={onChange}
+        expanded={expanded} onChange={onChange}
       >
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
@@ -36,19 +56,21 @@ const Education: React.FC<EducationProps> = ({ expanded, onChange }) => {
               flexShrink: 0,
             }}
           >
-            <WorkspacePremiumOutlinedIcon
+            <StarBorderOutlinedIcon
               sx={{ fontSize: "20px", mr: 1, fontWeight: "light" }}
             />
-            <Typography sx={{ fontWeight: "light", fontSize: "16px", p: 0.6 }}>
-              Education
+            <Typography
+              sx={{ fontWeight: "light", fontSize: "16px", p: 0.6 }}
+            >
+              Certifications
             </Typography>
           </Box>
         </AccordionSummary>
         <AccordionDetails>
-          <Typography sx={{ fontSize: "14px", fontWeight: "bold" }}>
-            Honors & Awards
+        <Typography sx={{ fontSize: "14px", fontWeight: "bold" }}>
+          Certificates
           </Typography>
-          {/* {inputAwards.map((award, index) => (
+          {inputCertificates.map((certificate, index) => (
             <Grid
               key={index}
               container
@@ -62,24 +84,24 @@ const Education: React.FC<EducationProps> = ({ expanded, onChange }) => {
               <Grid item xs={9} mt={1}>
                 <TextField
                   id="outlined-basic"
-                  label="Awards / Honors"
+                  label="Certifications"
                   variant="outlined"
                   size="small"
                   fullWidth
-                  value={award.award}
+                  value={certificate.certificate}
                   onChange={(event: any) =>
-                    handleAwardInputChange(index, event)
+                    handleCertificateInputChange(index, event)
                   }
                 />
               </Grid>
               <Grid item xs={1} mt={2}>
                 <DeleteOutlineOutlinedIcon
                   sx={{ cursor: "pointer" }}
-                  onClick={() => handleRemoveAwardField(index)}
+                  onClick={() => handleRemoveCertificate(index)}
                 />
               </Grid>
             </Grid>
-          ))} */}
+          ))}
           <Button
             size="medium"
             variant="outlined"
@@ -93,13 +115,14 @@ const Education: React.FC<EducationProps> = ({ expanded, onChange }) => {
               color: "black",
               m: 3,
             }}
-            // onClick={handleAddNewAward}
+            onClick={handleAddNewCertificate}
           >
-            + Add Honors / Award
+            + Add Certificate
           </Button>
         </AccordionDetails>
       </Accordion>
     </>
-  );
-};
-export default Education;
+
+  )
+}
+export default Certification;
