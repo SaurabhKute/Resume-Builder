@@ -3,13 +3,17 @@ import personalInfoReducer from '../features/form/slices/personalInfoSlice';
 import certificateReducer from '../features/form/slices/certificationSlice';
 import skillsetReducer from '../features/form/slices/skillSetSlice';
 import additionalReducer from '../features/form/slices/additionalSlice';
+import educationReducer from '../features/form/slices/educationSlice';
+import experienceReducer from '../features/form/slices/experienceSlice';
 
 const store = configureStore({
   reducer: {
     personalInfo : personalInfoReducer,
     certificate: certificateReducer,
     skillset: skillsetReducer,
-    additional : additionalReducer
+    additional : additionalReducer,
+    education: educationReducer,
+    experience : experienceReducer,
 
   },
 });

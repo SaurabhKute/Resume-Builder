@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Box, Tab, Tabs } from "@mui/material";
-import { Additional,Certification,Education,PersonalInfo, Skillset } from "../Accordians";
+import { Additional,Certification,Education,Experience,PersonalInfo, Skillset } from "../Accordions";
 
 
 const Form: React.FC = () => {
@@ -47,17 +47,21 @@ const Form: React.FC = () => {
               expanded={expanded === "panel2"}
               onChange={handleChange("panel2")}
             />
-            <Skillset
+            <Experience
               expanded={expanded === "panel3"}
               onChange={handleChange("panel3")}
             />
-            <Additional
+            <Skillset
               expanded={expanded === "panel4"}
               onChange={handleChange("panel4")}
             />
             <Certification
               expanded={expanded === "panel5"}
               onChange={handleChange("panel5")}
+            />
+            <Additional
+              expanded={expanded === "panel6"}
+              onChange={handleChange("panel6")}
             />
           </div>
         ) : (
