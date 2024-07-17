@@ -5,7 +5,7 @@ import LaptopOutlinedIcon from "@mui/icons-material/LaptopOutlined";
 import { Accordion, AccordionDetails, AccordionSummary, Autocomplete, Box, Chip, TextField, Typography } from "@mui/material";
 import { addDatabase, addFramework, addProgLanguage, addTool, removeDatabase, removeFramework, removeProgLanguage, removeTool } from "../../../features/form/slices/skillSetSlice";
 import { DATABASES, FRAMEWORKS, LANGUAGES, TOOLS } from "../../../utils/Constants";
-
+import LayersOutlinedIcon from '@mui/icons-material/LayersOutlined';
 interface SkillsetsProps {
     expanded: boolean;
     onChange: (event: React.SyntheticEvent, isExpanded: boolean) => void;
@@ -120,7 +120,7 @@ const Skillsets: React.FC<SkillsetsProps> = ({ expanded, onChange }) => {
                             flexShrink: 0,
                         }}
                     >
-                        <LaptopOutlinedIcon
+                        <LayersOutlinedIcon
                             sx={{ fontSize: "20px", mr: 1, fontWeight: "light" }}
                         />
                         <Typography

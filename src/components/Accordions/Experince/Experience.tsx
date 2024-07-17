@@ -27,6 +27,7 @@ import {
 } from "../../../features/form/slices/experienceSlice";
 import SchoolOutlinedIcon from "@mui/icons-material/SchoolOutlined";
 import MarkdownCheatsheet from "../../MarkdownCheatsheet";
+import WorkOutlineOutlinedIcon from '@mui/icons-material/WorkOutlineOutlined';
 
 interface ExperienceProps {
   expanded: boolean;
@@ -94,7 +95,7 @@ const Experience: React.FC<ExperienceProps> = () => {
               flexShrink: 0,
             }}
           >
-            <SchoolOutlinedIcon
+            <WorkOutlineOutlinedIcon
               sx={{ fontSize: "20px", mr: 1, fontWeight: "light" }}
             />
             <Typography sx={{ fontWeight: "light", fontSize: "16px", p: 0.6 }}>
