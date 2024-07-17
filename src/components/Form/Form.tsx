@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Box, Tab, Tabs } from "@mui/material";
 import { Additional,Certification,Education,Experience,PersonalInfo, Project, Skillset } from "../Accordions";
+import './Form.css';
 
 
 const Form: React.FC = () => {
@@ -19,6 +20,8 @@ const Form: React.FC = () => {
 
   return (
     <div
+
+    className="custom-scrollbar"
       style={{
         border: "0.1px solid gray",
         width: "500px",
