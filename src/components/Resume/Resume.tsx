@@ -12,7 +12,9 @@ export default function Resume() {
   const databases = useSelector((state: RootState) => state.skillset.databases)
   const honorsAndAwards = useSelector((state: RootState) => state.additional.awards)
   const certificates = useSelector((state: RootState) => state.certificate.certificate)
-
+  const education = useSelector((state: RootState) => state.education.educationInfo);
+  const experience = useSelector((state: RootState) => state.experience.experienceInfo);
+  const project = useSelector((state: RootState) => state.project.projectInfo);
 
   const contactInfo = [personalInfo.email, personalInfo.phone, personalInfo.address].filter(Boolean);
 
@@ -39,6 +41,7 @@ export default function Resume() {
           alignItems: "center",
           height: '100vh', // Ensure it takes full height
           overflowY: 'auto',
+          // width:'750px'
           // border:'2px solid green'
 
           // marginTop: '2px',
@@ -49,11 +52,13 @@ export default function Resume() {
           elevation={3}
           sx={{
             bgcolor: 'white',
-            width: '670px', // Fixed width
+            // width: '60px', // Fixed width
+            minWidth: '700px',
             height: '1100px', // Define height for scrollable area
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
+
             // marginTop: '200px',
             // border:'2px solid black'
             // overflowY: 'auto', // Enable vertical scroll
@@ -61,19 +66,16 @@ export default function Resume() {
           }}
           className="main"
         >
-          <div >
+          <div className="sk" style={{ minWidth: '680px' }} >
             <div className="header">
               <h1 className="name">
                 {personalInfo.firstName} {personalInfo.lastName}
-                {/* Saurabh Kute */}
               </h1>
+              <span className="jobTitle">{personalInfo.jobTitle}</span>
               <p className="contact-info">
                 {contactInfo.join(" | ")}
               </p>
               <div className="social-links">
-                {/* <a href="#">LinkedIn</a> | <a href="#">GitHub</a> |{" "}
-                <a href="#">Twitter</a> */}
-                {/* {socialLinkInfo.join(" | ")} */}
                 {socialLinks?.map((linkObj, index) => (
                   <span key={index}>
                     <a href={linkObj.link} target="_blank" rel="noopener noreferrer" style={{ color: 'black', fontWeight: 'normal' }}>{linkObj.linkType}</a>
@@ -82,42 +84,61 @@ export default function Resume() {
                 ))}
               </div>
             </div>
-            <hr className="divider" />
-            <div className="section">
-              <h2>Education:</h2>
-              <div className="location">Amravati</div>
-              <div className="institute">P.R.Pote Patil College of Engineering and Managment</div>
-              <div className="date">July 2010 - July 2014</div>
-              <div className="content">
-                <p>Bachelor of Science in Computer Science</p>
-              </div>
-              <div>
-                <p>CGPA : 7.9</p>
-              </div>
-              {/* Add more education entries as needed */}
+            {education.length > 0 && <hr className="divider" />}
+            <div className="education-section">
+              {education.length > 0 && <h2>Education</h2>}
+              {education.map((edu) => (
+                <>
+                  <div className="location" key={edu.id}>{edu.location}</div>
+                  <div className="institute">{edu.institute}</div>
+                  {/* <div className="date">July 2010 - July 2014</div> */}
+                  <div className="date">{edu.startMonthYear ? `${edu.startMonthYear} - ${edu.gradMonthYear}` : ''}</div>
+                  <div className="content">
+                    {/* <p>Bachelor of Science in Computer Science</p> */}
+                    <p>{edu.degreeType ? `${edu.degreeType} - ${edu.fieldOfStudy}` : ''}</p>
+                  </div>
+                  <div className="score">
+                    {/* <p>CGPA : 7.9</p> */}
+                    <p>{edu.score ? `${edu.score} - ${edu.marks}` : ''}</p>
+                  </div>
+                </>
+              ))}
+
             </div>
-            <hr className="divider" />
-            <div className="section">
-              <h2>Experience</h2>
-              <div className="date">2014 - Present</div>
-              <div className="location">ABC Company, Cityville</div>
-              <div className="content">
-                <p>
-                  <strong>Software Engineer</strong>
-                </p>
-                <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
-                  vitae ligula eu mi commodo interdum.
-                </p>
-                <p>
-                  Sed auctor ligula et est fermentum, nec fermentum libero
-                  fermentum. Phasellus nec justo id magna dapibus ultricies.
-                </p>
-              </div>
+
+
+            {experience.length > 0 && <hr className="divider" />}
+            <div className="experience-section">
+              {experience.length > 0 && <h2>Experience</h2>}
+              {experience.map((exp) => (
+                <>
+                  <div className="date" key={exp.id}>
+                    {exp.location ? <span className="m-3" style={{ margin: '4px' }}>|</span> : ''}
+                    {`${exp.startMonYear} - ${exp.endMonYear}`}</div>
+                  <div className="location">{exp.location}</div>
+
+                  <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <div className="company">{exp.employer}</div>
+                    <div className="designation">
+                      {exp.jobTitle ? <span style={{ margin: '6px' }}>|</span> : ''}
+                      {exp.jobTitle}
+                    </div>
+                  </div>
+                  <div className="description">
+                    <ul>
+                      {exp.description.split('\n').map((desc, index) => (
+                        desc.startsWith('*') && <li key={index}>{desc.slice(1).trim()}</li>
+                      ))}
+                    </ul>
+                  </div>
+                </>
+              ))}
+
+
               {/* Add more experience entries as needed */}
             </div>
 
-            <div className="section">
+            <div className="progLanguages-section">
               {(progLanguages.length > 0 || frameWorks.length > 0 || tools.length > 0 || databases.length > 0) && (
                 <>
                   <hr className="divider" />
@@ -161,26 +182,35 @@ export default function Resume() {
                 </>
               )}
             </div>
-            <hr className="divider" />
-            <div className="section">
-              <h2>Projects</h2>
-              <div className="project">
-                <div className="date">2020 - 2021</div>
-                <div className="content">
-                  <p>
-                    <strong>Project X</strong> -{" "}
-                    <span className="location">Cityville</span>
-                  </p>
-                  <ul>
-                    <li>
-                      Description: Developed a web application for managing
-                      tasks.
-                    </li>
-                    <li>Technology: HTML, CSS, JavaScript, React</li>
-                  </ul>
-                  <a href="#">Link to Project</a>
-                </div>
-              </div>
+
+
+            {project.length > 0 && <hr className="divider" />}
+            <div className="project-section">
+              {project.length > 0 && <h2>Projects / Open-Source</h2>}
+              {project.map((project) => (
+                <>
+                  <div className="" style={{float:'right'}}>{project.projectTechnologies}</div>
+                  <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <div className="project">{project.projectName}</div>
+                    
+                    <div className="designation">
+                      {project.projectLink ? <span style={{ margin: '6px' }}>|</span> : ''}
+                      <a href={project.projectLink} target="_blank" rel="noopener noreferrer" style={{ color: 'black', fontWeight: 'normal' }}>Link</a>
+                    </div>
+            
+                  </div>
+                 
+                  <div className="description">
+                    <ul>
+                      {project.projectDescription.split('\n').map((desc, index) => (
+                        desc.startsWith('*') && <li key={index}>{desc.slice(1).trim()}</li>
+                      ))}
+                    </ul>
+                  </div>
+                </>
+              ))}
+
+
               {/* Add more project entries as needed */}
             </div>
             {certificates.length > 0 &&
@@ -199,7 +229,7 @@ export default function Resume() {
             {honorsAndAwards.length > 0 &&
               <>
                 <hr className="divider" />
-                <div className="section">
+                <div className="honors-section">
                   <h2>Honors and Awards</h2>
                   <ul>
                     {honorsAndAwards.map((award, index) => (

@@ -5,6 +5,7 @@ import skillsetReducer from '../features/form/slices/skillSetSlice';
 import additionalReducer from '../features/form/slices/additionalSlice';
 import educationReducer from '../features/form/slices/educationSlice';
 import experienceReducer from '../features/form/slices/experienceSlice';
+import projectReducer from '../features/form/slices/projectSlice';
 
 const store = configureStore({
   reducer: {
@@ -14,6 +15,7 @@ const store = configureStore({
     additional : additionalReducer,
     education: educationReducer,
     experience : experienceReducer,
+    project: projectReducer,
 
   },
 });
