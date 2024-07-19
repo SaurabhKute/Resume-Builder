@@ -6,12 +6,25 @@ import EditNoteIcon from "@mui/icons-material/EditNote";
 import HistoryIcon from "@mui/icons-material/History";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import "./style.css";
+import Dashboard from "../../../components/DashBoard/DashBoard";
+import { useState } from "react";
+import ChooseTemplate from "../../../components/ChooseTemplate/ChooseTemplate";
 
 export default function Header() {
+
+
+  const [showTemplates, setShowTemplates] = useState(false);
+
+  const handleCreateNewClick = () => {
+    setShowTemplates(true);
+  };
+
+
+
   return (
     <>
-      {/* <div className="header" style={{ display: "flex", flexDirection: "row" }}>
-       
+
+       <div className="header" style={{ display: "flex", flexDirection: "row" }}>
           <Typography
             sx={{
               fontWeight: "light",
@@ -46,12 +59,15 @@ export default function Header() {
             }}
             variant="contained"
             startIcon={<AddCircleOutlineIcon />}
+
+            onClick={handleCreateNewClick}
+
           >
             Create New
           </Button>
-          </div> */}
+          </div> 
 
-      <div className="header">
+      {/* <div className="header">
         <BreadCrumb />
 
         <Box
@@ -109,9 +125,10 @@ export default function Header() {
           </Typography>
           <Typography sx={{ marginRight: "10px" }}></Typography>
         </Box>
-      </div>
+      </div> */}
+
+    {!showTemplates && <Dashboard/>}
+      <ChooseTemplate show={showTemplates} setShowTemplates={setShowTemplates} />
     </>
   );
 }
-
-BreadCrumb;
