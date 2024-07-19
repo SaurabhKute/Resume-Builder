@@ -14,6 +14,10 @@ const ChooseTemplate = ({ show, setShowTemplates }) => {
     setShowTemplates(false);
   };
 
+  const handleConfirmClick = () =>{
+     
+  }
+
   return (
     <>
       {show && (
@@ -169,6 +173,7 @@ const ChooseTemplate = ({ show, setShowTemplates }) => {
                   },
                 }}
                 variant="contained"
+                onClick={handleConfirmClick}
               >
                 Confirm
               </Button>
