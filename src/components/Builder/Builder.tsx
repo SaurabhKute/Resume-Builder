@@ -7,7 +7,9 @@ export default function Builder() {
       style={{
         marginTop: "40px",
         display: "flex",
-        height: "100%",
+        height:'800px',
+        margin:'20px',
+        justifyContent:'space-between'
       }}
     >
       <Form />

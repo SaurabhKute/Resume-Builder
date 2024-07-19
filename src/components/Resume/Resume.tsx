@@ -1,4 +1,4 @@
-import { Container, Paper } from "@mui/material";
+// import { Container, Paper } from "@mui/material";
 import { RootState } from "../../app/store";
 import { useSelector } from "react-redux";
 import "./Resume.css";
@@ -19,53 +19,32 @@ export default function Resume() {
   const contactInfo = [personalInfo.email, personalInfo.phone, personalInfo.address].filter(Boolean);
 
   return (
-    <div
-      style={{
-        // border: '1px solid green', 
-        display: "flex",
-        width: "1000px",
-        justifyContent: "center",
-        alignItems: "center",
-        marginLeft: "100px",
-        backgroundColor: "#f3f7f7",
-        height: '80%',
-        // border:'2px solid yellow'
+    <>
+      <div
+        style=
+        {{
+          width: '850px',
+          padding: '20px',
+          backgroundColor: '#f3f7f7',
+          display: 'flex',
+        }}>
 
-      }}
-    >
-      <Container
-        className="custom-scrollbar"
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: '100vh', // Ensure it takes full height
-          overflowY: 'auto',
-          // width:'750px'
-          // border:'2px solid green'
+        <div
+          style={{
 
-          // marginTop: '2px',
-
-        }}
-      >
-        <Paper
-          elevation={3}
-          sx={{
-            bgcolor: 'white',
-            // width: '60px', // Fixed width
-            minWidth: '700px',
-            height: '1100px', // Define height for scrollable area
-            display: 'flex',
+            width: '700px',
             justifyContent: 'center',
             alignItems: 'center',
+            marginLeft: "45px",
+            backgroundColor: '#fff',
+            overflow: 'auto'
 
-            // marginTop: '200px',
-            // border:'2px solid black'
-            // overflowY: 'auto', // Enable vertical scroll
 
           }}
           className="main"
         >
+
+
           <div className="sk" style={{ minWidth: '680px' }} >
             <div className="header">
               <h1 className="name">
@@ -189,17 +168,17 @@ export default function Resume() {
               {project.length > 0 && <h2>Projects / Open-Source</h2>}
               {project.map((project) => (
                 <>
-                  <div className="" style={{float:'right'}}>{project.projectTechnologies}</div>
+                  <div className="" style={{ float: 'right' }}>{project.projectTechnologies}</div>
                   <div style={{ display: 'flex', alignItems: 'center' }}>
                     <div className="project">{project.projectName}</div>
-                    
+
                     <div className="designation">
                       {project.projectLink ? <span style={{ margin: '6px' }}>|</span> : ''}
                       <a href={project.projectLink} target="_blank" rel="noopener noreferrer" style={{ color: 'black', fontWeight: 'normal' }}>Link</a>
                     </div>
-            
+
                   </div>
-                 
+
                   <div className="description">
                     <ul>
                       {project.projectDescription.split('\n').map((desc, index) => (
@@ -240,8 +219,10 @@ export default function Resume() {
               </>
             }
           </div>
-        </Paper>
-      </Container>
-    </div>
+
+        </div>
+
+      </div>
+    </>
   );
 }

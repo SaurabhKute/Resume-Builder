@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Box, Tab, Tabs } from "@mui/material";
-import { Additional,Certification,Education,Experience,PersonalInfo, Project, Skillset } from "../Accordions";
+import { Additional, Certification, Education, Experience, PersonalInfo, Project, Skillset } from "../Accordions";
 import './Form.css';
 
 
@@ -21,12 +21,13 @@ const Form: React.FC = () => {
   return (
     <div
 
-    className="custom-scrollbar"
+      className="custom-scrollbar"
       style={{
         border: "0.1px solid gray",
-        width: "500px",
+        width: "450px",
         display: "flex",
         justifyContent: "center",
+        overflow:'auto'
       }}
     >
       <Box sx={{ width: "100%", bgcolor: "background.paper" }}>
@@ -58,7 +59,7 @@ const Form: React.FC = () => {
               expanded={expanded === "panel4"}
               onChange={handleChange("panel4")}
             />
-             <Project
+            <Project
               expanded={expanded === "panel5"}
               onChange={handleChange("panel5")}
             />
