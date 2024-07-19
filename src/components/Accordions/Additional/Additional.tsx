@@ -14,7 +14,7 @@ interface AdditionalProps {
   onChange: (event: React.SyntheticEvent, isExpanded: boolean) => void;
 }
 
-const Additional: React.FC<AdditionalProps> = ({ expanded, onChange }) => {
+const Additional: React.FC<AdditionalProps> = () => {
 
 
   const dispatch = useDispatch();
@@ -39,9 +39,6 @@ const Additional: React.FC<AdditionalProps> = ({ expanded, onChange }) => {
   return (
     <>
       <Accordion
-        //   expanded={expanded === "panel7"}
-        //   onChange={handleChange("panel7")}
-        expanded={expanded} onChange={onChange}
       >
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}

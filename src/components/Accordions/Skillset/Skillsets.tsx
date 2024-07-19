@@ -1,17 +1,16 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import LaptopOutlinedIcon from "@mui/icons-material/LaptopOutlined";
+import LayersOutlinedIcon from '@mui/icons-material/LayersOutlined';
+import { DATABASES, FRAMEWORKS, LANGUAGES, TOOLS } from "../../../utils/Constants";
 import { Accordion, AccordionDetails, AccordionSummary, Autocomplete, Box, Chip, TextField, Typography } from "@mui/material";
 import { addDatabase, addFramework, addProgLanguage, addTool, removeDatabase, removeFramework, removeProgLanguage, removeTool } from "../../../features/form/slices/skillSetSlice";
-import { DATABASES, FRAMEWORKS, LANGUAGES, TOOLS } from "../../../utils/Constants";
-import LayersOutlinedIcon from '@mui/icons-material/LayersOutlined';
 interface SkillsetsProps {
     expanded: boolean;
     onChange: (event: React.SyntheticEvent, isExpanded: boolean) => void;
 }
 
-const Skillsets: React.FC<SkillsetsProps> = ({ expanded, onChange }) => {
+const Skillsets: React.FC<SkillsetsProps> = () => {
 
     const dispatch = useDispatch();
 
@@ -85,7 +84,7 @@ const Skillsets: React.FC<SkillsetsProps> = ({ expanded, onChange }) => {
     const handleAddDatabase = (event, newValue) => {
         if (newValue && !selectedDatabases.includes(newValue)) {
             setSelectedDatabases([...selectedDatabases, newValue]);
-            dispatch(addDatabase({ database: newValue })); 
+            dispatch(addDatabase({ database: newValue }));
         }
         setDatabase(null);
     };
@@ -94,7 +93,7 @@ const Skillsets: React.FC<SkillsetsProps> = ({ expanded, onChange }) => {
         setSelectedDatabases(
             selectedDatabases.filter((database) => database !== databaseToDelete)
         );
-        dispatch(removeDatabase(databaseToDelete)); 
+        dispatch(removeDatabase(databaseToDelete));
         setInputDatabase(""); // Clear the autocomplete input
     };
 
@@ -102,10 +101,6 @@ const Skillsets: React.FC<SkillsetsProps> = ({ expanded, onChange }) => {
     return (
         <>
             <Accordion
-
-                //  expanded={expanded === "panel2"}
-                //  onChange={handleChange("panel2")}
-                expanded={expanded} onChange={onChange}
             >
                 <AccordionSummary
                     expandIcon={<ExpandMoreIcon />}

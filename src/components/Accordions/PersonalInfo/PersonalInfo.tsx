@@ -15,7 +15,7 @@ interface PersonalInfoProps {
     onChange: (event: React.SyntheticEvent, isExpanded: boolean) => void;
 }
 
-const PersonalInfo: React.FC<PersonalInfoProps> = ({ expanded, onChange }) => {
+const PersonalInfo: React.FC<PersonalInfoProps> = () => {
 
     const dispatch = useDispatch();
     const inputFields = useSelector((state: RootState) => state.personalInfo.socialLinks);
@@ -33,17 +33,17 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({ expanded, onChange }) => {
     const handleInputChange = (
         index: number,
         event: React.ChangeEvent<
-          HTMLInputElement | { name?: string; value: unknown }
+            HTMLInputElement | { name?: string; value: unknown }
         >
-      ) => {
+    ) => {
         const { name, value } = event.target as HTMLInputElement;
         dispatch(
-          updateInputField({
-            index,
-            field: { ...inputFields[index], [name]: value },
-          })
+            updateInputField({
+                index,
+                field: { ...inputFields[index], [name]: value },
+            })
         );
-      };
+    };
 
 
     const handleAddNewLink = () => {
@@ -62,18 +62,15 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({ expanded, onChange }) => {
 
     const handlePersonalInfoChange = (
         event: React.ChangeEvent<HTMLInputElement>
-      ) => {
+    ) => {
         const { name, value } = event.target;
         dispatch(setPersonalInfo({ [name]: value }));
-      };
+    };
 
     return (
         <>
             <Accordion
-                //   defaultExpanded
-                //   onChange={handleChange("panel1")}
-                // defaultExpanded
-                onChange={onChange}
+
             >
                 <AccordionSummary
                     expandIcon={<ExpandMoreIcon />}

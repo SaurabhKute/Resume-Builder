@@ -3,10 +3,9 @@ import { useDispatch } from "react-redux";
 import { RootState } from "../../../app/store";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import BlurOnOutlinedIcon from "@mui/icons-material/BlurOnOutlined";
-import WorkspacePremiumOutlinedIcon from "@mui/icons-material/WorkspacePremiumOutlined";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import { Accordion, AccordionDetails, AccordionSummary, Box, Button, Grid, TextField, Typography } from "@mui/material";
-import {  addCertificateField, removeCertificateField,  updateCertificateField } from "../../../features/form/slices/certificationSlice";
+import { addCertificateField, removeCertificateField, updateCertificateField } from "../../../features/form/slices/certificationSlice";
 import StarBorderOutlinedIcon from '@mui/icons-material/StarBorderOutlined';
 
 
@@ -15,33 +14,31 @@ interface CertificationProps {
   onChange: (event: React.SyntheticEvent, isExpanded: boolean) => void;
 }
 
-const Certification: React.FC<CertificationProps> = ({ expanded, onChange }) => {
+const Certification: React.FC<CertificationProps> = () => {
 
-    const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
-    const inputCertificates = useSelector((state: RootState) => state.certificate.certificate);
+  const inputCertificates = useSelector((state: RootState) => state.certificate.certificate);
 
 
-    const handleAddNewCertificate = () => {
-      dispatch(addCertificateField());
-    };
-  
-    const handleRemoveCertificate = (index: number) => {
-      dispatch(removeCertificateField(index));
-    };
-  
-  
-    const handleCertificateInputChange = (index: number, event: React.ChangeEvent<HTMLInputElement>) => {
-      const newValue = event.target.value;
-      dispatch(updateCertificateField({ index, field: { certificate: newValue } }));
-    };
- 
+  const handleAddNewCertificate = () => {
+    dispatch(addCertificateField());
+  };
+
+  const handleRemoveCertificate = (index: number) => {
+    dispatch(removeCertificateField(index));
+  };
+
+
+  const handleCertificateInputChange = (index: number, event: React.ChangeEvent<HTMLInputElement>) => {
+    const newValue = event.target.value;
+    dispatch(updateCertificateField({ index, field: { certificate: newValue } }));
+  };
+
   return (
     <>
       <Accordion
-        //   expanded={expanded === "panel7"}
-        //   onChange={handleChange("panel7")}
-        expanded={expanded} onChange={onChange}
+
       >
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
@@ -67,8 +64,8 @@ const Certification: React.FC<CertificationProps> = ({ expanded, onChange }) => 
           </Box>
         </AccordionSummary>
         <AccordionDetails>
-        <Typography sx={{ fontSize: "14px", fontWeight: "bold" }}>
-          Certificates
+          <Typography sx={{ fontSize: "14px", fontWeight: "bold" }}>
+            Certificates
           </Typography>
           {inputCertificates.map((certificate, index) => (
             <Grid

@@ -205,7 +205,7 @@ const Education: React.FC<EducationProps> = () => {
                         value={edu.score}
                         label="Scores In"
                         placeholder="Select Marking Scheme"
-                        onChange={(event:any) => handleEducationInfoChange(event, edu.id)}
+                        onChange={(event: any) => handleEducationInfoChange(event, edu.id)}
                       >
                         <MenuItem value={"SGPA"}>SGPA</MenuItem>
                         <MenuItem value={"CGPA"}>CGPA</MenuItem>
@@ -228,7 +228,7 @@ const Education: React.FC<EducationProps> = () => {
               </AccordionDetails>
             </Accordion>
           ))}
-           <Button
+          <Button
             size="medium"
             variant="outlined"
             sx={{
