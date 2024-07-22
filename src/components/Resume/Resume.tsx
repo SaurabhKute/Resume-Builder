@@ -31,20 +31,16 @@ export default function Resume() {
 
         <div
           style={{
-
             width: '700px',
             justifyContent: 'center',
             alignItems: 'center',
             marginLeft: "45px",
             backgroundColor: '#fff',
-            overflow: 'auto'
-
-
+            overflow: 'scroll'
           }}
+
           className="main"
         >
-
-
           <div className="sk" style={{ minWidth: '680px' }} >
             <div className="header">
               <h1 className="name">
@@ -70,14 +66,14 @@ export default function Resume() {
                 <>
                   <div className="location" key={edu.id}>{edu.location}</div>
                   <div className="institute">{edu.institute}</div>
-                  {/* <div className="date">July 2010 - July 2014</div> */}
+                 
                   <div className="date">{edu.startMonthYear ? `${edu.startMonthYear} - ${edu.gradMonthYear}` : ''}</div>
                   <div className="content">
-                    {/* <p>Bachelor of Science in Computer Science</p> */}
+                  
                     <p>{edu.degreeType ? `${edu.degreeType} - ${edu.fieldOfStudy}` : ''}</p>
                   </div>
                   <div className="score">
-                    {/* <p>CGPA : 7.9</p> */}
+                    
                     <p>{edu.score ? `${edu.score} - ${edu.marks}` : ''}</p>
                   </div>
                 </>
@@ -114,7 +110,7 @@ export default function Resume() {
               ))}
 
 
-              {/* Add more experience entries as needed */}
+              
             </div>
 
             <div className="progLanguages-section">
@@ -190,7 +186,6 @@ export default function Resume() {
               ))}
 
 
-              {/* Add more project entries as needed */}
             </div>
             {certificates.length > 0 &&
               <>

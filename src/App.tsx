@@ -1,15 +1,15 @@
-import Header from "./common/components/Header/Header"
-import Navbar from "./common/components/Navbar/Navbar"
 
+import { BrowserRouter } from 'react-router-dom';
+import Router from './routes/sections';
 
 
 const App = () => {
 
   return (
-    <>
-    <Navbar/>
-    <Header/>
-    </>
+
+    <BrowserRouter>
+      <Router />
+    </BrowserRouter>
   )
 }
 
