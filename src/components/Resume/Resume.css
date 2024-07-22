@@ -1,9 +1,31 @@
-.main {
+.container {
+    width: 900px;
+    max-width: 100%;
+    padding: 20px;
+    background-color: #f3f7f7;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: auto;
+    box-sizing: border-box;
+  }
+  
+  .main {
     font-family: 'Times New Roman', Times, serif;
     margin: 0;
-    padding: 30px;
+    padding: 40px;
     font-size: 14px;
-}
+    width: 100%;
+    max-width: 850px;
+    /* height: auto; */
+    min-height: 850px;
+    background-color: #fff;
+    box-sizing: border-box;
+    overflow: auto;
+    margin-top: 80px;
+  }
+  
+
 
 .header {
     text-align: center;
@@ -176,5 +198,20 @@
   
   .custom-scrollbar::-webkit-scrollbar-thumb:hover {
     background-color: #555;
+  }
+  
+  /* Media queries for responsive design */
+  @media (max-width: 768px) {
+    .main {
+      padding: 20px;
+      font-size: 12px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .main {
+      padding: 10px;
+      font-size: 10px;
+    }
   }
   

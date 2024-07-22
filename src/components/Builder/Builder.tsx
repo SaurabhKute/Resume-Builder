@@ -9,7 +9,7 @@ export default function Builder() {
         display: "flex",
         height:'800px',
         margin:'20px',
-        justifyContent:'space-between'
+        justifyContent:'space-around'
       }}
     >
       <Form />

@@ -13,7 +13,7 @@ export default function Dashboard() {
 
   return (
     <>
-      <div className="main">
+      <div className="dasboard-main">
         <div
           className="card-content"
           style={{ transition: "transform 0.8s ease" }}

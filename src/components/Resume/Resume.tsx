@@ -21,27 +21,12 @@ export default function Resume() {
   return (
     <>
       <div
-        style=
-        {{
-          width: '850px',
-          padding: '20px',
-          backgroundColor: '#f3f7f7',
-          display: 'flex',
-        }}>
+        className="container custom-scrollbar">
 
         <div
-          style={{
-            width: '700px',
-            justifyContent: 'center',
-            alignItems: 'center',
-            marginLeft: "45px",
-            backgroundColor: '#fff',
-            overflow: 'scroll'
-          }}
-
-          className="main"
+          className="main "
         >
-          <div className="sk" style={{ minWidth: '680px' }} >
+          <div style={{ minWidth: '680px' }} >
             <div className="header">
               <h1 className="name">
                 {personalInfo.firstName} {personalInfo.lastName}
