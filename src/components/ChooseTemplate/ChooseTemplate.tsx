@@ -2,8 +2,12 @@ import { Box, Button, Paper, Radio, Typography } from "@mui/material";
 import { useState } from "react";
 import template1 from "../../assets/templates/template1.png";
 import template2 from "../../assets/templates/template2.png";
+import { useNavigate } from "react-router-dom";
 
-const ChooseTemplate = ({ show, setShowTemplates }) => {
+const ChooseTemplate = () => {
+const navigate = useNavigate();
+
+
   const [selectedValue, setSelectedValue] = useState("a");
 
   const handleChange = (event) => {
@@ -11,16 +15,16 @@ const ChooseTemplate = ({ show, setShowTemplates }) => {
   };
 
   const handleCancelClick = () => {
-    setShowTemplates(false);
+   navigate('/');
   };
 
   const handleConfirmClick = () =>{
-     
+     navigate('/builder');
   }
 
   return (
     <>
-      {show && (
+      {/* {show && ( */}
         <Box
           sx={{
             display: "flex",
@@ -180,7 +184,7 @@ const ChooseTemplate = ({ show, setShowTemplates }) => {
             </Box>
           </Paper>
         </Box>
-      )}
+      {/* )} */}
     </>
   );
 };
