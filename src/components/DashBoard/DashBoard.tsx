@@ -8,34 +8,24 @@ export default function Dashboard() {
   const navigate = useNavigate();
 
   const handleCreateNewClick = () => {
-
     navigate('/resume');
   };
 
   return (
     <>
-      <div className="dasboard-main" 
-      >
-        <BuiltResume/>
-        <BuiltResume/>
-        <BuiltResume/> 
-        <BuiltResume/> 
-        <BuiltResume/> 
-        <BuiltResume/> 
-       <div
-          className="card-content"
-          style={{ transition: "transform 0.8s ease",
-          
-           }}
-        >
-          <div className="sub-cart-content" onClick={handleCreateNewClick}>
+      <div className="dashboard-main">
+        <BuiltResume />
+        
+        <div className="card-content" style={{ transition: "transform 0.8s ease",
+         
+         }}>
+          <div className="sub-card-content" onClick={handleCreateNewClick}>
             <Box
               sx={{
                 display: "flex",
                 justifyContent: "center",
                 cursor: "pointer",
                 alignItems: "center",
-                mt: "120px",
                 flexWrap: "wrap",
                 "& > :not(style)": {
                   m: 1,
@@ -50,7 +40,7 @@ export default function Dashboard() {
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  marginRight: "10px",
+                  // marginRight: "10px",
                 }}
               >
                 <AddCircleIcon fontSize="large" sx={{ color: "#738f93" }} />
@@ -67,7 +57,7 @@ export default function Dashboard() {
               Create New
             </Button>
           </div>
-        </div> 
+        </div>
       </div>
     </>
   );
