@@ -48,9 +48,9 @@ setConfirmationOpen(false);
       </Typography>
       <Typography sx={{ color: 'gray', margin: '0 22px',fontWeight:'light'  }}>&#x7c;</Typography>
     </div>
-    <Typography sx={{fontSize:'16px',display:'inline-block', mt:'18px', fontWeight:'light', color:'#f0f3f5' }}>Dashboard
-    <Typography   component="span" sx={{ border: '2px solid white', display: 'block', mt: '10px', borderColor:'#20d761' }}></Typography>
-    </Typography>
+    {/* <Typography sx={{fontSize:'16px',display:'inline-block', mt:'18px', fontWeight:'light', color:'#f0f3f5' }}>Dashboard */}
+    {/* <Typography   component="span" sx={{ border: '2px solid white', display: 'block', mt: '10px', borderColor:'#20d761' }}></Typography> */}
+    {/* </Typography> */}
     
 
           {auth ? (

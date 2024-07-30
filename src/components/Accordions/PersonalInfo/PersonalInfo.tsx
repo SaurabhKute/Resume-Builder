@@ -70,7 +70,7 @@ const PersonalInfo: React.FC<PersonalInfoProps> = () => {
     return (
         <>
             <Accordion
-
+            defaultExpanded
             >
                 <AccordionSummary
                     expandIcon={<ExpandMoreIcon />}

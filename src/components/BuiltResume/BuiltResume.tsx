@@ -8,6 +8,7 @@ import "./style.css";
 import ConfirmationModal from "../../common/components/ConfirmationPopover/ConfirmationPopover";
 import { useState } from "react";
 import toast, { Toaster } from 'react-hot-toast';
+import { useNavigate } from "react-router-dom";
 
 
 const BootstrapTooltip = styled(({ className, ...props }: TooltipProps) => (
@@ -22,12 +23,16 @@ const BootstrapTooltip = styled(({ className, ...props }: TooltipProps) => (
 }));
 
 const BuiltResume = () => {
-
+const navigate = useNavigate(); 
   const [confirmationOpen, setConfirmationOpen] = useState(false);
 
 
   const handleDelete = () => {
     setConfirmationOpen(true);
+  }
+
+  const handleEdit = () =>{
+    navigate('/builder/');
   }
 
   const handleCloseDelete = () => {
@@ -110,7 +115,7 @@ const BuiltResume = () => {
             />
             <div className="hover-buttons">
               <BootstrapTooltip title="Edit Resume">
-                <Button color="inherit" sx={{ color: '#2596be' }}><EditIcon /></Button>
+                <Button color="inherit" sx={{ color: '#2596be' }} onClick={handleEdit}><EditIcon /></Button>
               </BootstrapTooltip>
               <BootstrapTooltip title="Delete Resume">
                 <Button color="inherit" sx={{ color: 'red' }} onClick={handleDelete}><DeleteIcon /></Button>
