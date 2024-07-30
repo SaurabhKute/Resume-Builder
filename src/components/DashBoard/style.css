@@ -1,27 +1,38 @@
-.dasboard-main {
-    background-color: rgb(255, 255, 255) !important;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr); /* 3 columns */
-    gap: 1px; 
-    padding: 1px;
-  
+/* Global reset for margin and padding */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.dashboard-main {
+  background-color: rgb(255, 255, 255) !important;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3 columns */
+  gap: 10px;
+  padding: 10px;
+  width: 100%;
+  overflow-x: hidden; /* Ensure no horizontal overflow */
 }
 
 .card-content {
   height: 420px;
-  width: 295px;
+  width: 100%; /* Ensure the card takes full width of its column */
+  max-width: 295px;
   border: 2px solid gray;
   display: flex;
-  margin: 70px;
+  /* margin: 30px; */
+  margin-top: 60px;
+  margin-left: 40px;
   border-radius: 4px;
   justify-content: center;
   align-items: center;
+  transition: transform 0.8s ease;
 }
 
 .card-content:hover {
   cursor: pointer;
   transform: scale(0.9) !important;
-  /* You can adjust the scale value as needed */
   background-color: #738f93;
 }
 
@@ -31,8 +42,76 @@
   text-overflow: ellipsis;
 }
 
-.sub-cart-content {
-  /* display: block; */
-  /* margin: 10px; */
+.sub-card-content {
   justify-content: center;
+}
+
+/* Media Queries for Responsive Design */
+
+@media (max-width: 1280px) {
+  .dashboard-main {
+    grid-template-columns: repeat(3, 1fr); /* 2 columns */  
+    padding-left: 35px;
+  }
+
+  .card-content {
+    margin: 20px;
+    margin-left: 40px;
+    margin-top: 60px;
+  }
+}
+
+
+@media (max-width: 1200px) {
+  .dashboard-main {
+    grid-template-columns: repeat(2, 1fr); /* 2 columns */
+    /* margin-left: 20px; */
+    padding-left: 70px;
+  }
+
+  .card-content {
+    margin: 20px;
+    margin-left: 40px;
+    /* margin-top: 100px; */
+
+  }
+}
+
+@media (max-width: 820px) {
+  .dashboard-main {
+    grid-template-columns: repeat(2, 1fr); /* 2 columns */
+    /* margin-left: 20px; */
+    padding-left: 20px;
+  }
+
+  .card-content {
+    margin: 20px;
+    margin-left: 40px;
+    
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard-main {
+    grid-template-columns: repeat(2, 1fr); /* 2 columns */
+    padding-left: 4px;
+
+  }
+
+  .card-content {
+    /* margin: 10px; */
+    margin-left: 42px;
+  }
+}
+
+@media (max-width: 480px) {
+  .card-content {
+    height: 300px;
+    width: 100%;
+    margin: 10px;
+  }
+
+  .sub-card-content {
+    margin-top: 60px; /* Adjust margin-top */
+  }
 }
