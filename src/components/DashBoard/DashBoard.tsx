@@ -14,7 +14,11 @@ export default function Dashboard() {
   return (
     <>
       <div className="dashboard-main">
+        {/* <BuiltResume /> */}
+        {/* <BuiltResume />
         <BuiltResume />
+        <BuiltResume /> */}
+        {/* <BuiltResume /> */}
         
         <div className="card-content" style={{ transition: "transform 0.8s ease",
          
