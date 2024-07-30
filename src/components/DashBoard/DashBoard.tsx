@@ -1,6 +1,7 @@
 import { Button, Paper, Box } from "@mui/material";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { useNavigate } from "react-router-dom";
+import BuiltResume from "../BuiltResume/BuiltResume";
 import "./style.css";
 
 export default function Dashboard() {
@@ -13,10 +14,19 @@ export default function Dashboard() {
 
   return (
     <>
-      <div className="dasboard-main">
-        <div
+      <div className="dasboard-main" 
+      >
+        <BuiltResume/>
+        <BuiltResume/>
+        <BuiltResume/> 
+        <BuiltResume/> 
+        <BuiltResume/> 
+        <BuiltResume/> 
+       <div
           className="card-content"
-          style={{ transition: "transform 0.8s ease" }}
+          style={{ transition: "transform 0.8s ease",
+          
+           }}
         >
           <div className="sub-cart-content" onClick={handleCreateNewClick}>
             <Box
@@ -57,7 +67,7 @@ export default function Dashboard() {
               Create New
             </Button>
           </div>
-        </div>
+        </div> 
       </div>
     </>
   );

@@ -73,7 +73,7 @@ const Form: React.FC = () => {
             />
           </div>
         ) : (
-          <div>Resume Matcher content goes here...</div>
+          <div style={{display:'flex',justifyContent:'center', padding:'20px'}}>Resume Matcher content goes here...</div>
         )}
       </Box>
     </div>

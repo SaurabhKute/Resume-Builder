@@ -1,15 +1,21 @@
 .dasboard-main {
-  background-color: rgb(255, 255, 255) !important;
+    background-color: rgb(255, 255, 255) !important;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 columns */
+    gap: 1px; 
+    padding: 1px;
+  
 }
 
 .card-content {
-  height: 380px;
-  width: 280px;
+  height: 420px;
+  width: 295px;
   border: 2px solid gray;
   display: flex;
   margin: 70px;
   border-radius: 4px;
   justify-content: center;
+  align-items: center;
 }
 
 .card-content:hover {

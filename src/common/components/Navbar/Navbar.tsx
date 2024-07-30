@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -9,10 +9,12 @@ import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import { Button } from '@mui/material';
 import './style.css';
+import ConfirmationModal from '../ConfirmationPopover/ConfirmationPopover';
 
 export default function Navbar() {
-  const [auth, setAuth] = React.useState(true);
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [auth, setAuth] = useState(true);
+  const [confirmationOpen, setConfirmationOpen] = useState(false);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   const handleLoginClick = () => {
     console.log("function called");
@@ -24,16 +26,22 @@ export default function Navbar() {
   };
 
   const handleLogout = () => {
-
     setAnchorEl(null);
     setAuth(false);
+    setConfirmationOpen(true);
   };
+
+  const handleCloseLogout = () =>{
+setConfirmationOpen(false);
+  }
+  const handleConfirmLogout = () =>{
+    setConfirmationOpen(false);
+  }
 
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static" className='navbar'>
         <Toolbar>
-          
           <div style={{ display: 'flex', alignItems: 'center' }}>
       <Typography variant="h6" component="div" sx={{ flexGrow: 1, fontWeight: 'bold' }}>
         Resume Builder
@@ -83,11 +91,19 @@ export default function Navbar() {
       <Button variant="contained" size="small" className='signup-btn' sx={{ backgroundColor:'#068932', color:'#fff', fontFamily:'unset'}} >Sign Up</Button>
     </div>
           )}
-          {/* <div>
-           
-          </div> */}
         </Toolbar>
       </AppBar>
+      <ConfirmationModal
+        open={confirmationOpen}
+        onClose={handleCloseLogout}
+        onConfirm={handleConfirmLogout}
+        title="Logout Confirmation"
+        message="Are you sure you want to logout ?"
+        buttonText1 = "No"
+        buttonText2 = "Logout"
+        buttonColor2='error'
+      />
     </Box>
+    
   );
 }
