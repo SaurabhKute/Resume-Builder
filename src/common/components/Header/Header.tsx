@@ -1,5 +1,5 @@
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button, Fade, Menu, MenuItem, Popover, Typography } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
 import EditNoteOutlinedIcon from '@mui/icons-material/EditNoteOutlined';
 import { useEffect, useState } from "react";
@@ -8,6 +8,8 @@ import UpdateOutlinedIcon from '@mui/icons-material/UpdateOutlined';
 import ArrowDownwardOutlinedIcon from '@mui/icons-material/ArrowDownwardOutlined';
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
+import ConfirmationModal from "../ConfirmationPopover/ConfirmationPopover";
+import toast, { Toaster } from 'react-hot-toast';
 import "./style.css";
 
 export default function Header() {
@@ -15,48 +17,92 @@ export default function Header() {
   const location = useLocation();
 
   const [path, setPath] = useState<any>('');
+  const [confirmationOpen, setConfirmationOpen] = useState(false);
+  
 
-  useEffect(()=>{
+  useEffect(() => {
     setPath(location?.pathname);
-    
-  },[location])
+
+  }, [location])
   console.log(path, "@path");
+
+
+  const handleEditClick = () => {
+    setConfirmationOpen(true); 
+  };
+
 
   const handleCreateNewClick = () => {
     navigate("/resume");
   };
 
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleDownloadClick = async () => {
+    setAnchorEl(null);
+    await generatePDF();
+  };
 
-  const handleDownloadPDF = async () => {
-    const resume:any = document.querySelector(".main");
-    if (!resume) return;
+  const handleCloseEdit = () => {
+    // setAnchorElEdit(null);
+    setConfirmationOpen(false);
+  };
+
+   const handleConfirmEdit = () => {
+    const fakeApiCall = () => new Promise((resolve) => setTimeout(resolve, 2000));
+
+    toast.promise(
+      fakeApiCall(),
+      {
+        loading: 'Updating...',
+        success: 'Updated successfully!',
+        error: 'Error occurred while updating.',
+      }
+    ).then(() => {
+      console.log("Confirmed Edit");
+      setConfirmationOpen(false);
+      // Add your edit logic here
+    });
+    console.log("Confirmed Edit");
+    setConfirmationOpen(false);
+    // Add your edit logic here
+  };
+
   
+
+  const generatePDF = async () => {
+    const resume: any = document.querySelector(".main");
+    if (!resume) return;
+
     // Temporarily remove overflow to capture all content
     const originalStyle = resume.getAttribute('style');
     resume.style.overflow = 'visible';
-  
+
     // Create a canvas with the entire content
     const canvas = await html2canvas(resume, {
       scale: 2, // Higher scale improves quality
       scrollY: -window.scrollY, // Include content that is currently out of view
       useCORS: true, // Allows for external styles and images
     });
-  
+
     // Restore the original style
     resume.setAttribute('style', originalStyle || '');
-  
+
     const imgData = canvas.toDataURL("image/png");
     const pdf = new jsPDF("p", "mm", "a4");
     const pdfWidth = pdf.internal.pageSize.getWidth();
     const pdfHeight = pdf.internal.pageSize.getHeight();
-  
+
     // Calculate scaling to fit the entire content on one page
     const imgWidth = canvas.width;
     const imgHeight = canvas.height;
     const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight);
     const width = imgWidth * ratio;
     const height = imgHeight * ratio;
-  
+
     pdf.addImage(imgData, "PNG", 0, 0, width, height);
     pdf.save("resume.pdf");
   };
@@ -79,13 +125,16 @@ export default function Header() {
               <Typography
                 variant="h4"
                 sx={{ mt: 2, fontWeight: "light", fontSize: "28px" }}
+               
               >
                 Saurabh's Resume
               </Typography>
-              <Typography sx={{ ml: 1, mt: 1 }}>
-                <EditNoteOutlinedIcon sx={{ cursor: "pointer", fontSize: "large" }} />
-              </Typography>
-              <Typography sx={{ ml: 1, mt: 0.7 }}>
+              {/* <Typography sx={{ ml: 1, mt: 1 }}> */}
+              <div onClick={handleEditClick}>
+                <EditNoteOutlinedIcon sx={{ cursor: "pointer", fontSize: "large" }}  />
+              </div>
+              {/* </Typography> */}
+              <Typography sx={{ ml: 1, mt: 0.7 }} >
                 <UpdateOutlinedIcon
                   sx={{
                     cursor: "pointer",
@@ -94,6 +143,7 @@ export default function Header() {
                   }}
                 />
               </Typography>
+              
               <Typography
                 sx={{
                   ml: 1,
@@ -106,8 +156,13 @@ export default function Header() {
                 Updated 32 min ago
               </Typography>
 
-              <Typography sx={{ marginLeft: "auto" }}>
+              <div style={{ marginLeft: 'auto' }}>
                 <Button
+                  id="fade-button"
+                  aria-controls={open ? 'fade-menu' : undefined}
+                  aria-haspopup="true"
+                  aria-expanded={open ? 'true' : undefined}
+                  variant="contained"
                   className="createNew-btn"
                   sx={{
                     marginLeft: "auto",
@@ -120,17 +175,29 @@ export default function Header() {
                       transition: "linear",
                     },
                   }}
-                  variant="contained"
-                  startIcon={
+                  onClick={handleClick}
+                  endIcon={
                     <ArrowDownwardOutlinedIcon
                       style={{ fontSize: "14px", fontWeight: "lighter" }}
                     />
                   }
-                  onClick={handleDownloadPDF}
                 >
                   Download
                 </Button>
-              </Typography>
+                <Menu
+                  id="fade-menu"
+                  MenuListProps={{
+                    'aria-labelledby': 'fade-button',
+                  }}
+                  anchorEl={anchorEl}
+                  open={open}
+                  // onClose={handleClose}
+                  TransitionComponent={Fade}
+                  sx={{right:'100px', display:'flex', marginRight:'700px'}}
+                >
+                  <MenuItem onClick={handleDownloadClick} sx={{fontWeight:'lighter'}}>Download PDF</MenuItem>
+                </Menu>
+              </div>
               <Typography sx={{ marginRight: "10px" }}></Typography>
             </Box>
           </div>
@@ -182,6 +249,18 @@ export default function Header() {
           </div>
         </>
       )}
+      <ConfirmationModal
+        open={confirmationOpen}
+        onClose={handleCloseEdit}
+        onConfirm={handleConfirmEdit}
+        title="Confirm Edit"
+        message="Provide a text to change resume's name?"
+        editText="Saurabh's Resume"
+        buttonText1 = "Cancel"
+        buttonText2 = "Save"
+        buttonColor2="success"
+      />
+      <Toaster />
     </>
   );
 }
