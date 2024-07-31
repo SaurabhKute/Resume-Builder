@@ -5,7 +5,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import BlurOnOutlinedIcon from "@mui/icons-material/BlurOnOutlined";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import { Accordion, AccordionDetails, AccordionSummary, Box, Button, Grid, TextField, Typography } from "@mui/material";
-import { addCertificateField, removeCertificateField, updateCertificateField } from "../../../features/form/slices/certificationSlice";
+import { addCertificateField, removeCertificateField, updateCertificateField } from "../../../features/Form/slices/certificationSlice";
 import StarBorderOutlinedIcon from '@mui/icons-material/StarBorderOutlined';
 
 

@@ -7,7 +7,7 @@ import BlurOnIcon from "@mui/icons-material/BlurOn";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 // import SchoolOutlinedIcon from "@mui/icons-material/SchoolOutlined";
 import LaptopMacOutlinedIcon from '@mui/icons-material/LaptopMacOutlined';
-import { addProjectEntry, removeProjectEntry, updateProjectEntry } from "../../../features/form/slices/projectSlice";
+import { addProjectEntry, removeProjectEntry, updateProjectEntry } from "../../../features/Form/slices/projectSlice";
 
 
 

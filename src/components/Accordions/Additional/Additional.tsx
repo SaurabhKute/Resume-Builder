@@ -5,7 +5,7 @@ import BlurOnOutlinedIcon from "@mui/icons-material/BlurOnOutlined";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../app/store";
 import { useDispatch } from "react-redux";
-import { addAwardField, removeAwardField, updateAwardField } from "../../../features/form/slices/additionalSlice";
+import { addAwardField, removeAwardField, updateAwardField } from "../../../features/Form/slices/additionalSlice";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 
 

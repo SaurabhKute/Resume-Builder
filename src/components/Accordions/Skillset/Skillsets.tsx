@@ -4,7 +4,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import LayersOutlinedIcon from '@mui/icons-material/LayersOutlined';
 import { DATABASES, FRAMEWORKS, LANGUAGES, TOOLS } from "../../../utils/Constants";
 import { Accordion, AccordionDetails, AccordionSummary, Autocomplete, Box, Chip, TextField, Typography } from "@mui/material";
-import { addDatabase, addFramework, addProgLanguage, addTool, removeDatabase, removeFramework, removeProgLanguage, removeTool } from "../../../features/form/slices/skillSetSlice";
+import { addDatabase, addFramework, addProgLanguage, addTool, removeDatabase, removeFramework, removeProgLanguage, removeTool } from "../../../features/Form/slices/skillSetSlice";
 interface SkillsetsProps {
     expanded: boolean;
     onChange: (event: React.SyntheticEvent, isExpanded: boolean) => void;

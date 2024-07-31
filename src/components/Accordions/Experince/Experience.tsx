@@ -24,7 +24,7 @@ import {
   addExperienceEntry,
   removeExperienceEntry,
   updateExperienceEntry,
-} from "../../../features/form/slices/experienceSlice";
+} from "../../../features/Form/slices/experienceSlice";
 import SchoolOutlinedIcon from "@mui/icons-material/SchoolOutlined";
 import MarkdownCheatsheet from "../../MarkdownCheatsheet";
 import WorkOutlineOutlinedIcon from '@mui/icons-material/WorkOutlineOutlined';

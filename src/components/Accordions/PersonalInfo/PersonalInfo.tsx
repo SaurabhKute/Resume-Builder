@@ -1,6 +1,6 @@
 import { Accordion, AccordionDetails, AccordionSummary, Box, Button, FormControl, Grid, InputLabel, MenuItem, Select, TextField, Typography } from "@mui/material";
 import { useState } from "react";
-import { addInputField, removeInputField, setPersonalInfo, updateInputField } from "../../../features/form/slices/personalInfoSlice";
+import { addInputField, removeInputField, setPersonalInfo, updateInputField } from "../../../features/Form/slices/personalInfoSlice";
 import { useDispatch } from "react-redux";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import PersonOutlineRoundedIcon from "@mui/icons-material/PersonOutlineRounded";
