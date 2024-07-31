@@ -5,15 +5,18 @@ import {
     TextField,
     Button,
     styled,
+    InputAdornment,
+    IconButton,
 } from "@mui/material";
-import google from "../../assets/templates/google.svg";
-import github from "../../assets/templates/github.svg";
-import linkedin from "../../assets/templates/linkedin.svg";
-import { InputAdornment, IconButton } from "@mui/material";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import resume from '../../assets/templates/resume6.png';
+import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { Formik, Form, Field } from "formik";
+import * as Yup from "yup";
+import google from "../../assets/svg/google.svg";
+import github from "../../assets/svg/github.svg";
+import linkedin from "../../assets/svg/linkedin.svg";
+import resume from '../../assets/resume/resume6.png';
 import "./style.css";
 
 const CssTextField = styled(TextField)({
@@ -37,7 +40,6 @@ const CssTextField = styled(TextField)({
 });
 
 const Auth = () => {
-
     const navigate = useNavigate();
 
     const [isSignUpRequest, setSignUpRequest] = useState(false);
@@ -47,249 +49,281 @@ const Auth = () => {
         setShowPassword(!showPassword);
     };
 
-    const handleMouseDownPassword = (event) => {
+    const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
     };
+
     const handleClick = () => {
         if (isSignUpRequest) {
             setSignUpRequest(false);
             navigate('/login');
-        }
-        else {
+        } else {
             setSignUpRequest(true);
             navigate('/register');
         }
-    }
+    };
 
+    const validationSchema = Yup.object().shape({
+        firstName: isSignUpRequest
+            ? Yup.string().required("First name is required")
+            : Yup.string(),
+        lastName: isSignUpRequest
+            ? Yup.string().required("Last name is required")
+            : Yup.string(),
+        email: Yup.string().email("Invalid email address").required("Email is required"),
+        password: Yup.string().required("Password is required").min(6, "Password must be at least 6 characters"),
+    });
 
-    const handleLoginOrRegisterClick = (e) => {
-        if (isSignUpRequest) {
-            navigate('/login');
-        }
-        else {
-
-            navigate('/register');
-        }
+    const handleFormSubmit = (values) =>{
+        console.log("Form Submit", values);
     }
 
     return (
-        <>
-            <div>
-                <Grid container component="main" sx={{ height: "100vh" }}>
-                    <Grid
-                        item
+        <div>
+            <Grid container component="main" sx={{ height: "100vh" }}>
+                <Grid
+                    item
+                    xs={12}
+                    md={4}
+                    sx={{
+                        display: "flex",
+                        flexDirection: "column",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        backgroundColor: "#f2f2f2",
+                        border: "1px solid gray",
+                        borderStyle: "hidden",
+                        padding: 2,
+                    }}
+                >
+                    <Typography
+                        variant="h5"
+                        sx={{ fontWeight: "bold", mb: 2 }}
+                    >
+                        Hi, Welcome back
+                    </Typography>
+                    <Typography sx={{ color: "gray", textAlign: "center" }}>
+                        More effectively with optimized workflows.
+                    </Typography>
+                    <Box sx={{ mt: 3, textAlign: "center" }}>
+                        <img src={resume} style={{ maxWidth: "100%", height: "auto" }} />
+                    </Box>
+                </Grid>
+                <Grid
+                    item
+                    xs={12}
+                    md={8}
+                    sx={{
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        padding: 2,
+                    }}
+                >
+                    <Box
                         sx={{
-                            justifyContent: "center",
-                            alignItems: "center",
-                            backgroundColor: "#f2f2f2",
-                            border: "1px solid gray",
-                            borderStyle: "hidden",
+                            width: "100%",
+                            maxWidth: "450px",
+                            p: 2,
                         }}
-                        md={4}
                     >
                         <Typography
-                            variant="h5"
-                            sx={{ fontWeight: "bold", ml: 14, mt: 10, p: 2 }}
+                            variant="h6"
+                            sx={{ fontWeight: "bold", mt: 2, mb: 1, textAlign: "center" }}
                         >
-                            Hi, Welcome back
+                            {isSignUpRequest ? 'Get started absolutely free' : 'Sign in to your account'}
                         </Typography>
-                        <Typography sx={{ ml: 10, color: "gray" }}>
-                            More effectively with optimized workflows.
-                        </Typography>
-                        <Box sx={{ ml: 5, mt: 3 }}>
-                            <img src={resume} height="350px" />
-                        </Box>
-                    </Grid>
-                    <Grid
-                        item
-                        sx={{
-                            display: "flex",
-                            justifyContent: "center",
-                            alignItems: "center",
-                        }}
-                        md={8}
-                    >
-                        <Box
+                        <Typography
                             sx={{
-                                // border: "1px solid black",
-                                height: "450px",
-                                width: "450px",
+                                fontWeight: "light",
+                                color: "gray",
+                                fontSize: "14px",
+                                mb: 2,
+                                textAlign: "center"
                             }}
                         >
-                            <Typography
-                                variant="h6"
-                                sx={{ fontWeight: "bold", mt: 2, mb: 1 }}
-                            >{isSignUpRequest ? 'Get started absolutely free' :
-                                'Sign in to your account'}
-                            </Typography>
-                            <Typography
-                                className=""
-                                sx={{
-                                    fontWeight: "light",
-                                    color: "gray",
-                                    fontSize: "14px",
-                                    mb: 2,
-                                }}
+                            {isSignUpRequest ? "Already have an account?" : " Don't have an account?"} {" "}
+                            <span
+                                className="small-text"
+                                style={{ color: "#00a76f", fontWeight: "normal" }}
+                                onClick={handleClick}
                             >
-                                {isSignUpRequest ? "Already have an account?" : " Don't have an account?"} {" "}
-                                <span
-                                    className="small-text"
-                                    style={{ color: "#00a76f", fontWeight: "normal" }}
-                                    onClick={handleClick}
-                                >
-                                    {isSignUpRequest ? "Sign in" : "Get started"}
-                                </span>
-                            </Typography>
-                            {isSignUpRequest && (
-                                <Grid container sx={{}}>
-                                    <Grid md={5.7} mr={2.7}>
-                                        <CssTextField
-                                            id="custom-css-outlined-input"
-                                            label="First Name"
-                                            variant="outlined"
-                                            // focused
-                                            fullWidth
-                                            sx={{ mt: 1, mb: 2 }}
-                                        />
-                                    </Grid>
-                                    <Grid md={5.7}>
-                                        <CssTextField
-                                            id="custom-css-outlined-input"
-                                            label="Last Name"
-                                            variant="outlined"
-                                            // focused
-                                            fullWidth
-                                            sx={{ mt: 1, mb: 2 }}
-                                        />
-                                    </Grid>
-                                </Grid>
+                                {isSignUpRequest ? "Sign in" : "Get started"}
+                            </span>
+                        </Typography>
+
+                        <Formik
+                            initialValues={{
+                                firstName: '',
+                                lastName: '',
+                                email: '',
+                                password: '',
+                            }}
+                            validationSchema={validationSchema}
+                            onSubmit={handleFormSubmit}
+                        >
+                            {({ errors, touched }) => (
+                                <Form>
+                                    {isSignUpRequest && (
+                                        <Grid container spacing={2}>
+                                            <Grid item xs={12} sm={6}>
+                                                <Field
+                                                    as={CssTextField}
+                                                    id="firstName"
+                                                    name="firstName"
+                                                    label="First Name"
+                                                    variant="outlined"
+                                                    fullWidth
+                                                    error={touched.firstName && !!errors.firstName}
+                                                    helperText={touched.firstName && errors.firstName}
+                                                />
+                                            </Grid>
+                                            <Grid item xs={12} sm={6}>
+                                                <Field
+                                                    as={CssTextField}
+                                                    id="lastName"
+                                                    name="lastName"
+                                                    label="Last Name"
+                                                    variant="outlined"
+                                                    fullWidth
+                                                    error={touched.lastName && !!errors.lastName}
+                                                    helperText={touched.lastName && errors.lastName}
+                                                />
+                                            </Grid>
+                                        </Grid>
+                                    )}
+                                    <Field
+                                        as={CssTextField}
+                                        id="email"
+                                        name="email"
+                                        label="Email Address"
+                                        variant="outlined"
+                                        fullWidth
+                                        sx={{ mt: 2, mb: 2 }}
+                                        error={touched.email && !!errors.email}
+                                        helperText={touched.email && errors.email}
+                                    />
+                                    {!isSignUpRequest && (
+                                        <Typography
+                                            sx={{
+                                                display: "flex",
+                                                justifyContent: "flex-end",
+                                                mb: 1,
+                                                fontWeight: "light",
+                                                fontSize: "14px",
+                                            }}
+                                            className="forget-password"
+                                        >
+                                            Forgot password?
+                                        </Typography>
+                                    )}
+                                    <Field
+                                        as={CssTextField}
+                                        id="password"
+                                        name="password"
+                                        label="Password"
+                                        aria-label="password"
+                                        variant="outlined"
+                                        placeholder="6+ characters"
+                                        fullWidth
+                                        type={showPassword ? "text" : "password"}
+                                        InputProps={{
+                                            endAdornment: (
+                                                <InputAdornment position="end">
+                                                    <IconButton
+                                                        aria-label="toggle password visibility"
+                                                        onClick={handleClickShowPassword}
+                                                        onMouseDown={handleMouseDownPassword}
+                                                        edge="end"
+                                                    >
+                                                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                                                    </IconButton>
+                                                </InputAdornment>
+                                            ),
+                                        }}
+                                        error={touched.password && !!errors.password}
+                                        helperText={touched.password && errors.password}
+                                    />
+                                    <Button
+                                        type="submit"
+                                        fullWidth
+                                        className="signIn-btn"
+                                        sx={{
+                                            mt: 4,
+                                            p: 1.5,
+                                            display: "flex",
+                                            justifyContent: "center",
+                                            alignItems: "center",
+                                            backgroundColor: "#0d0d0d",
+                                            color: "#ffffff",
+                                            fontWeight: "bold",
+                                            borderRadius: "10px",
+                                        }}
+                                    >
+                                        {isSignUpRequest ? "Create account" : "Sign In"}
+                                    </Button>
+                                </Form>
                             )}
+                        </Formik>
 
-                            <CssTextField
-                                id="custom-css-outlined-input"
-                                label="Email Address"
-                                variant="outlined"
-                                // focused
-                                fullWidth
-                                sx={{ mt: 1, mb: 3 }}
-                            />
-                            {!isSignUpRequest ? <Typography
-                                sx={{
-                                    display: "flex",
-                                    justifyContent: "end",
-                                    alignItems: "end",
-                                    mb: 1,
-                                    fontWeight: "light",
-                                    fontSize: "14px",
-                                }}
-                                className="forget-password"
-                            >
-                                Forgot password?
-                            </Typography>
-
-                                : ""}
-
-                            <CssTextField
-                                id="custom-css-outlined-input"
-                                label="Password"
-                                aria-label="password"
-                                variant="outlined"
-                                placeholder="6+ characters"
-                                fullWidth
-                                type={showPassword ? "text" : "password"}
-                                InputProps={{
-                                    endAdornment: (
-                                        <InputAdornment position="end">
-                                            <IconButton
-                                                aria-label="toggle password visibility"
-                                                onClick={handleClickShowPassword}
-                                                onMouseDown={handleMouseDownPassword}
-                                                edge="end"
-                                            >
-                                                {showPassword ? <VisibilityOff /> : <Visibility />}
-                                            </IconButton>
-                                        </InputAdornment>
-                                    ),
+                        <Box
+                            sx={{
+                                mt: 3,
+                                height: "50px",
+                                display: "flex",
+                                justifyContent: "center",
+                                alignItems: "center",
+                            }}
+                        >
+                            <hr
+                                style={{
+                                    borderStyle: "dashed",
+                                    width: "100%",
+                                    maxWidth: "120px",
+                                    color: "#f2f2f2",
                                 }}
                             />
-
-                            <Button
-                                fullWidth
-                                className="signIn-btn"
+                            <Typography
                                 sx={{
-                                    mt: 4,
-                                    p: 1.5,
-                                    display: "flex",
-                                    justifyContent: "center",
-                                    alignItems: "center",
-                                    backgroundColor: "#0d0d0d",
-                                    color: "#ffffff",
+                                    m: 1,
+                                    fontSize: "12px",
                                     fontWeight: "bold",
-                                    borderRadius: "10px",
-                                }}
-                                onClick={handleLoginOrRegisterClick}
-                            >
-                                {isSignUpRequest ? "Create account" : "Sign In"}
-
-                            </Button>
-                            <Box
-                                sx={{
-                                    mt: 3,
-                                    height: "50px",
-                                    display: "flex",
-                                    justifyContent: "center",
-                                    alignItems: "center",
+                                    color: "#b3b3b3",
                                 }}
                             >
-                                <hr
-                                    style={{
-                                        borderStyle: "dashed",
-                                        width: "300px",
-                                        color: "#f2f2f2",
-                                    }}
-                                />
-                                <Typography
-                                    sx={{
-                                        m: 1,
-                                        fontSize: "12px",
-                                        fontWeight: "bold",
-                                        color: "#b3b3b3",
-                                    }}
-                                >
-                                    OR
-                                </Typography>
-                                <hr
-                                    style={{
-                                        borderStyle: "dashed",
-                                        width: "300px",
-                                        color: "#f2f2f2",
-                                    }}
-                                />
-                            </Box>
-                            <Box
-                                sx={{
-                                    mt: 3,
-                                    height: "10px",
-                                    display: "flex",
-                                    justifyContent: "center",
-                                    alignItems: "center",
+                                OR
+                            </Typography>
+                            <hr
+                                style={{
+                                    borderStyle: "dashed",
+                                    width: "100%",
+                                    maxWidth: "120px",
+                                    color: "#f2f2f2",
                                 }}
-                            >
-                                <Button className="btn-img">
-                                    <img src={google} height={18} />
-                                </Button>
-                                <Button className="btn-img">
-                                    <img src={github} height={18} />
-                                </Button>
-                                <Button className="btn-img">
-                                    <img src={linkedin} height={18} />
-                                </Button>
-                            </Box>
+                            />
                         </Box>
-                    </Grid>
+                        <Box
+                            sx={{
+                                mt: 3,
+                                display: "flex",
+                                justifyContent: "center",
+                                alignItems: "center",
+                            }}
+                        >
+                            <Button className="btn-img">
+                                <img src={google} height={18} />
+                            </Button>
+                            <Button className="btn-img">
+                                <img src={github} height={18} />
+                            </Button>
+                            <Button className="btn-img">
+                                <img src={linkedin} height={18} />
+                            </Button>
+                        </Box>
+                    </Box>
                 </Grid>
-            </div>
-        </>
+            </Grid>
+        </div>
     );
 };
 

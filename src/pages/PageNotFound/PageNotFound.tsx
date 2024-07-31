@@ -3,7 +3,7 @@ import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import { useNavigate } from 'react-router-dom';
-import illustration from '../../assets/templates/illustration.svg';
+import illustration from '../../assets/svg/illustration.svg';
 
 
 export default function NotFoundView() {
