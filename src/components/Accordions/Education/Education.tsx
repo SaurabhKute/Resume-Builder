@@ -22,7 +22,7 @@ import {
   addEducationEntry,
   removeEducationEntry,
   updateEducationEntry,
-} from "../../../features/form/slices/educationSlice";
+} from "../../../features/Form/slices/educationSlice";
 import SchoolOutlinedIcon from '@mui/icons-material/SchoolOutlined';
 
 interface EducationProps {

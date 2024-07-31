@@ -18,6 +18,8 @@ import github from "../../assets/svg/github.svg";
 import linkedin from "../../assets/svg/linkedin.svg";
 import resume from '../../assets/resume/resume6.png';
 import "./style.css";
+import { useDispatch } from "react-redux";
+import { login } from "../../features/Auth/slices/authSlice";
 
 const CssTextField = styled(TextField)({
     "& label.Mui-focused": {
@@ -41,6 +43,7 @@ const CssTextField = styled(TextField)({
 
 const Auth = () => {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const [isSignUpRequest, setSignUpRequest] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
@@ -74,8 +77,16 @@ const Auth = () => {
         password: Yup.string().required("Password is required").min(6, "Password must be at least 6 characters"),
     });
 
-    const handleFormSubmit = (values) =>{
+    const handleFormSubmit = (values) => {
+        if (isSignUpRequest) {
+            console.log("Registration Form");
+        }
+        else {
+            dispatch(login());
+            navigate('/');
+        }
         console.log("Form Submit", values);
+
     }
 
     return (

@@ -8,17 +8,28 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import { Button } from '@mui/material';
-import './style.css';
 import ConfirmationModal from '../ConfirmationPopover/ConfirmationPopover';
+import './style.css';
+import { RootState } from '../../../app/store';
+import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { login, logout } from '../../../features/Auth/slices/authSlice';
+import { useNavigate } from 'react-router-dom';
 
 export default function Navbar() {
-  const [auth, setAuth] = useState(true);
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  // const [auth, setAuth] = useState(true);
   const [confirmationOpen, setConfirmationOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
+  const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
+
   const handleLoginClick = () => {
     console.log("function called");
-    setAuth(true);
+    dispatch(login())
+    navigate('/');
   };
 
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -27,15 +38,16 @@ export default function Navbar() {
 
   const handleLogout = () => {
     setAnchorEl(null);
-    setAuth(false);
     setConfirmationOpen(true);
+
   };
 
-  const handleCloseLogout = () =>{
-setConfirmationOpen(false);
-  }
-  const handleConfirmLogout = () =>{
+  const handleCloseLogout = () => {
     setConfirmationOpen(false);
+  }
+  const handleConfirmLogout = () => {
+    setConfirmationOpen(false);
+    dispatch(logout());
   }
 
   return (
@@ -43,17 +55,20 @@ setConfirmationOpen(false);
       <AppBar position="static" className='navbar'>
         <Toolbar>
           <div style={{ display: 'flex', alignItems: 'center' }}>
-      <Typography variant="h6" component="div" sx={{ flexGrow: 1, fontWeight: 'bold' }}>
-        Resume Builder
-      </Typography>
-      <Typography sx={{ color: 'gray', margin: '0 22px',fontWeight:'light'  }}>&#x7c;</Typography>
-    </div>
-    {/* <Typography sx={{fontSize:'16px',display:'inline-block', mt:'18px', fontWeight:'light', color:'#f0f3f5' }}>Dashboard */}
-    {/* <Typography   component="span" sx={{ border: '2px solid white', display: 'block', mt: '10px', borderColor:'#20d761' }}></Typography> */}
-    {/* </Typography> */}
-    
+            <Typography variant="h6" component="div" sx={{ flexGrow: 1, fontWeight: 'bold' }}>
+              Resume Builder
+            </Typography>
+            <Typography sx={{ color: 'gray', margin: '0 22px', fontWeight: 'light' }}>&#x7c;</Typography>
+          </div>
+          {isAuthenticated && (
+            <Typography sx={{ fontSize: '16px', display: 'inline-block', mt: '18px', fontWeight: 'light', color: '#f0f3f5' }}>Dashboard
+              <Typography component="span" sx={{ border: '2px solid white', display: 'block', mt: '10px', borderColor: '#20d761' }}></Typography>
+            </Typography>
+          )}
 
-          {auth ? (
+
+
+          {isAuthenticated ? (
             <div style={{ marginLeft: 'auto' }}>
               <IconButton
                 size="large"
@@ -80,16 +95,16 @@ setConfirmationOpen(false);
                 open={Boolean(anchorEl)}
                 onClose={handleLogout}
               >
-               
+
                 {/* <MenuItem onClick={handleLogout}>My account</MenuItem> */}
                 <MenuItem onClick={handleLogout}>Logout</MenuItem>
               </Menu>
             </div>
-          ):(
+          ) : (
             <div style={{ display: 'flex', marginLeft: 'auto', justifyContent: 'space-between' }}>
-      <Button variant="contained" size="small" className='login-btn' sx={{mr:'20px', backgroundColor:'#fff', color:'black', fontFamily:'unset'}} onClick={handleLoginClick}>Log In</Button>
-      <Button variant="contained" size="small" className='signup-btn' sx={{ backgroundColor:'#068932', color:'#fff', fontFamily:'unset'}} >Sign Up</Button>
-    </div>
+              <Button variant="contained" size="small" className='login-btn' sx={{ mr: '20px', backgroundColor: '#fff', color: 'black', fontFamily: 'unset' }} onClick={handleLoginClick}>Log In</Button>
+              <Button variant="contained" size="small" className='signup-btn' sx={{ backgroundColor: '#068932', color: '#fff', fontFamily: 'unset' }} >Sign Up</Button>
+            </div>
           )}
         </Toolbar>
       </AppBar>
@@ -99,11 +114,11 @@ setConfirmationOpen(false);
         onConfirm={handleConfirmLogout}
         title="Logout Confirmation"
         message="Are you sure you want to logout ?"
-        buttonText1 = "No"
-        buttonText2 = "Logout"
+        buttonText1="No"
+        buttonText2="Logout"
         buttonColor2='error'
       />
     </Box>
-    
+
   );
 }
