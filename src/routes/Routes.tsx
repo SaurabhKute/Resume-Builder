@@ -10,7 +10,7 @@ import Header from '../common/components/Header/Header';
 import Navbar from '../common/components/Navbar/Navbar';
 import Builder from '../components/Builder/Builder';
 import ChooseTemplate from '../components/ChooseTemplate/ChooseTemplate';
-import ProtectedRoute from './protectedRoute'; 
+import ProtectedRoute from './ProtectedRoute'; 
 import { RootState } from '../app/store';
 
 export default function Router() {
