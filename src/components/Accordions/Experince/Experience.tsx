@@ -5,14 +5,9 @@ import {
   AccordionSummary,
   Box,
   Button,
-  FormControl,
   Grid,
-  InputLabel,
-  MenuItem,
   Popover,
-  Select,
   TextField,
-  TextareaAutosize,
   Typography,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
@@ -25,8 +20,6 @@ import {
   removeExperienceEntry,
   updateExperienceEntry,
 } from "../../../features/Form/slices/experienceSlice";
-import SchoolOutlinedIcon from "@mui/icons-material/SchoolOutlined";
-import MarkdownCheatsheet from "../../MarkdownCheatsheet";
 import WorkOutlineOutlinedIcon from '@mui/icons-material/WorkOutlineOutlined';
 
 interface ExperienceProps {
@@ -224,7 +217,7 @@ const Experience: React.FC<ExperienceProps> = () => {
                     <Button variant="contained" onClick={handleClick} style={{ marginTop: '10px' }}>
               Markdown Cheatsheet
             </Button>
-            <Popover
+            {/* <Popover
               id={id}
               open={open}
               anchorEl={anchorEl}
@@ -235,7 +228,7 @@ const Experience: React.FC<ExperienceProps> = () => {
               }}
             >
               <MarkdownCheatsheet />
-            </Popover>
+            </Popover> */}
                   </Grid>
                 </Grid>
               </AccordionDetails>

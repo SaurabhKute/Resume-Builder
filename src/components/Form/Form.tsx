@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { Box, Tab, Tabs } from "@mui/material";
-import { Additional, Certification, Education, Experience, PersonalInfo, Project, Skillset } from "../Accordions";
 import './Form.css';
+import { Additional, Certification, Education, Experience, PersonalInfo, Project, Skillset } from "../Accordions";
+
 
 
 const Form: React.FC = () => {
