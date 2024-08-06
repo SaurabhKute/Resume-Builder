@@ -1,5 +1,5 @@
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
-import { Box, Button, Fade, Menu, MenuItem, Popover, Typography } from "@mui/material";
+import { Box, Button, Fade, Menu, MenuItem, Typography } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
 import EditNoteOutlinedIcon from '@mui/icons-material/EditNoteOutlined';
 import { useEffect, useState } from "react";
@@ -10,11 +10,18 @@ import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import ConfirmationModal from "../ConfirmationPopover/ConfirmationPopover";
 import toast, { Toaster } from 'react-hot-toast';
+import { useSelector } from "react-redux";
+import { RootState } from "../../../app/store";
+import SaveAsOutlinedIcon from '@mui/icons-material/SaveAsOutlined';
 import "./style.css";
 
 export default function Header() {
+
+
   const navigate = useNavigate();
   const location = useLocation();
+
+  const user = useSelector((state:RootState)=> state.auth.user);
 
   const [path, setPath] = useState<any>('');
   const [confirmationOpen, setConfirmationOpen] = useState(false);
@@ -24,7 +31,6 @@ export default function Header() {
     setPath(location?.pathname);
 
   }, [location])
-
 
 
   const handleEditClick = () => {
@@ -123,7 +129,7 @@ export default function Header() {
                 sx={{ mt: 2, fontWeight: "light", fontSize: "28px" }}
                
               >
-                Saurabh's Resume
+                {`${user?.firstName}'s Resume`}
               </Typography>
               {/* <Typography sx={{ ml: 1, mt: 1 }}> */}
               <div onClick={handleEditClick}>
@@ -153,6 +159,34 @@ export default function Header() {
               </Typography>
 
               <div style={{ marginLeft: 'auto' }}>
+              <Button
+                  id="fade-button"
+                  aria-controls={open ? 'fade-menu' : undefined}
+                  aria-haspopup="true"
+                  aria-expanded={open ? 'true' : undefined}
+                  variant="contained"
+                  className="createNew-btn"
+                  sx={{
+                    marginLeft: "auto",
+                    backgroundColor: '#1a75ff',
+                    textTransform: "none",
+                    fontWeight: "light",
+                    marginRight: "16px",
+                    ":hover": {
+                      bgcolor: "#1a75ff",
+                      transition: "linear",
+                    },
+                  }}
+                  
+                  endIcon={
+                    <SaveAsOutlinedIcon
+                      style={{ fontSize: "14px", fontWeight: "lighter" }}
+                    />
+                  }
+                >
+                  Save Draft
+                </Button>
+
                 <Button
                   id="fade-button"
                   aria-controls={open ? 'fade-menu' : undefined}
@@ -222,7 +256,7 @@ export default function Header() {
                 ml: "6px",
               }}
             >
-              Saurabh!
+             {`${user?.firstName}`}
             </Typography>
             <Button
               className="createNew-btn"

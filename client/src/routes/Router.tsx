@@ -7,17 +7,17 @@ import PublicRoute from './PublicRoute';
 import { Builder, ChooseTemplate, Dashboard } from '../components';
 import { Auth, NotFoundView } from '../pages';
 import { Header, Navbar, ScrollToTop } from '../common/components';
+import ToasterComponent from '../common/components/Toaster/Toaster';
 
 export default function Router() {
   const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
 
 
-  
-
   const routes = useRoutes([
     {
       element: (
         <>
+         <ToasterComponent />
           <ScrollToTop />
           <Navbar />
           {isAuthenticated && <Header />}
@@ -27,11 +27,16 @@ export default function Router() {
         </>
       ),
       children: [
-        { path: '/login', element: <PublicRoute element={<Auth />} redirectTo="/" /> },
-        { path: '/register', element: <PublicRoute element={<Auth />} redirectTo="/" /> },
-        { path: '/', element: <ProtectedRoute element={<Dashboard />} redirectTo="/login" /> },
+        // Public Routes
+        { path: '/login', element: <PublicRoute element={<Auth />} redirectTo="/dashboard" /> },
+        { path: '/register', element: <PublicRoute element={<Auth />} redirectTo="/login" /> },
+
+        // Private Routes
+        { path: '/dashboard', element: <ProtectedRoute element={<Dashboard />} redirectTo="/login" /> },
         { path: '/builder', element: <ProtectedRoute element={<Builder />} redirectTo="/login" /> },
         { path: '/resume', element: <ProtectedRoute element={<ChooseTemplate />} redirectTo="/login" /> },
+
+        // Page Not Found
         { path: '*', element: <NotFoundView /> },
       ],
     },

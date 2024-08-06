@@ -8,7 +8,7 @@ import {
     InputAdornment,
     IconButton,
 } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { Formik, Form, Field } from "formik";
@@ -47,8 +47,13 @@ const Auth = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch<any>();
 
-    const [isSignUpRequest, setSignUpRequest] = useState(false);
+    const [isSignUpRequest, setSignUpRequest] = useState(location.pathname === '/register');
     const [showPassword, setShowPassword] = useState(false);
+
+
+    useEffect(() => {
+        setSignUpRequest(location.pathname === '/register');
+    }, [location.pathname]);
 
     const handleClickShowPassword = () => {
         setShowPassword(!showPassword);
@@ -78,40 +83,47 @@ const Auth = () => {
         email: Yup.string().email("Invalid email address").required("Email is required"),
         password: Yup.string().required("Password is required").min(6, "Password must be at least 6 characters"),
     });
-
     const handleFormSubmit = async (values: any) => {
         const { firstName, lastName, email, password } = values;
         try {
-            if (isSignUpRequest) {
-              const actionResult = await dispatch(registerUser({ firstName, lastName, email, password }));
-              
-              if (registerUser.fulfilled.match(actionResult)) {
-                toast.success('Registration successful! ');
-                navigate('/login');
-              } else {
-                const errorMessage = actionResult.payload?.error?.message || 'Registration failed. Please try again.';
-                toast.error(errorMessage);
-              }
+          if (isSignUpRequest) {
+            console.log("Attempting to register user...");
+            const actionResult = await dispatch(registerUser({ firstName, lastName, email, password }));
+            console.log("Action Result:", actionResult);
+      
+            if (registerUser.fulfilled.match(actionResult)) {
+              toast.success('Registration successful!');
+              console.log("Navigating to login page...");
+              navigate('/login');
             } else {
-              const actionResult = await dispatch(loginUser({ email, password }));
-              
-              if (loginUser.fulfilled.match(actionResult)) {
-                toast.success('Login successful!');
-                navigate('/');
-              } else {
-                const errorMessage = actionResult.payload?.error?.message || 'Login failed. Please try again.';
-                toast.error(errorMessage);
-              }
+              const errorMessage = actionResult.payload?.error?.message || 'Registration failed. Please try again.';
+              toast.error(errorMessage);
             }
-          } catch (error) {
-            toast.error('An unexpected error occurred. Please try again.');
+          } else {
+            console.log("Attempting to log in user...");
+            const actionResult = await dispatch(loginUser({ email, password }));
+            console.log("Action Result:", actionResult);
+      
+            if (loginUser.fulfilled.match(actionResult)) {
+              toast.success('Login successfully!');
+              console.log("Navigating to dashboard...");
+              navigate('/dashboard');
+            } else {
+              const errorMessage = actionResult.payload?.error?.message || 'Login failed. Please try again.';
+              toast.error(errorMessage);
+            }
           }
-    }
+        } catch (error) {
+          toast.error('An unexpected error occurred. Please try again.');
+          console.error("Error during form submission:", error);
+        }
+      }
+      
 
 
     return (
         <>
-        <Toaster />
+        {/* <Toaster /> */}
         <div>
             <Grid container component="main" sx={{ height: "100vh" }}>
                 <Grid
