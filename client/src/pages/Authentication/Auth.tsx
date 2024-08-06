@@ -19,7 +19,9 @@ import linkedin from "../../assets/svg/linkedin.svg";
 import resume from '../../assets/resume/resume6.png';
 import "./style.css";
 import { useDispatch } from "react-redux";
-import { login } from "../../features/Auth/slices/authSlice";
+import { loginUser, registerUser } from "../../features/Auth/actions/authAction";
+import toast, { Toaster } from "react-hot-toast";
+
 
 const CssTextField = styled(TextField)({
     "& label.Mui-focused": {
@@ -43,7 +45,7 @@ const CssTextField = styled(TextField)({
 
 const Auth = () => {
     const navigate = useNavigate();
-    const dispatch = useDispatch();
+    const dispatch = useDispatch<any>();
 
     const [isSignUpRequest, setSignUpRequest] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
@@ -77,19 +79,39 @@ const Auth = () => {
         password: Yup.string().required("Password is required").min(6, "Password must be at least 6 characters"),
     });
 
-    const handleFormSubmit = (values) => {
-        if (isSignUpRequest) {
-            console.log("Registration Form");
-        }
-        else {
-            dispatch(login());
-            navigate('/');
-        }
-        console.log("Form Submit", values);
-
+    const handleFormSubmit = async (values: any) => {
+        const { firstName, lastName, email, password } = values;
+        try {
+            if (isSignUpRequest) {
+              const actionResult = await dispatch(registerUser({ firstName, lastName, email, password }));
+              
+              if (registerUser.fulfilled.match(actionResult)) {
+                toast.success('Registration successful! ');
+                navigate('/login');
+              } else {
+                const errorMessage = actionResult.payload?.error?.message || 'Registration failed. Please try again.';
+                toast.error(errorMessage);
+              }
+            } else {
+              const actionResult = await dispatch(loginUser({ email, password }));
+              
+              if (loginUser.fulfilled.match(actionResult)) {
+                toast.success('Login successful!');
+                navigate('/');
+              } else {
+                const errorMessage = actionResult.payload?.error?.message || 'Login failed. Please try again.';
+                toast.error(errorMessage);
+              }
+            }
+          } catch (error) {
+            toast.error('An unexpected error occurred. Please try again.');
+          }
     }
 
+
     return (
+        <>
+        <Toaster />
         <div>
             <Grid container component="main" sx={{ height: "100vh" }}>
                 <Grid
@@ -335,6 +357,8 @@ const Auth = () => {
                 </Grid>
             </Grid>
         </div>
+            
+        </>
     );
 };
 

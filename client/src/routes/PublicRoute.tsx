@@ -3,10 +3,13 @@ import { Navigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { RootState } from '../app/store';
 
-const PublicRoute = ({ element, redirectTo }) => {
-  const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
+interface PublicRouteProps {
+  element: React.ReactElement;
+  redirectTo: string;
+}
 
-  console.log('PublicRoute - isAuthenticated:', isAuthenticated);
+const PublicRoute: React.FC<PublicRouteProps> = ({ element, redirectTo }) => {
+  const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
   return !isAuthenticated ? element : <Navigate to={redirectTo} />;
 };
 
