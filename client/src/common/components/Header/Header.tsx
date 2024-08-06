@@ -24,7 +24,7 @@ export default function Header() {
     setPath(location?.pathname);
 
   }, [location])
-  console.log(path, "@path");
+
 
 
   const handleEditClick = () => {
@@ -62,13 +62,9 @@ export default function Header() {
         error: 'Error occurred while updating.',
       }
     ).then(() => {
-      console.log("Confirmed Edit");
       setConfirmationOpen(false);
-      // Add your edit logic here
     });
-    console.log("Confirmed Edit");
     setConfirmationOpen(false);
-    // Add your edit logic here
   };
 
   

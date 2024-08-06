@@ -10,8 +10,6 @@ const navigate = useNavigate();
 
 function handleClick(event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) {
   event.preventDefault();
-  console.info('You clicked a breadcrumb.');
-  console.log('key is: ', event.target);
   navigate('/');
 }
 

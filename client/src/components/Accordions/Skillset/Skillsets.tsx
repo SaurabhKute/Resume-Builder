@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import LayersOutlinedIcon from '@mui/icons-material/LayersOutlined';
-import { DATABASES, FRAMEWORKS, LANGUAGES, TOOLS } from "../../../utils/Constants";
+import { DATABASES, FRAMEWORKS, LANGUAGES, TOOLS } from "../../../utils/constants";
 import { Accordion, AccordionDetails, AccordionSummary, Autocomplete, Box, Chip, TextField, Typography } from "@mui/material";
 import { addDatabase, addFramework, addProgLanguage, addTool, removeDatabase, removeFramework, removeProgLanguage, removeTool } from "../../../features/Form/slices/skillSetSlice";
 interface SkillsetsProps {

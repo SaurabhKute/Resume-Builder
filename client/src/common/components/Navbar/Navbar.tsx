@@ -7,30 +7,26 @@ import IconButton from '@mui/material/IconButton';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
-import { Button } from '@mui/material';
 import ConfirmationModal from '../ConfirmationPopover/ConfirmationPopover';
-import './style.css';
 import { RootState } from '../../../app/store';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
-import { login, logout } from '../../../features/Auth/slices/authSlice';
+
+import './style.css';
+import { logoutUser } from '../../../features/Auth/actions/authAction';
 import { useNavigate } from 'react-router-dom';
+
 
 export default function Navbar() {
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<any>();
   const navigate = useNavigate();
-  // const [auth, setAuth] = useState(true);
   const [confirmationOpen, setConfirmationOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
 
-  const handleLoginClick = () => {
-    console.log("function called");
-    dispatch(login())
-    navigate('/');
-  };
+
 
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -47,7 +43,8 @@ export default function Navbar() {
   }
   const handleConfirmLogout = () => {
     setConfirmationOpen(false);
-    dispatch(logout());
+    dispatch(logoutUser());
+    navigate('/login');
   }
 
   return (
@@ -102,8 +99,8 @@ export default function Navbar() {
             </div>
           ) : (
             <div style={{ display: 'flex', marginLeft: 'auto', justifyContent: 'space-between' }}>
-              <Button variant="contained" size="small" className='login-btn' sx={{ mr: '20px', backgroundColor: '#fff', color: 'black', fontFamily: 'unset' }} onClick={handleLoginClick}>Log In</Button>
-              <Button variant="contained" size="small" className='signup-btn' sx={{ backgroundColor: '#068932', color: '#fff', fontFamily: 'unset' }} >Sign Up</Button>
+              {/* <Button variant="contained" size="small" className='login-btn' sx={{ mr: '20px', backgroundColor: '#fff', color: 'black', fontFamily: 'unset' }} onClick={handleLogin}>Log In</Button>
+              <Button variant="contained" size="small" className='signup-btn' sx={{ backgroundColor: '#068932', color: '#fff', fontFamily: 'unset' }} onClick={handleRegister} >Sign Up</Button> */}
             </div>
           )}
         </Toolbar>

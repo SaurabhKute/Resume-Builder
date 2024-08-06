@@ -7,7 +7,7 @@ import PersonOutlineRoundedIcon from "@mui/icons-material/PersonOutlineRounded";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../app/store";
-import { SOCIAL_LINKS } from "../../../utils/Constants";
+import { SOCIAL_LINKS } from "../../../utils/constants";
 
 
 interface PersonalInfoProps {

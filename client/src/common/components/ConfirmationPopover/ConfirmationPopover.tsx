@@ -16,7 +16,6 @@ interface ConfirmationModalProps {
 
 const ConfirmationModal = ({ open, onClose, onConfirm, title, message, editText,buttonText1,buttonText2,buttonColor2 }:ConfirmationModalProps) => {
 
-  console.log(buttonColor2, "btn2color");
   const [editName, setEditName] = useState(editText || '');
 
   return (
