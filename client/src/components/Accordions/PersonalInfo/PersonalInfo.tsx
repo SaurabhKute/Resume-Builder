@@ -18,6 +18,7 @@ interface PersonalInfoProps {
 const PersonalInfo: React.FC<PersonalInfoProps> = () => {
 
     const dispatch = useDispatch();
+    const user = useSelector((state:RootState)=>state.auth.user);
     const inputFields = useSelector((state: RootState) => state.personalInfo.socialLinks);
 
 
@@ -113,7 +114,7 @@ const PersonalInfo: React.FC<PersonalInfoProps> = () => {
                                 type="text"
                                 label="First Name"
                                 placeholder="John"
-                                value={personalInfo.firstName}
+                                value={personalInfo.firstName }
                                 onChange={handlePersonalInfoChange}
                             />
                         </Grid>
@@ -124,7 +125,7 @@ const PersonalInfo: React.FC<PersonalInfoProps> = () => {
                                 type="text"
                                 label="Last Name"
                                 placeholder="Doe"
-                                value={personalInfo.lastName}
+                                value={personalInfo.lastName }
                                 onChange={handlePersonalInfoChange}
                             />
                         </Grid>
@@ -135,7 +136,8 @@ const PersonalInfo: React.FC<PersonalInfoProps> = () => {
                                 type="email"
                                 label="Email"
                                 placeholder="john@example.com"
-                                value={personalInfo.email}
+                                value={personalInfo.email }
+                              
                                 onChange={handlePersonalInfoChange}
                             />
                         </Grid>

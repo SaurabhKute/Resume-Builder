@@ -15,7 +15,7 @@ const navigate = useNavigate();
   };
 
   const handleCancelClick = () => {
-   navigate('/');
+   navigate('/dashboard');
   };
 
   const handleConfirmClick = () =>{
