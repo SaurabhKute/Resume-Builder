@@ -15,8 +15,20 @@ const createResume = async (resumeData) => {
  * @returns {Promise<Resume>}
  */
 const getAllResumeByuserId = async (userId) => {
-  return Resume.find({userId});
+  return Resume.find({ userId });
 };
+
+
+/**
+ * Get a resume by ID
+ * @param {ObjectId} resumeId - ID of the resume
+ * @returns {Promise<Resume>}
+ */
+const getResumeById = async (resumeId) => {
+  return Resume.findById(resumeId);
+};
+
+
 
 /**
  * Update a resume by ID
@@ -40,6 +52,7 @@ const deleteResumeById = async (resumeId) => {
 export default {
   createResume,
   getAllResumeByuserId,
+  getResumeById,
   updateResumeById,
   deleteResumeById,
 };

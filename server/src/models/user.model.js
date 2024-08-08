@@ -1,5 +1,3 @@
-
-
 import mongoose from "mongoose";
 import validator from "validator";
 import bcrypt from 'bcryptjs';
@@ -49,7 +47,6 @@ const userSchema = mongoose.Schema(
   }
 );
 
-
 /**
  * Check if email is taken
  * @param {string} email - The user's email
@@ -84,4 +81,4 @@ userSchema.pre('save', async function (next) {
  */
 const User = mongoose.model('User', userSchema);
 
-export  default  User;
+export default User;
