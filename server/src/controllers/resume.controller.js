@@ -1,15 +1,32 @@
 import httpStatus from 'http-status';
 import resumeService from '../services/resume.service.js';
-
+import mongoose from 'mongoose';
+import User from '../models/user.model.js';
 /**
  * Create a new resume
  * @param {Object} req - HTTP request
  * @param {Object} res - HTTP response
  */
+
+
+
 const createResume = async (req, res) => {
   try {
-    const resumeData = req.body;
+    const userId = req.params.userId; // Assuming the user ID is available in req.params
+
+    if (!mongoose.Types.ObjectId.isValid(userId)) {
+      return res.status(httpStatus.BAD_REQUEST).send({ message: 'Invalid user ID' });
+    }
+    const objectId = mongoose.Types.ObjectId.createFromHexString(userId);
+
+    const user = await User.findById(objectId);
+    if (!user) {
+      return res.status(httpStatus.NOT_FOUND).send({ message: 'User not found' });
+    }
+    const resumeData = { ...req.body, userId };
+
     const resume = await resumeService.createResume(resumeData);
+
     res.status(httpStatus.CREATED).send({
       resumeId: resume._id, // Return the resume ID
       resume,
@@ -28,18 +45,19 @@ const createResume = async (req, res) => {
 
 const getAllResumesByUserId = async (req, res) => {
   try {
-    console.log(req.params.userId);
     const userId = req.params.userId;
 
     const resumes = await resumeService.getAllResumeByuserId(userId);
-    res.status(httpStatus.OK).send(resumes);
+    if (resumes?.length > 0) {
+      res.status(httpStatus.OK).send(resumes);
+    }
+    else {
+      res.status(httpStatus.OK).send({ message: "No resumes available" });
+    }
   } catch (error) {
     res.status(httpStatus.INTERNAL_SERVER_ERROR).send({ message: error.message });
   }
 };
-
-
-
 
 
 /**
@@ -48,20 +66,27 @@ const getAllResumesByUserId = async (req, res) => {
  * @param {Object} res - HTTP response
  */
 
-// const getResumeById = async (req, res) => {
-//   try {
-//     const { resumeId } = req.params;
-//     const resume = await resumeService.getResumeById(resumeId);
+const getResumeById = async (req, res) => {
+  try {
+    const { resumeId } = req.params;
 
-//     if (!resume) {
-//       return res.status(httpStatus.NOT_FOUND).send({ message: 'Resume not found' });
-//     }
+    // Check if the resumeId is a valid ObjectId
+    if (!mongoose.Types.ObjectId.isValid(resumeId)) {
+      return res.status(httpStatus.BAD_REQUEST).send({ message: 'Invalid resume ID' });
+    }
+    const objectId = mongoose.Types.ObjectId.createFromHexString(resumeId);
 
-//     res.send(resume);
-//   } catch (error) {
-//     res.status(httpStatus.INTERNAL_SERVER_ERROR).send({ message: error.message });
-//   }
-// };
+    const resume = await resumeService.getResumeById(objectId);
+
+    if (!resume) {
+      return res.status(httpStatus.NOT_FOUND).send({ message: 'Resume not found' });
+    }
+
+    res.send(resume);
+  } catch (error) {
+    res.status(httpStatus.INTERNAL_SERVER_ERROR).send({ message: error.message });
+  }
+};
 
 /**
  * Update a resume by ID
@@ -99,7 +124,7 @@ const deleteResumeById = async (req, res) => {
       return res.status(httpStatus.NOT_FOUND).send({ message: 'Resume not found' });
     }
 
-    res.status(httpStatus.OK).send({message: "Deleted successfully"});
+    res.status(httpStatus.OK).send({ message: "Deleted successfully" });
   } catch (error) {
     res.status(httpStatus.INTERNAL_SERVER_ERROR).send({ message: error.message });
   }
@@ -108,6 +133,7 @@ const deleteResumeById = async (req, res) => {
 export default {
   createResume,
   getAllResumesByUserId,
+  getResumeById,
   updateResumeById,
   deleteResumeById,
 };

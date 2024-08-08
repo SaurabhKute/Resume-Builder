@@ -1,13 +1,10 @@
 import httpStatus from "http-status";
 import tokenService from "./token.service.js";
-import userService  from "./resume.service.js";
+import userService from "./resume.service.js";
 import Token from "../models/token.model.js";
 import ApiError from "../utils/ApiError.js";
 import tokenTypes from "../config/tokens.js";
 import User from "../models/user.model.js";
-// import bcrypt from 'bcryptjs';
-// import authService from "./auth.service.js";
-
 
 /**
  * Register a new user
@@ -29,7 +26,6 @@ const createUser = async (userBody) => {
  */
 const loginUserWithEmailAndPassword = async (email, password) => {
   const user = await User.findOne({ email });
-  console.log(user?.isPasswordMatch(password), "!@#");
   if (!user || !(await user.isPasswordMatch(password))) {
     throw new ApiError(httpStatus.UNAUTHORIZED, 'Incorrect email or password');
   }
@@ -106,7 +102,7 @@ const verifyEmail = async (verifyEmailToken) => {
     throw new ApiError(httpStatus.UNAUTHORIZED, 'Email verification failed');
   }
 };
-export default  {
+export default {
   createUser,
   loginUserWithEmailAndPassword,
   logout,
