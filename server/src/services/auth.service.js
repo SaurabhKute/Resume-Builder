@@ -1,11 +1,22 @@
 import httpStatus from "http-status";
 import tokenService from "./token.service.js";
-import userService  from "./user.service.js";
+import userService from "./resume.service.js";
 import Token from "../models/token.model.js";
 import ApiError from "../utils/ApiError.js";
 import tokenTypes from "../config/tokens.js";
+import User from "../models/user.model.js";
 
-
+/**
+ * Register a new user
+ * @param {Object} userBody - User details
+ * @returns {Promise<User>}
+ */
+const createUser = async (userBody) => {
+  if (await User.isEmailTaken(userBody.email)) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Email already taken');
+  }
+  return User.create(userBody);
+};
 
 /**
  * Login with username and password
@@ -14,7 +25,7 @@ import tokenTypes from "../config/tokens.js";
  * @returns {Promise<User>}
  */
 const loginUserWithEmailAndPassword = async (email, password) => {
-  const user = await userService.getUserByEmail(email);
+  const user = await User.findOne({ email });
   if (!user || !(await user.isPasswordMatch(password))) {
     throw new ApiError(httpStatus.UNAUTHORIZED, 'Incorrect email or password');
   }
@@ -91,7 +102,8 @@ const verifyEmail = async (verifyEmailToken) => {
     throw new ApiError(httpStatus.UNAUTHORIZED, 'Email verification failed');
   }
 };
-export default  {
+export default {
+  createUser,
   loginUserWithEmailAndPassword,
   logout,
   refreshAuth,
