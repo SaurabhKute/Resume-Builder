@@ -29,8 +29,18 @@ const loginUserWithEmailAndPassword = async (email, password) => {
   if (!user || !(await user.isPasswordMatch(password))) {
     throw new ApiError(httpStatus.UNAUTHORIZED, 'Incorrect email or password');
   }
-  return user;
-};
+return user
+
+}
+  
+  // tokens:{
+  //   access:{
+  //     token:user.tokens.access.token,
+  //   },
+  //   refresh:{
+  //     token:user.tokens.refresh.token,
+  //   }
+  // }
 
 /**
  * Logout

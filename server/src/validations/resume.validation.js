@@ -16,6 +16,7 @@ const personalInfoSchema = Joi.object().keys({
 });
 
 const educationInfoSchema = Joi.object().keys({
+  id:Joi.number(),
   institute: Joi.string(),
   location: Joi.string(),
   degreeType: Joi.string(),

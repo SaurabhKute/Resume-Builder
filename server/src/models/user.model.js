@@ -68,6 +68,14 @@ userSchema.methods.isPasswordMatch = async function (password) {
   return bcrypt.compare(password, user.password);
 };
 
+
+// Add the toJSON method to exclude password
+userSchema.methods.toJSON = function() {
+  const user = this.toObject();
+  delete user.password;
+  return user;
+};
+
 userSchema.pre('save', async function (next) {
   const user = this;
   if (user.isModified('password')) {
