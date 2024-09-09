@@ -11,22 +11,21 @@ import ConfirmationModal from '../ConfirmationPopover/ConfirmationPopover';
 import { RootState } from '../../../app/store';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
-
-import './style.css';
 import { logoutUser } from '../../../features/Auth/actions/authAction';
 import { useNavigate } from 'react-router-dom';
+import './style.css';
+import { clearState } from '../../../features/Form/slices/formSlice';
 
 
 export default function Navbar() {
 
   const dispatch = useDispatch<any>();
   const navigate = useNavigate();
+
   const [confirmationOpen, setConfirmationOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
-
-
 
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -43,6 +42,7 @@ export default function Navbar() {
   }
   const handleConfirmLogout = () => {
     setConfirmationOpen(false);
+    dispatch(clearState());
     dispatch(logoutUser());
     navigate('/login');
   }
@@ -62,8 +62,6 @@ export default function Navbar() {
               <Typography component="span" sx={{ border: '2px solid white', display: 'block', mt: '10px', borderColor: '#20d761' }}></Typography>
             </Typography>
           )}
-
-
 
           {isAuthenticated ? (
             <div style={{ marginLeft: 'auto' }}>

@@ -3,28 +3,88 @@ import { useState } from "react";
 import template1 from "../../assets/templates/template1.png";
 import template2 from "../../assets/templates/template2.png";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { RootState } from "../../app/store";
+import { useDispatch } from "react-redux";
+import { createResume, getResumeById } from "../../features/Form/actions/formAction";
+import { Loading } from "../../common/components";
+import toast from "react-hot-toast";
+
+
 
 const ChooseTemplate = () => {
-const navigate = useNavigate();
+  const navigate = useNavigate();
+  const dispatch = useDispatch<any>();
 
+  const user = useSelector((state: RootState) => state.auth.user);
+
+
+  // console.log(user, "@user");
 
   const [selectedValue, setSelectedValue] = useState("a");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   const handleChange = (event) => {
     setSelectedValue(event.target.value);
   };
 
   const handleCancelClick = () => {
-   navigate('/dashboard');
+    navigate('/');
   };
 
-  const handleConfirmClick = () =>{
-     navigate('/builder');
-  }
+  const handleConfirmClick = async () => {
+    setLoading(true);
+    setError(null);
+  
+    const timeoutId = setTimeout(() => {
+      setLoading(false); // Stop loading after 30 seconds
+    }, 30000); // 30,000 milliseconds = 30 seconds
+  
+    const newResumeData = {
+      userId: `${user?.userId}`,
+      templateId: 1,
+      resumeTitle: `${user?.firstName}'s Resume`,
+    };
+  
+    try {
+      // console.log(newResumeData, "@newResumeData");
+      const resultAction = await dispatch(createResume(newResumeData));
+
+      // console.log(resultAction, "@resultAction");
+  
+      if (createResume.fulfilled.match(resultAction)) {
+        clearTimeout(timeoutId);
+        toast.success("Resume Created!");
+        await dispatch(getResumeById(resultAction?.payload?.resumeId))
+        navigate('/builder');
+      } else if (createResume.rejected.match(resultAction)) {
+        clearTimeout(timeoutId);
+        setLoading(false);
+        toast.error(resultAction.payload?.message || "Failed to create resume.");
+      }
+    } catch (error: any) {
+      clearTimeout(timeoutId);
+      setLoading(false);
+      toast.error(error.message || "An error occurred.");
+    }
+  };
+  
 
   return (
     <>
-      {/* {show && ( */}
+      {loading && !error ? (
+        <div>
+          <Loading
+            isLoading={loading}
+            loadingText=""
+            stopLoadingText="Your resume is being created, just a moment..."
+            loadingDelay={500}
+            autoStopAfter={150000} // Automatically stops loading after 3 seconds
+            onLoadingChange={setLoading}
+          />
+        </div>
+      ) : (
         <Box
           sx={{
             display: "flex",
@@ -184,7 +244,8 @@ const navigate = useNavigate();
             </Box>
           </Paper>
         </Box>
-      {/* )} */}
+      )
+      }
     </>
   );
 };

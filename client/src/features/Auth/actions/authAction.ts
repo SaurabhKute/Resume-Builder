@@ -1,5 +1,5 @@
-import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
+import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AuthResponse, AuthError } from '../authTypes';
 import apiService from '../../../services/apiService';
 
@@ -55,13 +55,11 @@ export const loginUser = createAsyncThunk<AuthResponse, LoginPayload, { rejectVa
 );
 
 // Logout User
-// Logout User
 export const logoutUser = createAsyncThunk<void, void, { rejectValue: AuthError }>(
   'auth/logoutUser',
   async (_, { rejectWithValue }) => {
     try {
       const refreshToken = localStorage.getItem('refreshToken');
-      console.log(refreshToken, "rt");
       await apiService.post('/auth/logout', { refreshToken: refreshToken });
       localStorage.removeItem('authToken');
       localStorage.removeItem('refreshToken');

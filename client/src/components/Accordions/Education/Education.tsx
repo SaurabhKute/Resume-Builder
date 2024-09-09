@@ -18,12 +18,9 @@ import BlurOnIcon from "@mui/icons-material/BlurOn";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../app/store";
-import {
-  addEducationEntry,
-  removeEducationEntry,
-  updateEducationEntry,
-} from "../../../features/Form/slices/educationSlice";
+
 import SchoolOutlinedIcon from '@mui/icons-material/SchoolOutlined';
+import { addEducationEntry, removeEducationEntry, updateEducationEntry } from "../../../features/Form/slices/formSlice";
 
 interface EducationProps {
   expanded: boolean;
@@ -33,8 +30,10 @@ interface EducationProps {
 const Education: React.FC<EducationProps> = () => {
   const dispatch = useDispatch();
   const educationInfo = useSelector(
-    (state: RootState) => state.education.educationInfo
+    (state: RootState) => state.resume.educationInfo
   );
+
+  // console.log(educationInfo, "@educationInfo");
 
   const handleEducationInfoChange = (
     event: React.ChangeEvent<{ name?: string; value: unknown }>,
@@ -62,6 +61,7 @@ const Education: React.FC<EducationProps> = () => {
   };
 
   const handleDeleteEducation = (id: number) => {
+    // console.log(id, "@id");
     dispatch(removeEducationEntry(id));
   };
 
@@ -115,7 +115,7 @@ const Education: React.FC<EducationProps> = () => {
                 >
                   <BlurOnIcon />
                   <Typography sx={{ fontWeight: "light" }}>
-                    Institute Name
+                  {edu.institute ? edu.institute : 'Institute Name'}  
                   </Typography>
                   <DeleteOutlineOutlinedIcon
                     onClick={() => handleDeleteEducation(edu.id)}

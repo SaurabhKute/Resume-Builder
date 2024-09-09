@@ -5,7 +5,7 @@ import BlurOnOutlinedIcon from "@mui/icons-material/BlurOnOutlined";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../app/store";
 import { useDispatch } from "react-redux";
-import { addAwardField, removeAwardField, updateAwardField } from "../../../features/Form/slices/additionalSlice";
+import { addAwardField, removeAwardField, updateAwardField } from "../../../features/Form/slices/formSlice";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 
 
@@ -19,10 +19,13 @@ const Additional: React.FC<AdditionalProps> = () => {
 
   const dispatch = useDispatch();
 
-  const inputAwards = useSelector((state: RootState) => state.additional.awards);
+  const inputAwards = useSelector((state: RootState) => state.resume.additionalInfo);
+
+  // console.log(inputAwards, "@inp ")
 
 
   const handleAddNewAward = () => {
+    // console.log("add new honors called");
     dispatch(addAwardField());
   };
 
@@ -67,7 +70,7 @@ const Additional: React.FC<AdditionalProps> = () => {
           <Typography sx={{ fontSize: "14px", fontWeight: "bold" }}>
             Honors & Awards
           </Typography>
-          {inputAwards.map((award, index) => (
+          {inputAwards?.map((award, index) => (
             <Grid
               key={index}
               container
@@ -85,10 +88,11 @@ const Additional: React.FC<AdditionalProps> = () => {
                   variant="outlined"
                   size="small"
                   fullWidth
-                  value={award.award}
-                  onChange={(event: any) =>
-                    handleAwardInputChange(index, event)
-                  }
+                  value={award?.award}
+                  onChange={(event: any) => handleAwardInputChange(index, event)}
+                  InputLabelProps={{
+                    shrink: !!award, // Keeps the label in the floated position if there is a value
+                  }}
                 />
               </Grid>
               <Grid item xs={1} mt={2}>

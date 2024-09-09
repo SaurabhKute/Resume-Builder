@@ -4,8 +4,8 @@ interface ExperienceInfo {
   id: number;
   employer: string;
   jobTitle: string;
-  startMonYear: string;
-  endMonYear: string;
+  startMonthYear: string;
+  endMonthYear: string;
   location: string;
   description: string
 }

@@ -28,11 +28,11 @@ export default function Router() {
       ),
       children: [
         // Public Routes
-        { path: '/login', element: <PublicRoute element={<Auth />} redirectTo="/dashboard" /> },
+        { path: '/login', element: <PublicRoute element={<Auth />} redirectTo="/" /> },
         { path: '/register', element: <PublicRoute element={<Auth />} redirectTo="/login" /> },
 
         // Private Routes
-        { path: '/dashboard', element: <ProtectedRoute element={<Dashboard />} redirectTo="/login" /> },
+        { path: '/', element: <ProtectedRoute element={<Dashboard />} redirectTo="/login" /> },
         { path: '/builder', element: <ProtectedRoute element={<Builder />} redirectTo="/login" /> },
         { path: '/resume', element: <ProtectedRoute element={<ChooseTemplate />} redirectTo="/login" /> },
 
