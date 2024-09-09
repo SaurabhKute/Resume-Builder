@@ -24,6 +24,10 @@
     overflow: auto;
     margin-top: 80px;
   }
+  .divider {
+    margin-bottom: 10px;
+    margin-top: 10px;
+  }
   
 
 
@@ -44,6 +48,7 @@
 .header .jobTitle{
     text-align: center;
     margin-bottom:2px;
+    color: #555;
 }
 
 .contact-info {
@@ -79,24 +84,20 @@
 
 }
 
-.section {
-    margin-bottom: 20px;
-}
-
-.section h2 {
-    font-size: 18px;
-    font-weight: bold;
-    margin-bottom: 10px;
-    color: #333;
-}
 
 .education-section .location {
     float: right;
     font-size: 14px;
-    color: #555;
+    color: #555;    
+
+}
+.education-section  h2 {
+    margin-top: 10px;
+    margin-bottom: 6px;
 }
 .education-section .institute {
     font-weight: bold;
+    margin-top: 8px;
 
 }
 
@@ -116,8 +117,13 @@
 }
 
 .education-section .score p{
-    margin-top:-8px;
+    margin-top:6px;
     font-size: 14px;
+}
+
+.experience-section h2 {
+    margin-top: 10px;
+    margin-bottom: 6px;
 }
 
 .experience-section  .location{
@@ -133,14 +139,36 @@
 }
 
 .experience-section .company {
-
     font-weight: bold;
-
 }
 
 .experience-section .designation {
     font-weight: bold;
 
+}
+.experience-section .description {
+    margin-top: 4px;
+    margin-bottom: 4px;
+    margin-left: 14px;
+}
+.project-section {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.project-section .project {
+    margin-top: 2px;
+    margin-bottom: 2px;
+    font-weight: bold;
+}
+.project-section h2 {
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+
+.project-section .description {
+    margin-top: 2px;
+    margin-bottom: 2px;
+    margin-left: 14px;
 }
 
 .section p {
@@ -151,6 +179,18 @@
 
 .skill-group {
     margin-top: 8px;
+}
+
+
+.certification-section h2 {
+margin-top: 8px;
+margin-bottom:8px;
+}
+
+.certification-section .description {
+    margin-top: 4px;
+    margin-bottom: 4px;
+    margin-left: 14px;
 }
 
 .skill-group h3 {   
@@ -169,6 +209,12 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+.honors-section .description {
+    margin-top: 4px;    
+    margin-left: 14px;
+
 }
 
 

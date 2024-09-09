@@ -1,5 +1,5 @@
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
-import { Box, Button, Fade, Menu, MenuItem, Popover, Typography } from "@mui/material";
+import { Box, Button, Fade, Menu, MenuItem, Typography } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
 import EditNoteOutlinedIcon from '@mui/icons-material/EditNoteOutlined';
 import { useEffect, useState } from "react";
@@ -10,27 +10,53 @@ import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import ConfirmationModal from "../ConfirmationPopover/ConfirmationPopover";
 import toast, { Toaster } from 'react-hot-toast';
+import { useSelector, useDispatch } from "react-redux";
+import { RootState } from "../../../app/store";
+import SaveAsOutlinedIcon from '@mui/icons-material/SaveAsOutlined';
+import timeAgo from "../../../utils/format";
+import { getResumeById, updateResume } from "../../../features/Form/actions/formAction";
 import "./style.css";
 
 export default function Header() {
   const navigate = useNavigate();
   const location = useLocation();
+  const dispatch = useDispatch<any>();
 
-  const [path, setPath] = useState<any>('');
+
+  const personalInfo = useSelector((state: RootState) => state.resume.personalInfo || {});
+  const socialLinks = useSelector((state: RootState) => state.resume.socialLinks || []);
+  const progLanguages = useSelector((state: RootState) => state.resume.progLanguages || []);
+  const frameWorks = useSelector((state: RootState) => state.resume.frameworks || []);
+  const tools = useSelector((state: RootState) => state.resume.tools || []);
+  const databases = useSelector((state: RootState) => state.resume.databases || []);
+  const additionalInfo = useSelector((state: RootState) => state.resume.additionalInfo || []);
+  const certificationInfo = useSelector((state: RootState) => state.resume.certificationInfo || []);
+  const educationInfo = useSelector((state: RootState) => state.resume.educationInfo || []);
+  const experienceInfo = useSelector((state: RootState) => state.resume.experienceInfo || []);
+  const projectInfo = useSelector((state: RootState) => state.resume.projectInfo || []);
+
+  // console.log(progLanguages, "@progLanguages");
+
+  // const contactInfo = [personalInfo.email, personalInfo.phone, personalInfo.address].filter(Boolean);
+
+  const user = useSelector((state: RootState) => state.auth.user);
+  const resume = useSelector((state: RootState) => state.resume.resumeResponse);
+
+  const [path, setPath] = useState<string>('');
   const [confirmationOpen, setConfirmationOpen] = useState(false);
-  
+  const [newResumeTitle, setNewResumeTitle] = useState<string>('');
 
   useEffect(() => {
     setPath(location?.pathname);
+  }, [location]);
 
-  }, [location])
-
-
+  useEffect(() => {
+    setNewResumeTitle(resume?.resumeTitle)
+  }, [resume]);
 
   const handleEditClick = () => {
-    setConfirmationOpen(true); 
+    setConfirmationOpen(true);
   };
-
 
   const handleCreateNewClick = () => {
     navigate("/resume");
@@ -41,21 +67,26 @@ export default function Header() {
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
+
   const handleDownloadClick = async () => {
     setAnchorEl(null);
     await generatePDF();
   };
 
   const handleCloseEdit = () => {
-    // setAnchorElEdit(null);
     setConfirmationOpen(false);
   };
 
-   const handleConfirmEdit = () => {
-    const fakeApiCall = () => new Promise((resolve) => setTimeout(resolve, 2000));
+  const handleConfirmEdit = (editText: string) => {
+
+    // console.log(editText, "@123");
+    if (editText.trim() === '') {
+      toast.error('Resume title cannot be empty');
+      return;
+    }
 
     toast.promise(
-      fakeApiCall(),
+      dispatch(updateResume({ resumeTitle: editText, resumeId: resume._id })),
       {
         loading: 'Updating...',
         success: 'Updated successfully!',
@@ -63,36 +94,66 @@ export default function Header() {
       }
     ).then(() => {
       setConfirmationOpen(false);
+      dispatch(getResumeById(resume?._id));
+    }).catch((error) => {
+      console.error('Error during update:', error);
     });
+
     setConfirmationOpen(false);
   };
 
-  
+  const handleEditTextChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setNewResumeTitle(event.target.value);
+  };
 
-  const generatePDF = async () => {
-    const resume: any = document.querySelector(".main");
-    if (!resume) return;
 
-    // Temporarily remove overflow to capture all content
-    const originalStyle = resume.getAttribute('style');
-    resume.style.overflow = 'visible';
-
-    // Create a canvas with the entire content
-    const canvas = await html2canvas(resume, {
-      scale: 2, // Higher scale improves quality
-      scrollY: -window.scrollY, // Include content that is currently out of view
-      useCORS: true, // Allows for external styles and images
+  const handleSaveDraftClick = () => {
+    const updatedResumeData = {
+      personalInfo : {...personalInfo, links:socialLinks},
+      skillsetInfo: {progLanguages:[...progLanguages],tools:[...tools],frameworks:[...frameWorks],databases:[...databases]},
+      additionalInfo, 
+      certificationInfo,
+      educationInfo,
+      experienceInfo,
+      projectInfo,
+    };
+    // console.log(updatedResumeData, "@updatedResumeData");
+    toast.promise(
+      dispatch(updateResume({ ...updatedResumeData, resumeId: resume._id })),
+      {
+        loading: 'Updating...',
+        success: 'Updated successfully!',
+        error: 'Error occurred while updating.',
+      }
+    ).then(() => {
+      dispatch(getResumeById(resume?._id));
+    }).catch((error) => {
+      console.error('Error during update:', error);
     });
 
-    // Restore the original style
-    resume.setAttribute('style', originalStyle || '');
+  }
+
+
+  const generatePDF = async () => {
+    const resumeElement: any = document.querySelector(".main");
+    if (!resumeElement) return;
+
+    const originalStyle = resumeElement.getAttribute('style');
+    resumeElement.style.overflow = 'visible';
+
+    const canvas = await html2canvas(resumeElement, {
+      scale: 2,
+      scrollY: -window.scrollY,
+      useCORS: true,
+    });
+
+    resumeElement.setAttribute('style', originalStyle || '');
 
     const imgData = canvas.toDataURL("image/png");
     const pdf = new jsPDF("p", "mm", "a4");
     const pdfWidth = pdf.internal.pageSize.getWidth();
     const pdfHeight = pdf.internal.pageSize.getHeight();
 
-    // Calculate scaling to fit the entire content on one page
     const imgWidth = canvas.width;
     const imgHeight = canvas.height;
     const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight);
@@ -103,147 +164,112 @@ export default function Header() {
     pdf.save("resume.pdf");
   };
 
-
   return (
     <>
-      {path == "/builder" ? (
-        <>
-          <div className="header-main">
-            <BreadCrumb />
-
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "row",
-                alignItems: "center",
-              }}
-            >
-              <Typography
-                variant="h4"
-                sx={{ mt: 2, fontWeight: "light", fontSize: "28px" }}
-               
-              >
-                Saurabh's Resume
-              </Typography>
-              {/* <Typography sx={{ ml: 1, mt: 1 }}> */}
-              <div onClick={handleEditClick}>
-                <EditNoteOutlinedIcon sx={{ cursor: "pointer", fontSize: "large" }}  />
-              </div>
-              {/* </Typography> */}
-              <Typography sx={{ ml: 1, mt: 0.7 }} >
-                <UpdateOutlinedIcon
-                  sx={{
-                    cursor: "pointer",
-                    fontSize: "medium",
-                    color: "#20d761",
-                  }}
-                />
-              </Typography>
-              
-              <Typography
+      {path === "/builder" ? (
+        <div className="header-main">
+          <BreadCrumb />
+          <Box sx={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
+            <Typography variant="h4" sx={{ mt: 2, fontWeight: "light", fontSize: "28px" }}>
+              {resume?.resumeTitle}
+            </Typography>
+            <div onClick={handleEditClick}>
+              <EditNoteOutlinedIcon sx={{ cursor: "pointer", fontSize: "large" }} />
+            </div>
+            <Typography sx={{ ml: 1, mt: 0.7 }}>
+              <UpdateOutlinedIcon sx={{ cursor: "pointer", fontSize: "medium", color: "#20d761" }} />
+            </Typography>
+            <Typography sx={{ ml: 1, mt: 0, fontSize: "12px", color: "#20d761", fontWeight: "light" }}>
+              {`Updated ${timeAgo(resume?.updatedAt)}`}
+            </Typography>
+            <div style={{ marginLeft: 'auto' }}>
+              <Button
+                id="fade-button"
+                aria-controls={open ? 'fade-menu' : undefined}
+                aria-haspopup="true"
+                aria-expanded={open ? 'true' : undefined}
+                variant="contained"
+                className="createNew-btn"
+                onClick={handleSaveDraftClick}
                 sx={{
-                  ml: 1,
-                  mt: 0,
-                  fontSize: "12px",
-                  color: "#20d761",
+                  marginLeft: "auto",
+                  backgroundColor: '#1a75ff',
+                  textTransform: "none",
                   fontWeight: "light",
+                  marginRight: "16px",
+                  ":hover": {
+                    bgcolor: "#1a75ff",
+                    transition: "linear",
+                  },
                 }}
-              >
-                Updated 32 min ago
-              </Typography>
+                endIcon={<SaveAsOutlinedIcon style={{ fontSize: "14px", fontWeight: "lighter" }} />}
 
-              <div style={{ marginLeft: 'auto' }}>
-                <Button
-                  id="fade-button"
-                  aria-controls={open ? 'fade-menu' : undefined}
-                  aria-haspopup="true"
-                  aria-expanded={open ? 'true' : undefined}
-                  variant="contained"
-                  className="createNew-btn"
-                  sx={{
-                    marginLeft: "auto",
-                    backgroundColor: "#068932",
-                    textTransform: "none",
-                    fontWeight: "light",
-                    marginRight: "16px",
-                    ":hover": {
-                      bgcolor: "#068932",
-                      transition: "linear",
-                    },
-                  }}
-                  onClick={handleClick}
-                  endIcon={
-                    <ArrowDownwardOutlinedIcon
-                      style={{ fontSize: "14px", fontWeight: "lighter" }}
-                    />
-                  }
-                >
-                  Download
-                </Button>
-                <Menu
-                  id="fade-menu"
-                  MenuListProps={{
-                    'aria-labelledby': 'fade-button',
-                  }}
-                  anchorEl={anchorEl}
-                  open={open}
-                  // onClose={handleClose}
-                  TransitionComponent={Fade}
-                  sx={{right:'100px', display:'flex', marginRight:'700px'}}
-                >
-                  <MenuItem onClick={handleDownloadClick} sx={{fontWeight:'lighter'}}>Download PDF</MenuItem>
-                </Menu>
-              </div>
-              <Typography sx={{ marginRight: "10px" }}></Typography>
-            </Box>
-          </div>
-        </>
+              >
+                Save Draft
+              </Button>
+              <Button
+                id="fade-button"
+                aria-controls={open ? 'fade-menu' : undefined}
+                aria-haspopup="true"
+                aria-expanded={open ? 'true' : undefined}
+                variant="contained"
+                className="createNew-btn"
+                sx={{
+                  marginLeft: "auto",
+                  backgroundColor: "#068932",
+                  textTransform: "none",
+                  fontWeight: "light",
+                  marginRight: "16px",
+                  ":hover": {
+                    bgcolor: "#068932",
+                    transition: "linear",
+                  },
+                }}
+                onClick={handleClick}
+                endIcon={<ArrowDownwardOutlinedIcon style={{ fontSize: "14px", fontWeight: "lighter" }} />}
+              >
+                Download
+              </Button>
+              <Menu
+                id="fade-menu"
+                MenuListProps={{ 'aria-labelledby': 'fade-button' }}
+                anchorEl={anchorEl}
+                open={open}
+                TransitionComponent={Fade}
+                sx={{ right: '100px', display: 'flex', marginRight: '700px' }}
+              >
+                <MenuItem onClick={handleDownloadClick} sx={{ fontWeight: 'lighter' }}>Download PDF</MenuItem>
+              </Menu>
+            </div>
+          </Box>
+        </div>
       ) : (
-        <>
-          <div
-            className="header-main"
-            style={{ display: "flex", flexDirection: "row" }}
+        <div className="header-main" style={{ display: "flex", flexDirection: "row" }}>
+          <Typography sx={{ fontWeight: "light", fontSize: "18px", color: "#738f93", ml: "50px" }}>
+            Welcome
+          </Typography>
+          <Typography sx={{ fontWeight: "small", fontSize: "18px", color: "#738f93", ml: "6px" }}>
+            {user?.firstName}
+          </Typography>
+          <Button
+            className="createNew-btn"
+            sx={{
+              marginLeft: "auto",
+              backgroundColor: "#068932",
+              textTransform: "none",
+              marginRight: "16px",
+              ":hover": {
+                bgcolor: "#068932",
+                transition: "linear",
+              },
+            }}
+            variant="contained"
+            startIcon={<AddCircleOutlineIcon />}
+            onClick={handleCreateNewClick}
           >
-            <Typography
-              sx={{
-                fontWeight: "light",
-                fontSize: "18px",
-                color: "#738f93",
-                ml: "50px",
-              }}
-            >
-              Welcome
-            </Typography>
-            <Typography
-              sx={{
-                fontWeight: "small",
-                fontSize: "18px",
-                color: "#738f93",
-                ml: "6px",
-              }}
-            >
-              Saurabh!
-            </Typography>
-            <Button
-              className="createNew-btn"
-              sx={{
-                marginLeft: "auto",
-                backgroundColor: "#068932",
-                textTransform: "none",
-                marginRight: "16px",
-                ":hover": {
-                  bgcolor: "#068932",
-                  transition: "linear",
-                },
-              }}
-              variant="contained"
-              startIcon={<AddCircleOutlineIcon />}
-              onClick={handleCreateNewClick}
-            >
-              Create New
-            </Button>
-          </div>
-        </>
+            Create New
+          </Button>
+        </div>
       )}
       <ConfirmationModal
         open={confirmationOpen}
@@ -251,9 +277,10 @@ export default function Header() {
         onConfirm={handleConfirmEdit}
         title="Confirm Edit"
         message="Provide a text to change resume's name?"
-        editText="Saurabh's Resume"
-        buttonText1 = "Cancel"
-        buttonText2 = "Save"
+        editText={newResumeTitle}
+        onEditTextChange={handleEditTextChange}
+        buttonText1="Cancel"
+        buttonText2="Save"
         buttonColor2="success"
       />
       <Toaster />

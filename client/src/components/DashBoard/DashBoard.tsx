@@ -3,9 +3,25 @@ import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { useNavigate } from "react-router-dom";
 import BuiltResume from "../BuiltResume/BuiltResume";
 import "./style.css";
+import { useDispatch } from "react-redux";
+import { RootState } from "../../app/store";
+import { useSelector } from "react-redux";
+import { useEffect } from "react";
+import { getAllResumeById } from "../../features/Form/actions/formAction";
 
 export default function Dashboard() {
   const navigate = useNavigate();
+  const dispatch = useDispatch<any>();
+
+  const user = useSelector((state: RootState) => state.auth.user);
+  const allResumes = useSelector((state: RootState) => state.resume.allResumes);
+  // console.log(allResumes, "@@");
+
+
+  useEffect(() => {
+    dispatch(getAllResumeById(user?.userId));
+  }, [user]);
+
 
   const handleCreateNewClick = () => {
     navigate('/resume');
@@ -14,15 +30,19 @@ export default function Dashboard() {
   return (
     <>
       <div className="dashboard-main">
-        {/* <BuiltResume /> */}
-        {/* <BuiltResume />
-        <BuiltResume />
-        <BuiltResume /> */}
-        {/* <BuiltResume /> */}
-        
-        <div className="card-content" style={{ transition: "transform 0.8s ease",
-         
-         }}>
+        {allResumes && allResumes.length > 0 ? (
+          allResumes.map((resume, index) => (
+            <BuiltResume key={index} resumeData={resume} index={index + 1} />
+          ))
+        ) : (
+          ''
+        )}
+
+
+        <div className="card-content" style={{
+          transition: "transform 0.8s ease",
+
+        }}>
           <div className="sub-card-content" onClick={handleCreateNewClick}>
             <Box
               sx={{

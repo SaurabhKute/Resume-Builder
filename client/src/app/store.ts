@@ -1,26 +1,28 @@
 import { configureStore } from '@reduxjs/toolkit';
 import authReducer from '../features/Auth/slices/authSlice';
-import { 
-    personalInfoReducer, 
-    certificateReducer, 
-    skillsetReducer, 
-    additionalReducer, 
-    educationReducer, 
-    experienceReducer, 
-    projectReducer 
-} from '../features/Form/slices';
+import resumeReducer from '../features/Form/slices/formSlice';
+// import { 
+//     personalInfoReducer, 
+//     certificateReducer, 
+//     skillsetReducer, 
+//     additionalReducer, 
+//     educationReducer, 
+//     experienceReducer, 
+//     projectReducer 
+// } from '../features/Form/slices';
 
 
 const store = configureStore({
   reducer: {
     auth: authReducer,
-    personalInfo : personalInfoReducer,
-    certificate: certificateReducer,
-    skillset: skillsetReducer,
-    additional : additionalReducer,
-    education: educationReducer,
-    experience : experienceReducer,
-    project: projectReducer,
+    resume: resumeReducer, 
+    // personalInfo : personalInfoReducer,
+    // certificate: certificateReducer,
+    // skillset: skillsetReducer,
+    // additional : additionalReducer,
+    // education: educationReducer,
+    // experience : experienceReducer,
+    // project: projectReducer,
 
   },
 });

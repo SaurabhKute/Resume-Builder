@@ -1,22 +1,43 @@
- import { Dialog, DialogActions, Button, Typography, TextField, Box } from '@mui/material';
-import { useState } from 'react';
+import { Dialog, DialogActions, Button, Typography, TextField, Box } from '@mui/material';
+import { useState, useEffect } from 'react';
 
 interface ConfirmationModalProps {
   open: boolean;
-  onClose():void;
-  onConfirm():void;
-  title:string;
-  message:string;
-  editText?:string;
-  buttonText1:string;
-  buttonText2:string;
-  buttonColor2:string;
+  onClose(): void;
+  onConfirm(editText: string): void;
+  title: string;
+  message: string;
+  editText?: string;
+  buttonText1: string;
+  buttonText2: string;
+  buttonColor2: string;
+  onEditTextChange?(event: React.ChangeEvent<HTMLInputElement>): void;
 }
 
+const ConfirmationModal = ({
+  open,
+  onClose,
+  onConfirm,
+  title,
+  message,
+  editText,
+  buttonText1,
+  buttonText2,
+  buttonColor2,
+  onEditTextChange,
+}: ConfirmationModalProps) => {
+  const [editName, setEditName] = useState<string>('');
 
-const ConfirmationModal = ({ open, onClose, onConfirm, title, message, editText,buttonText1,buttonText2,buttonColor2 }:ConfirmationModalProps) => {
+  // Update the state when editText or open changes
+  useEffect(() => {
+    if (open && editText !== undefined) {
+      setEditName(editText);
+    }
+  }, [open, editText]);
 
-  const [editName, setEditName] = useState(editText || '');
+  const handleConfirm = () => {
+    onConfirm(editName); // Pass the current value of editName
+  };
 
   return (
     <Dialog
@@ -33,40 +54,54 @@ const ConfirmationModal = ({ open, onClose, onConfirm, title, message, editText,
           maxHeight: '70vh', // Maximum height
           maxWidth: '80vw', // Maximum width
           borderRadius: '12px',
-          boxSizing: 'border-box'
+          boxSizing: 'border-box',
         },
       }}
     >
-      {/* <DialogTitle id="confirmation-dialog-title" sx={{marginLeft:'14px',marginTop:'10px', fontSize:'20px'}}>{title} </DialogTitle> */}
-      <Typography sx={{ marginLeft: '40px', marginTop: '40px', fontSize: '20px' }}>{title}</Typography>
-      <Typography sx={{ marginLeft: '40px', marginTop: '4px', fontSize: '15px', fontWeight: 'light' }}>{message}</Typography>
-      {editText && (
+      <Typography sx={{ marginLeft: '40px', marginTop: '40px', fontSize: '20px' }}>
+        {title}
+      </Typography>
+      <Typography sx={{ marginLeft: '40px', marginTop: '4px', fontSize: '15px', fontWeight: 'light' }}>
+        {message}
+      </Typography>
+      {editText !== undefined && (
         <Box
           sx={{
             width: 450,
             maxWidth: '100%',
             m: 2,
             marginLeft: '40px',
-            marginTop:'10px'
-
+            marginTop: '10px',
           }}
         >
-          <TextField fullWidth value={editName}
+          <TextField
+            fullWidth
+            value={editName}
             onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
               setEditName(event.target.value);
+              if (onEditTextChange) {
+                onEditTextChange(event);
+              }
             }}
           />
         </Box>
       )}
-
-      <DialogActions sx={{margin:'20px' , marginTop:'40px'}}>
-        <Button onClick={onClose} color='inherit' variant="outlined" sx={{ fontSize: '12px', }}>
-        {buttonText1}
+      <DialogActions sx={{ margin: '20px', marginTop: '40px' }}>
+        <Button
+          onClick={onClose}
+          color="inherit"
+          variant="outlined"
+          sx={{ fontSize: '12px' }}
+        >
+          {buttonText1}
         </Button>
-        <Button onClick={onConfirm}
-        
-        color={buttonColor2 == 'success' ? 'success': 'error'}
-        variant="contained" sx={{ fontSize: '12px', margin: '10px', }}>
+        <Button
+          onClick={handleConfirm}
+          color={buttonColor2 === 'success' ? 'success' : 'error'}
+          variant="contained"
+          sx={{ fontSize: '12px', margin: '10px' }}
+         
+        >
           {buttonText2}
         </Button>
       </DialogActions>

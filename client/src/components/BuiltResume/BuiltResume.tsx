@@ -9,6 +9,22 @@ import ConfirmationModal from "../../common/components/ConfirmationPopover/Confi
 import { useState } from "react";
 import toast, { Toaster } from 'react-hot-toast';
 import { useNavigate } from "react-router-dom";
+import { deleteResume, getAllResumeById, getResumeById } from "../../features/Form/actions/formAction";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import { RootState } from "../../app/store";
+import { clearState } from "../../features/Form/slices/formSlice";
+
+interface BuiltResumeProps {
+  resumeData: {
+    _id: string;
+    resumeTitle: string;
+    templateId: number;
+  };
+  onEdit?: (resumeId: string) => void;
+  onDelete?: (resumeId: string) => void;
+  index: number;
+}
 
 
 const BootstrapTooltip = styled(({ className, ...props }: TooltipProps) => (
@@ -22,8 +38,15 @@ const BootstrapTooltip = styled(({ className, ...props }: TooltipProps) => (
   },
 }));
 
-const BuiltResume = () => {
-const navigate = useNavigate(); 
+
+
+const BuiltResume: React.FC<BuiltResumeProps> = ({ resumeData, index }) => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch<any>();
+
+  const user = useSelector((state: RootState) => state.auth.user);
+
+
   const [confirmationOpen, setConfirmationOpen] = useState(false);
 
 
@@ -31,19 +54,27 @@ const navigate = useNavigate();
     setConfirmationOpen(true);
   }
 
-  const handleEdit = () =>{
-    navigate('/builder/');
-  }
+  const handleEdit = () => {
+    dispatch(getResumeById(resumeData._id))
+      .unwrap()
+      .then(() => {
+        navigate('/builder');
+      })
+      .catch((error) => {
+        console.error('Failed to load resume:', error);
+        toast.error(error.message);
+      });
+  };
+
 
   const handleCloseDelete = () => {
     setConfirmationOpen(false);
   }
 
   const handleConfirmDelete = () => {
-    const fakeApiCall = () => new Promise((resolve) => setTimeout(resolve, 2000));
-
+    // Replace fakeApiCall with the actual API call
     toast.promise(
-      fakeApiCall(),
+      dispatch(deleteResume(resumeData._id)), // Call the delete API with the resume ID
       {
         loading: 'Deleting...',
         success: 'Deleted successfully!',
@@ -51,10 +82,16 @@ const navigate = useNavigate();
       }
     ).then(() => {
       setConfirmationOpen(false);
-      // Add your edit logic here
+      dispatch(clearState());
+      dispatch(getAllResumeById(user?.userId));
+      // Add your edit logic here if necessary
+    }).catch((error) => {
+      // Handle any additional error logic here if necessary
+      console.error('Error during deletion:', error);
     });
+
     setConfirmationOpen(false);
-    // Add your edit logic here
+    // Add your edit logic here if necessary
   }
 
   return (
@@ -77,7 +114,7 @@ const navigate = useNavigate();
           }}
         >
           <span style={{ fontFamily: "cursive", color: "gray" }}>
-            Saurabh's Resume
+            {resumeData.resumeTitle}
           </span>
           <span
             style={{
@@ -86,7 +123,7 @@ const navigate = useNavigate();
               fontSize: "25px",
             }}
           >
-            1
+            {index}
           </span>
         </div>
         <div className="hover-container">

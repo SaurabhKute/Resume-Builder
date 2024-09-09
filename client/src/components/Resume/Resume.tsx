@@ -4,19 +4,22 @@ import { useSelector } from "react-redux";
 import "./Resume.css";
 
 export default function Resume() {
-  const personalInfo = useSelector((state: RootState) => state.personalInfo.personalInfo);
-  const socialLinks = useSelector((state: RootState) => state.personalInfo.socialLinks);
-  const progLanguages = useSelector((state: RootState) => state.skillset.progLanguages)
-  const frameWorks = useSelector((state: RootState) => state.skillset.frameworks)
-  const tools = useSelector((state: RootState) => state.skillset.tools)
-  const databases = useSelector((state: RootState) => state.skillset.databases)
-  const honorsAndAwards = useSelector((state: RootState) => state.additional.awards)
-  const certificates = useSelector((state: RootState) => state.certificate.certificate)
-  const education = useSelector((state: RootState) => state.education.educationInfo);
-  const experience = useSelector((state: RootState) => state.experience.experienceInfo);
-  const project = useSelector((state: RootState) => state.project.projectInfo);
+
+  const personalInfo = useSelector((state: RootState) => state.resume.personalInfo || {});
+  const socialLinks = useSelector((state: RootState) => state.resume.socialLinks || []);
+  const progLanguages = useSelector((state: RootState) => state.resume.progLanguages || []);
+  const frameWorks = useSelector((state: RootState) => state.resume.frameworks || []);
+  const tools = useSelector((state: RootState) => state.resume.tools || []);
+  const databases = useSelector((state: RootState) => state.resume.databases || []);
+  const additionalInfo = useSelector((state: RootState) => state.resume.additionalInfo || []);
+  const certificationInfo = useSelector((state: RootState) => state.resume.certificationInfo || []);
+  const educationInfo = useSelector((state: RootState) => state.resume.educationInfo || []);
+  const experience = useSelector((state: RootState) => state.resume.experienceInfo || []);
+  const project = useSelector((state: RootState) => state.resume.projectInfo || []);
 
   const contactInfo = [personalInfo.email, personalInfo.phone, personalInfo.address].filter(Boolean);
+
+  console.log(progLanguages,frameWorks,tools,databases,'!@#');
 
   return (
     <>
@@ -29,36 +32,36 @@ export default function Resume() {
           <div style={{ minWidth: '680px' }} >
             <div className="header">
               <h1 className="name">
-                {personalInfo.firstName} {personalInfo.lastName}
+                {personalInfo?.firstName} {personalInfo?.lastName}
               </h1>
-              <span className="jobTitle">{personalInfo.jobTitle}</span>
+              <span className="jobTitle">{personalInfo?.jobTitle}</span>
               <p className="contact-info">
                 {contactInfo.join(" | ")}
               </p>
               <div className="social-links">
                 {socialLinks?.map((linkObj, index) => (
                   <span key={index}>
-                    <a href={linkObj.link} target="_blank" rel="noopener noreferrer" style={{ color: 'black', fontWeight: 'normal' }}>{linkObj.linkType}</a>
-                    {index < socialLinks.length - 1 && " | "}
+                    <a href={linkObj.link} target="_blank" rel="noopener noreferrer" style={{ color: 'black', fontWeight: 'normal' }}>{linkObj?.linkType}</a>
+                    {index < socialLinks?.length - 1 && " | "}
                   </span>
                 ))}
               </div>
             </div>
-            {education.length > 0 && <hr className="divider" />}
+            {educationInfo.length > 0 && <hr className="divider" />}
             <div className="education-section">
-              {education.length > 0 && <h2>Education</h2>}
-              {education.map((edu) => (
+              {educationInfo?.length > 0 && <h2>Education</h2>}
+              {educationInfo?.map((edu) => (
                 <>
                   <div className="location" key={edu.id}>{edu.location}</div>
                   <div className="institute">{edu.institute}</div>
-                 
+
                   <div className="date">{edu.startMonthYear ? `${edu.startMonthYear} - ${edu.gradMonthYear}` : ''}</div>
                   <div className="content">
-                  
+
                     <p>{edu.degreeType ? `${edu.degreeType} - ${edu.fieldOfStudy}` : ''}</p>
                   </div>
                   <div className="score">
-                    
+
                     <p>{edu.score ? `${edu.score} - ${edu.marks}` : ''}</p>
                   </div>
                 </>
@@ -74,7 +77,7 @@ export default function Resume() {
                 <>
                   <div className="date" key={exp.id}>
                     {exp.location ? <span className="m-3" style={{ margin: '4px' }}>|</span> : ''}
-                    {`${exp.startMonYear} - ${exp.endMonYear}`}</div>
+                    {`${exp.startMonthYear} - ${exp.endMonthYear}`}</div>
                   <div className="location">{exp.location}</div>
 
                   <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -95,7 +98,7 @@ export default function Resume() {
               ))}
 
 
-              
+
             </div>
 
             <div className="progLanguages-section">
@@ -104,37 +107,37 @@ export default function Resume() {
                   <hr className="divider" />
                   <h2>Skills</h2>
                   <div className="skill-group">
-                    {progLanguages.length > 0 && <h3>Programming Languages : </h3>}
-                    {progLanguages?.map((lang, index) => (
+                    {progLanguages?.length > 0 && <h3>Programming Languages : </h3>}
+                    {progLanguages?.map((lang: any, index) => (
                       <span key={index}>
-                        {lang.language}
+                        {lang}
                         {index < progLanguages.length - 1 && ", "}
                       </span>
                     ))}
                   </div>
                   <div className="skill-group">
                     {frameWorks.length > 0 && <h3>Frameworks / Libraries : </h3>}
-                    {frameWorks?.map((framework, index) => (
+                    {frameWorks?.map((framework: any, index) => (
                       <span key={index}>
-                        {framework.framework}
+                        {framework}
                         {index < frameWorks.length - 1 && ", "}
                       </span>
                     ))}
                   </div>
                   <div className="skill-group">
                     {tools.length > 0 && <h3>Tools / Platforms : </h3>}
-                    {tools?.map((tool, index) => (
+                    {tools?.map((tool: any, index) => (
                       <span key={index}>
-                        {tool.tool}
+                        {tool}
                         {index < tools.length - 1 && ", "}
                       </span>
                     ))}
                   </div>
                   <div className="skill-group">
                     {databases.length > 0 && <h3>Databases : </h3>}
-                    {databases?.map((database, index) => (
+                    {databases?.map((database: any, index) => (
                       <span key={index}>
-                        {database.database}
+                        {database}
                         {index < databases.length - 1 && ", "}
                       </span>
                     ))}
@@ -149,13 +152,13 @@ export default function Resume() {
               {project.length > 0 && <h2>Projects / Open-Source</h2>}
               {project.map((project) => (
                 <>
-                  <div className="" style={{ float: 'right' }}>{project.projectTechnologies}</div>
+                  <div className="" style={{ float: 'right' }}>{project.projectTechnology}</div>
                   <div style={{ display: 'flex', alignItems: 'center' }}>
                     <div className="project">{project.projectName}</div>
 
                     <div className="designation">
                       {project.projectLink ? <span style={{ margin: '6px' }}>|</span> : ''}
-                      <a href={project.projectLink} target="_blank" rel="noopener noreferrer" style={{ color: 'black', fontWeight: 'normal' }}>Link</a>
+                    {project.projectLink ? <a href={project.projectLink} target="_blank" rel="noopener noreferrer" style={{ color: 'black', fontWeight: 'normal' }}>Link</a> : ''}  
                     </div>
 
                   </div>
@@ -172,29 +175,33 @@ export default function Resume() {
 
 
             </div>
-            {certificates.length > 0 &&
+            {certificationInfo.length > 0 &&
               <>
                 <hr className="divider" />
-                <div className="section">
+                <div className="certification-section">
                   <h2>Certifications</h2>
-                  <ul>
-                    {certificates.map((certificate, index) => (
-                      <li key={index}>{certificate.certificate}</li>
-                    ))}
-                  </ul>
+                  <div className="description">
+                    <ul>
+                      {certificationInfo.map((certificate: any, index) => (
+                        <li key={index}>{certificate.certificate}</li>
+                      ))}
+                    </ul>
+                  </div>
                 </div>
               </>
             }
-            {honorsAndAwards.length > 0 &&
+            {additionalInfo.length > 0 &&
               <>
                 <hr className="divider" />
                 <div className="honors-section">
                   <h2>Honors and Awards</h2>
-                  <ul>
-                    {honorsAndAwards.map((award, index) => (
-                      <li key={index}>{award.award}</li>
-                    ))}
-                  </ul>
+                  <div className="description">
+                    <ul>
+                      {additionalInfo.map((award: any, index) => (
+                        <li key={index}>{award.award}</li>
+                      ))}
+                    </ul>
+                  </div>
                 </div>
               </>
             }
