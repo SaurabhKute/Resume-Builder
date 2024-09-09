@@ -53,6 +53,7 @@ const personalInfoSchema = mongoose.Schema({
 }, { _id: false });
 
 const educationInfoSchema = mongoose.Schema({
+  id:{type:Number},
   institute: { type: String, trim: true },
   location: { type: String, trim: true },
   degreeType: { type: String, trim: true },
@@ -64,6 +65,7 @@ const educationInfoSchema = mongoose.Schema({
 }, { _id: false });
 
 const experienceInfoSchema = mongoose.Schema({
+  id:{type:Number},
   employer: { type: String, trim: true },
   jobTitle: { type: String, trim: true },
   startMonthYear: { type: String, trim: true },
@@ -73,13 +75,27 @@ const experienceInfoSchema = mongoose.Schema({
 }, { _id: false });
 
 const skillsetInfoSchema = mongoose.Schema({
-  progLanguages: { type: [String], trim: true },
-  frameworks: { type: [String], trim: true },
-  tools: { type: [String], trim: true },
-  databases: { type: [String], trim: true },
+  progLanguages: { 
+    type: [String], 
+    set: (values) => values.map(value => value.trim())  // Trim each string
+  },
+  frameworks: { 
+    type: [String], 
+    set: (values) => values.map(value => value.trim())  // Trim each string
+  },
+  tools: { 
+    type: [String], 
+    set: (values) => values.map(value => value.trim())  // Trim each string
+  },
+  databases: { 
+    type: [String], 
+    set: (values) => values.map(value => value.trim())  // Trim each string
+  },
 }, { _id: false });
 
+
 const projectInfoSchema = mongoose.Schema({
+  id:{type:Number},
   projectName: { type: String, trim: true },
   projectTechnology: { type: String, trim: true },
   projectLink: { type: String, trim: true },
@@ -88,13 +104,21 @@ const projectInfoSchema = mongoose.Schema({
   description: { type: String, trim: true },
 }, { _id: false });
 
+
+
 const certificationInfoSchema = mongoose.Schema({
-  certificates: { type: [String], trim: true },
+    
+  certificate: { type: String, trim: true },
+
 }, { _id: false });
 
+
 const additionalInfoSchema = mongoose.Schema({
-  awards: { type: [String], trim: true },
+    
+      award: { type: String, trim: true },
+    
 }, { _id: false });
+
 
 // Define main resume schema
 const resumeSchema = mongoose.Schema({
@@ -115,8 +139,8 @@ const resumeSchema = mongoose.Schema({
   experienceInfo: [experienceInfoSchema],
   skillsetInfo: skillsetInfoSchema,
   projectInfo: [projectInfoSchema],
-  certificationInfo: certificationInfoSchema,
-  additionalInfo: additionalInfoSchema,
+  certificationInfo: [certificationInfoSchema],
+  additionalInfo: [additionalInfoSchema],
 }, { timestamps: true });
 
 const Resume = mongoose.model('Resume', resumeSchema);

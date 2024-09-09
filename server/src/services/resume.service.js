@@ -15,7 +15,7 @@ const createResume = async (resumeData) => {
  * @returns {Promise<Resume>}
  */
 const getAllResumeByuserId = async (userId) => {
-  return Resume.find({ userId });
+  return Resume.find({ userId },{_id:1, templateId:1, resumeTitle:1});
 };
 
 
