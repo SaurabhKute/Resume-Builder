@@ -1,107 +1,96 @@
-import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import LayersOutlinedIcon from '@mui/icons-material/LayersOutlined';
-import { DATABASES, FRAMEWORKS, LANGUAGES, TOOLS } from "../../../utils/constants";
+import { DATABASES, FRAMEWORKS, LANGUAGES, TOOLS } from "../../../utils/Constants.js";
 import { Accordion, AccordionDetails, AccordionSummary, Autocomplete, Box, Chip, TextField, Typography } from "@mui/material";
-import { addDatabase, addFramework, addProgLanguage, addTool, removeDatabase, removeFramework, removeProgLanguage, removeTool } from "../../../features/Form/slices/skillSetSlice";
+import { RootState } from "../../../app/store.js" // Import RootState type
+import { addDatabase, addFramework, addProgLanguage, addTool, clearState, removeDatabase, removeFramework, removeProgLanguage, removeTool } from "../../../features/Form/slices/formSlice";
+
 interface SkillsetsProps {
     expanded: boolean;
     onChange: (event: React.SyntheticEvent, isExpanded: boolean) => void;
 }
 
 const Skillsets: React.FC<SkillsetsProps> = () => {
-
     const dispatch = useDispatch();
+
+    // Selecting skillsets from Redux store
+    const progLanguages = useSelector((state: RootState) => state.resume.progLanguages || []);
+    const frameWorks = useSelector((state: RootState) => state.resume.frameworks || []);
+    const tools = useSelector((state: RootState) => state.resume.tools || []);
+    const databases = useSelector((state: RootState) => state.resume.databases || []);
+
+   
 
     // Programming Languages
     const [language, setLanguage] = useState<string | null>(null);
     const [inputLanguage, setInputLanguage] = useState<string>("");
-    const [selectedLanguages, setSelectedLanguages] = useState<string[]>([]);
 
-    // FrameWorks
+    // Frameworks
     const [framework, setFramework] = useState<string | null>(null);
     const [inputFramework, setInputFramework] = useState<string>("");
-    const [selectedFramework, setSelectedFramework] = useState<string[]>([]);
 
     // Tools
-    const [tools, setTools] = useState<string | null>(null);
-    const [inputTools, setInputTools] = useState<string>("");
-    const [selectedTools, setSelectedTools] = useState<string[]>([]);
+    const [tool, setTool] = useState<string | null>(null);
+    const [inputTool, setInputTool] = useState<string>("");
 
     // Databases
     const [database, setDatabase] = useState<string | null>(null);
     const [inputDatabase, setInputDatabase] = useState("");
-    const [selectedDatabases, setSelectedDatabases] = useState<string[]>([]);
 
 
     const handleAddLanguage = (event, newValue) => {
-        if (newValue && !selectedLanguages.includes(newValue)) {
-            setSelectedLanguages([...selectedLanguages, newValue]);
+        if (newValue && !progLanguages.includes(newValue)) {
             dispatch(addProgLanguage({ language: newValue }));
         }
         setLanguage(null);
     };
 
     const handleDeleteLanguage = (languageToDelete: string) => {
-        setSelectedLanguages(
-            selectedLanguages.filter((language) => language !== languageToDelete)
-        );
         dispatch(removeProgLanguage(languageToDelete));
-        setInputLanguage(""); // Clear the autocomplete input
+        setInputLanguage("");
     };
 
     const handleAddFramework = (event, newValue) => {
-        if (newValue && !selectedFramework.includes(newValue)) {
-            setSelectedFramework([...selectedFramework, newValue]);
+        if (newValue && !frameWorks.includes(newValue)) {
             dispatch(addFramework({ framework: newValue }));
         }
         setFramework(null);
     };
 
     const handleDeleteFramework = (frameworkToDelete: string) => {
-        setSelectedFramework(
-            selectedFramework.filter((framework) => framework !== frameworkToDelete)
-        );
         dispatch(removeFramework(frameworkToDelete));
-        setInputFramework(""); // Clear the autocomplete input
+        setInputFramework("");
     };
 
     const handleAddTool = (event, newValue) => {
-        if (newValue && !selectedTools.includes(newValue)) {
-            setSelectedTools([...selectedTools, newValue]);
+        if (newValue && !tools.includes(newValue)) {
             dispatch(addTool({ tool: newValue }));
         }
-        setTools(null);
+        setTool(null);
     };
 
     const handleDeleteTool = (toolToDelete: string) => {
-        setSelectedTools(selectedTools.filter((tool) => tool !== toolToDelete));
         dispatch(removeTool(toolToDelete));
-        setInputTools("");
+        setInputTool("");
     };
 
     const handleAddDatabase = (event, newValue) => {
-        if (newValue && !selectedDatabases.includes(newValue)) {
-            setSelectedDatabases([...selectedDatabases, newValue]);
+        if (newValue && !databases.includes(newValue)) {
             dispatch(addDatabase({ database: newValue }));
         }
         setDatabase(null);
     };
 
     const handleDeleteDatabase = (databaseToDelete: string) => {
-        setSelectedDatabases(
-            selectedDatabases.filter((database) => database !== databaseToDelete)
-        );
         dispatch(removeDatabase(databaseToDelete));
-        setInputDatabase(""); // Clear the autocomplete input
+        setInputDatabase("");
     };
-
 
     return (
         <>
-            <Accordion
-            >
+            <Accordion>
                 <AccordionSummary
                     expandIcon={<ExpandMoreIcon />}
                     aria-controls="panel2bh-content"
@@ -118,130 +107,111 @@ const Skillsets: React.FC<SkillsetsProps> = () => {
                         <LayersOutlinedIcon
                             sx={{ fontSize: "20px", mr: 1, fontWeight: "light" }}
                         />
-                        <Typography
-                            sx={{ fontWeight: "light", fontSize: "16px", p: 0.6 }}
-                        >
+                        <Typography sx={{ fontWeight: "light", fontSize: "16px", p: 0.6 }}>
                             Skillsets
                         </Typography>
                     </Box>
                 </AccordionSummary>
                 <AccordionDetails>
+                    {/* Programming Languages */}
                     <Box sx={{ width: 400 }}>
                         <Autocomplete
                             value={language}
                             onChange={handleAddLanguage}
                             inputValue={inputLanguage}
-                            onInputChange={(event, newInputValue) => {
-                                setInputLanguage(newInputValue);
-                            }}
-                            id="controllable-states-demo"
+                            onInputChange={(event, newInputValue) => setInputLanguage(newInputValue)}
                             options={LANGUAGES}
                             renderInput={(params) => (
-                                <TextField
-                                    {...params}
-                                    label="Add Programming languages"
-                                />
+                                <TextField {...params} label="Add Programming languages" />
                             )}
                         />
                         <Box sx={{ mt: 2 }}>
-                            {selectedLanguages.map(
-                                (language: string, index: number) => (
-                                    <Chip
-                                        key={index}
-                                        label={language}
-                                        onDelete={() => handleDeleteLanguage(language)}
-                                        sx={{ margin: 0.5 }}
-                                    />
-                                )
-                            )}
+                            {progLanguages.map((language: string, index: number) => (
+                                <Chip
+                                    key={index}
+                                    label={language}
+                                    onDelete={() => handleDeleteLanguage(language)}
+                                    sx={{ margin: 0.5 }}
+                                />
+                            ))}
                         </Box>
                     </Box>
+
+                    {/* Frameworks */}
                     <Box sx={{ width: 400, mt: 2 }}>
                         <Autocomplete
                             value={framework}
                             onChange={handleAddFramework}
                             inputValue={inputFramework}
-                            onInputChange={(event, newInputValue) => {
-                                setInputFramework(newInputValue);
-                            }}
-                            id="controllable-states-demo"
+                            onInputChange={(event, newInputValue) => setInputFramework(newInputValue)}
                             options={FRAMEWORKS}
                             renderInput={(params) => (
-                                <TextField
-                                    {...params}
-                                    label="Add libraries / frameworks"
-                                />
+                                <TextField {...params} label="Add libraries / frameworks" />
                             )}
                         />
                         <Box sx={{ mt: 2 }}>
-                            {selectedFramework.map(
-                                (framework: string, index: number) => (
-                                    <Chip
-                                        key={index}
-                                        label={framework}
-                                        onDelete={() => handleDeleteFramework(framework)}
-                                        sx={{ margin: 0.5 }}
-                                    />
-                                )
-                            )}
+                            {frameWorks.map((framework: any, index: number) => (
+                                <Chip
+                                    key={index}
+                                    label={framework}
+                                    onDelete={() => handleDeleteFramework(framework)}
+                                    sx={{ margin: 0.5 }}
+                                />
+                            ))}
                         </Box>
                     </Box>
+
+                    {/* Tools */}
                     <Box sx={{ width: 400, mt: 2 }}>
                         <Autocomplete
-                            value={tools}
+                            value={tool}
                             onChange={handleAddTool}
-                            inputValue={inputTools}
-                            onInputChange={(event, newInputValue) => {
-                                setInputTools(newInputValue);
-                            }}
-                            id="controllable-states-demo"
+                            inputValue={inputTool}
+                            onInputChange={(event, newInputValue) => setInputTool(newInputValue)}
                             options={TOOLS}
                             renderInput={(params) => (
                                 <TextField {...params} label="Add tools / platforms" />
                             )}
                         />
                         <Box sx={{ mt: 2 }}>
-                            {selectedTools.map((tools: string, index: number) => (
+                            {tools.map((tool: any, index: number) => (
                                 <Chip
                                     key={index}
-                                    label={tools}
-                                    onDelete={() => handleDeleteTool(tools)}
+                                    label={tool}
+                                    onDelete={() => handleDeleteTool(tool)}
                                     sx={{ margin: 0.5 }}
                                 />
                             ))}
                         </Box>
                     </Box>
+
+                    {/* Databases */}
                     <Box sx={{ width: 400, mt: 2 }}>
                         <Autocomplete
                             value={database}
                             onChange={handleAddDatabase}
                             inputValue={inputDatabase}
-                            onInputChange={(event, newInputValue) => {
-                                setInputDatabase(newInputValue);
-                            }}
-                            id="controllable-states-demo"
+                            onInputChange={(event, newInputValue) => setInputDatabase(newInputValue)}
                             options={DATABASES}
                             renderInput={(params) => (
                                 <TextField {...params} label="Add databases" />
                             )}
                         />
                         <Box sx={{ mt: 2 }}>
-                            {selectedDatabases.map(
-                                (database: string, index: number) => (
-                                    <Chip
-                                        key={index}
-                                        label={database}
-                                        onDelete={() => handleDeleteDatabase(database)}
-                                        sx={{ margin: 0.5 }}
-                                    />
-                                )
-                            )}
+                            {databases.map((database: any, index: number) => (
+                                <Chip
+                                    key={index}
+                                    label={database}
+                                    onDelete={() => handleDeleteDatabase(database)}
+                                    sx={{ margin: 0.5 }}
+                                />
+                            ))}
                         </Box>
                     </Box>
                 </AccordionDetails>
             </Accordion>
         </>
+    );
+};
 
-    )
-}
 export default Skillsets;

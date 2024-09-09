@@ -7,7 +7,7 @@ import BlurOnIcon from "@mui/icons-material/BlurOn";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 // import SchoolOutlinedIcon from "@mui/icons-material/SchoolOutlined";
 import LaptopMacOutlinedIcon from '@mui/icons-material/LaptopMacOutlined';
-import { addProjectEntry, removeProjectEntry, updateProjectEntry } from "../../../features/Form/slices/projectSlice";
+import { addProjectEntry, removeProjectEntry, updateProjectEntry } from "../../../features/Form/slices/formSlice";
 
 
 
@@ -20,7 +20,7 @@ interface ProjectProps {
   const Project: React.FC<ProjectProps> = () => {
 
     const dispatch = useDispatch();
-  const projectInfo = useSelector((state: RootState) => state.project.projectInfo);
+  const projectInfo = useSelector((state: RootState) => state.resume.projectInfo);
 
 
 
@@ -39,7 +39,7 @@ interface ProjectProps {
     const newProject = {
       id: Date.now(),
       projectName: "",
-      projectTechnologies: "",
+      projectTechnology: "",
       projectLink: "",
       projectDescription: "",
       location: "",
@@ -102,7 +102,7 @@ interface ProjectProps {
                 >
                   <BlurOnIcon />
                   <Typography sx={{ fontWeight: "light" }}>
-                    Project Name
+                  {project.projectName ? project.projectName : 'Project Name'} 
                   </Typography>
                   <DeleteOutlineOutlinedIcon
                     onClick={() => handleDeleteProject(project.id)}
@@ -132,12 +132,12 @@ interface ProjectProps {
                   </Grid>
                   <Grid item xs={12} mt={1}>
                     <TextField
-                      id={`projectTechnologies-${project.id}`}
-                      name="projectTechnologies"
+                      id={`projectTechnology-${project.id}`}
+                      name="projectTechnology"
                       type="text"
                       label="Project Technologies"
                       placeholder="JavaScript, Python, Flutter"
-                      value={project.projectTechnologies}
+                      value={project.projectTechnology}
                       fullWidth
                       onChange={(event) =>
                         handleProjetInfoChange(event, project.id)

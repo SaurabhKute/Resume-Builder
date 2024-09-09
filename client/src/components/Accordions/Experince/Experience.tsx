@@ -19,7 +19,7 @@ import {
   addExperienceEntry,
   removeExperienceEntry,
   updateExperienceEntry,
-} from "../../../features/Form/slices/experienceSlice";
+} from "../../../features/Form/slices/formSlice";
 import WorkOutlineOutlinedIcon from '@mui/icons-material/WorkOutlineOutlined';
 
 interface ExperienceProps {
@@ -30,7 +30,7 @@ interface ExperienceProps {
 const Experience: React.FC<ExperienceProps> = () => {
 
   const dispatch = useDispatch();
-  const experienceInfo = useSelector((state: RootState) => state.experience.experienceInfo);
+  const experienceInfo = useSelector((state: RootState) => state.resume.experienceInfo);
 
   const [anchorEl, setAnchorEl] = useState(null);
 
@@ -60,8 +60,8 @@ const Experience: React.FC<ExperienceProps> = () => {
       id: Date.now(),
       employer: "",
       jobTitle: "",
-      startMonYear: "",
-      endMonYear: "",
+      startMonthYear: "",
+      endMonthYear: "",
       location: "",
       description: "",
     };
@@ -122,7 +122,7 @@ const Experience: React.FC<ExperienceProps> = () => {
                 >
                   <BlurOnIcon />
                   <Typography sx={{ fontWeight: "light" }}>
-                    Company Name
+                  {exp.employer ? exp.employer: 'Company Name'} 
                   </Typography>
                   <DeleteOutlineOutlinedIcon
                     onClick={() => handleDeleteExperience(exp.id)}
@@ -164,12 +164,12 @@ const Experience: React.FC<ExperienceProps> = () => {
                   </Grid>
                   <Grid item xs={6} mt={1}>
                     <TextField
-                      id={`startMonYear-${exp.id}`}
-                      name="startMonYear"
+                      id={`startMonthYear-${exp.id}`}
+                      name="startMonthYear"
                       type="text"
                       label="Start of Month / Year"
                       placeholder="July 2023"
-                      value={exp.startMonYear}
+                      value={exp.startMonthYear}
                       onChange={(event) =>
                         handleExperienceInfoChange(event, exp.id)
                       }
@@ -177,12 +177,12 @@ const Experience: React.FC<ExperienceProps> = () => {
                   </Grid>
                   <Grid item xs={6} mt={1}>
                     <TextField
-                      id={`endMonYear-${exp.id}`}
-                      name="endMonYear"
+                      id={`endMonthYear-${exp.id}`}
+                      name="endMonthYear"
                       type="text"
                       label="End of Month / Year"
                       placeholder="July 2027"
-                      value={exp.endMonYear}
+                      value={exp.endMonthYear}
                       onChange={(event) =>
                         handleExperienceInfoChange(event, exp.id)
                       }

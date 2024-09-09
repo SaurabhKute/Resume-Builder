@@ -5,7 +5,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import BlurOnOutlinedIcon from "@mui/icons-material/BlurOnOutlined";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import { Accordion, AccordionDetails, AccordionSummary, Box, Button, Grid, TextField, Typography } from "@mui/material";
-import { addCertificateField, removeCertificateField, updateCertificateField } from "../../../features/Form/slices/certificationSlice";
+import { addCertificateField, removeCertificateField, updateCertificateField } from "../../../features/Form/slices/formSlice";
 import StarBorderOutlinedIcon from '@mui/icons-material/StarBorderOutlined';
 
 
@@ -18,7 +18,7 @@ const Certification: React.FC<CertificationProps> = () => {
 
   const dispatch = useDispatch();
 
-  const inputCertificates = useSelector((state: RootState) => state.certificate.certificate);
+  const inputCertificates = useSelector((state: RootState) => state.resume.certificationInfo);
 
 
   const handleAddNewCertificate = () => {
@@ -67,7 +67,7 @@ const Certification: React.FC<CertificationProps> = () => {
           <Typography sx={{ fontSize: "14px", fontWeight: "bold" }}>
             Certificates
           </Typography>
-          {inputCertificates.map((certificate, index) => (
+          {inputCertificates?.map((certificate, index) => (
             <Grid
               key={index}
               container
@@ -89,6 +89,9 @@ const Certification: React.FC<CertificationProps> = () => {
                   onChange={(event: any) =>
                     handleCertificateInputChange(index, event)
                   }
+                  InputLabelProps={{
+                    shrink: !!certificate, // Keeps the label in the floated position if there is a value
+                  }}
                 />
               </Grid>
               <Grid item xs={1} mt={2}>

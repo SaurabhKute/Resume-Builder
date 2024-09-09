@@ -10,7 +10,7 @@ const navigate = useNavigate();
 
 function handleClick(event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) {
   event.preventDefault();
-  navigate('/dashboard');
+  navigate('/');
 }
 
   const breadcrumbs = [
