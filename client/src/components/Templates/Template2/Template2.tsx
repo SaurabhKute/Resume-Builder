@@ -1,9 +1,9 @@
 // import { Container, Paper } from "@mui/material";
-import { RootState } from "../../app/store";
 import { useSelector } from "react-redux";
-import "./Resume.css";
+import { RootState } from "../../../app/store";
+import "./Template2.css";
 
-export default function Resume() {
+export default function Template1() {
 
   const personalInfo = useSelector((state: RootState) => state.resume.personalInfo || {});
   const socialLinks = useSelector((state: RootState) => state.resume.socialLinks || []);

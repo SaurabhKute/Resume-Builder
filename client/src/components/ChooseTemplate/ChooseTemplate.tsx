@@ -21,7 +21,7 @@ const ChooseTemplate = () => {
 
   // console.log(user, "@user");
 
-  const [selectedValue, setSelectedValue] = useState("a");
+  const [selectedValue, setSelectedValue] = useState(1);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -34,6 +34,7 @@ const ChooseTemplate = () => {
   };
 
   const handleConfirmClick = async () => {
+    console.log(selectedValue, "@selected value");
     setLoading(true);
     setError(null);
   
@@ -43,7 +44,7 @@ const ChooseTemplate = () => {
   
     const newResumeData = {
       userId: `${user?.userId}`,
-      templateId: 1,
+      templateId: selectedValue,
       resumeTitle: `${user?.firstName}'s Resume`,
     };
   
@@ -147,9 +148,9 @@ const ChooseTemplate = () => {
                   }}
                 >
                   <Radio
-                    checked={selectedValue === "a"}
+                    checked={selectedValue === 1}
                     onChange={handleChange}
-                    value="a"
+                    value="1"
                     name="radio-buttons"
                     inputProps={{ "aria-label": "A" }}
                     sx={{ marginBottom: "4px", color: "black" }}
@@ -188,9 +189,9 @@ const ChooseTemplate = () => {
                   }}
                 >
                   <Radio
-                    checked={selectedValue === "b"}
+                    checked={selectedValue == 2}
                     onChange={handleChange}
-                    value="b"
+                    value="2"
                     name="radio-buttons"
                     inputProps={{ "aria-label": "B" }}
                     sx={{ marginBottom: "4px" }}

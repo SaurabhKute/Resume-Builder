@@ -1,0 +1,209 @@
+.container {
+    width: 900px;
+    max-width: 100%;
+    padding: 20px;
+    background-color: #f4f4f4; /* Light gray for better readability */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: auto;
+    box-sizing: border-box;
+  }
+  
+  .main {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 40px;
+    font-size: 14px;
+    width: 100%;
+    max-width: 850px;
+    min-height: 850px;
+    background-color: #ffffff; /* White background for professionalism */
+    border: 1px solid #ddd; /* Subtle border for better structure */
+    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+    overflow: auto;
+    margin-top: 50px;
+  }
+  
+  .divider {
+    border-top: 1px solid #ccc;
+    margin: 20px 0;
+  }
+  
+  .header {
+    text-align: center;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #2b5876; /* Professional navy blue */
+  }
+  
+  .name {
+    font-size: 32px; /* Bigger font for visibility */
+    font-weight: bold;
+    color: #2b5876; /* Navy blue for professionalism */
+    margin-bottom: 6px;
+  }
+  
+  .header .jobTitle {
+    text-align: center;
+    font-size: 18px;
+    color: #555; /* Neutral gray for contrast */
+    margin-bottom: 10px;
+  }
+  
+  .contact-info {
+    font-size: 14px;
+    color: #555;
+    margin: 10px 0;
+    text-align: center;
+  }
+  
+  .social-links {
+    text-align: center;
+    font-size: 14px;
+    color: #2b5876;
+  }
+  
+  .social-links a {
+    text-decoration: none;
+    color: #2b5876;
+    font-weight: bold;
+  }
+  
+  .social-links a:hover {
+    color: #1e3d57; /* Darker shade of navy */
+  }
+  
+  h2 {
+    font-size: 18px;
+    font-weight: bold;
+    color: #2b5876;
+    margin-top: 20px;
+    border-bottom: 1px solid #ccc; /* Divider under headings */
+    padding-bottom: 5px;
+  }
+  
+  .education-section .institute,
+  .experience-section .company,
+  .project-section .project {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333; /* Neutral dark gray for emphasis */
+  }
+  
+  .education-section .date,
+  .experience-section .date {
+    text-align: right;
+    font-size: 14px;
+    color: #666;
+    font-style: italic;
+  }
+  
+  .education-section .location,
+  .experience-section .location {
+    text-align: left;
+    font-size: 14px;
+    color: #777;
+    margin-top: 5px;
+  }
+  
+  .education-section .score,
+  .experience-section .description {
+    font-size: 14px;
+    color: #555;
+    margin: 10px 0;
+    line-height: 1.5;
+  }
+  
+  .project-section .description,
+  .certification-section .description {
+    font-size: 14px;
+    color: #444;
+    margin-left: 14px;
+    line-height: 1.4;
+  }
+  
+  .skill-group h3 {
+    font-size: 16px;
+    font-weight: bold;
+    color: #2b5876;
+    margin-bottom: 5px;
+  }
+  
+  .skill-group p {
+    font-size: 14px;
+    color: #555;
+  }
+  
+  .honors-section .description {
+    font-size: 14px;
+    color: #444;
+    margin-left: 14px;
+  }
+  
+  footer {
+    text-align: center;
+    font-size: 12px;
+    color: #777;
+    margin-top: 20px;
+  }
+  
+  /* Scrollbar Customization */
+  .custom-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: #2b5876 #f4f4f4;
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 10px;
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: #f4f4f4;
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background-color: #2b5876;
+    border-radius: 10px;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .main {
+      padding: 20px;
+      font-size: 12px;
+    }
+  
+    .header .name {
+      font-size: 24px;
+    }
+  
+    .header .jobTitle {
+      font-size: 16px;
+    }
+  
+    h2 {
+      font-size: 16px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .main {
+      padding: 10px;
+      font-size: 10px;
+    }
+  
+    .header .name {
+      font-size: 20px;
+    }
+  
+    .header .jobTitle {
+      font-size: 14px;
+    }
+  
+    h2 {
+      font-size: 14px;
+    }
+  }
+  
